@@ -1,9 +1,10 @@
 .content.height.width.left
   .lefty.height.left
     .vimg.width
-      #pagelet_main_nav
-        ul.uiSideNav.mtm#fbCoreAppsNav(dir='rtl')
-          != partial('../_votes/nav', [{what: '\u05de\u05d4\u0020\u05d6\u05d4\u0020\u05d6\u05d4\u003f', where: '/whatisit.html', class: '', img: '/whatisit.png'}, {what: '\u05db\u05dc\u0020\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea', where: '/votes/all', class: '', img: '/vlogo.png'}])
+      img.width.height(src='/ivotelogo.png')  
+    #pagelet_main_nav
+      ul.uiSideNav.mtm#fbCoreAppsNav(dir='rtl')
+        != partial('nav', [{what: '\u05de\u05d4\u0020\u05d6\u05d4\u0020\u05d6\u05d4\u003f', where: 'whatisit.html', class: '', img: '/whatisit.png'}, {what: '\u05db\u05dc\u0020\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea', where: '/votes/all', class: allSelected, img: '/vlogo.png'}, {what: '\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea\u0020\u05e9\u05dc\u05d9', where: '/votes/all/' + cfbuid, class: userSelected, img: cpicurl}])
   .center.height.left(dir='rtl')	  
     h1
       |קולורבים
