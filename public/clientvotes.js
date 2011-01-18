@@ -21,9 +21,9 @@ function afterLogin(newsession) {
 		  domReplace(dom, '.urvote');
 		  domReplace(dom, '.lefty');
 		  
-		  var cmts = $('.cmts iframe');
+		  var cmts = $('.cmnts iframe');
 		  if (cmts){
-		      cmts.attr('src', cmts.attr('src').replace('CMT', 'CMT' + ME.uid));
+		      cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
 		      console.log('baby');
 		  }
 		      
