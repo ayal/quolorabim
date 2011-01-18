@@ -118,10 +118,12 @@ function handleSessionResponse(response, after, force, perms) {
     bperms = {perms: 'email'};
     if (!perms)
 	perms = bperms;
+    
+    var ask = response.perms != perms.perms;
 
     console.log('is there a session?');
-
-    if (!response.session) {
+    
+    if (!response.session || ask) {
 	console.log('no session');
 	console.log(response);
 	notconnected();
