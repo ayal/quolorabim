@@ -1,5 +1,3 @@
-
-
 var appidEncodedUrl = "140153199345253&next=http%3A%2F%2Fapps.facebook.com%2Fnotifymeplease%2Fnext";
 var API_KEY = 'f0b99f4293afe8d7e6823f7b0ee197d1';
 
