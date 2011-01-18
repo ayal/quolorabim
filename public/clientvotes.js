@@ -19,12 +19,21 @@ function afterLogin(newsession) {
 	$.get(window.location.pathname + '?ajx=true', function (html) {
 		  var dom = $(html);
 		  domReplace(dom, '.urvote');
-		  domReplace(dom, '#'+daat.vid+' .noes');
-		  domReplace(dom, '#'+daat.vid+' .yess');
+		  domReplace(dom, '.lefty');
+		  pieit();
 		  //domReplace(dom, '.noes');
 		  //domReplace(dom, '.yess');
 	      }); // TODO: can save one call 	
     }
+}
+
+function pieit() {
+    var pies = $('.pie');
+    pies.each(function(i, pie){
+		  $(pie).sparkline([$(pie).attr('yes'),
+				    $(pie).attr('no')],
+				   {type: 'pie', sliceColors: ['#ADDFAD', '#B00000'], height: $(pie).attr('h')} ); 		      
+	      });   
 }
 
 $(document).ready(function(){
@@ -39,13 +48,8 @@ $(document).ready(function(){
 		      $("td a").click(function (){
 				       evt('click', {uri: this.href});
 				   });
-		      
-		      var pies = $('.pie');
-		      pies.each(function(i, pie){
-				    $(pie).sparkline([$(pie).attr('yes'),
-						   $(pie).attr('no')],
-						  {type: 'pie', sliceColors: ['#ADDFAD', '#B00000'], height: $(pie).attr('h')} ); 		      
-				});
+
+		      pieit();
 		      
 		  });
 
@@ -71,8 +75,10 @@ function postit(daat) {
 			       $.get('../../votes/' + daat.vid + query, function (html) {
 					 var dom = $('<div>' + html + '</div>');
 					 domReplace(dom, '#'+daat.vid+' .urvote');
-					 domReplace(dom, '#'+daat.vid+' .noes');
-					 domReplace(dom, '#'+daat.vid+' .yess');
+					 domReplace(dom, '.lefty');
+//					 domReplace(dom, '#'+daat.vid+' .noes');
+//					 domReplace(dom, '#'+daat.vid+' .yess');
+					 pieit();
 					 $('.loading').hide();
 				     }); // TODO: can save one call 
 			   });
