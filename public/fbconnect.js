@@ -79,7 +79,8 @@ function evt(name, data){
 
 function createSession(after) {
     $.get('/sess', function(res){
-	      if (res == 'YES') {
+	      if (res != 'NO') {
+		  ME.id = res;
 		  console.log('session already exists');
 		  after(false);
 		  return;
@@ -91,7 +92,6 @@ function createSession(after) {
 			 console.log('creating server session');
 			 
 			 fbuid = ME.uid;
-			 response['perms'] = ME.perms;
 			 $.post('/auth?dummy=' + new Date(),
 				{fbuid: fbuid, data: JSON.stringify(response)},
 				function (data) {
@@ -131,7 +131,6 @@ function handleSessionResponse(response, after, force, perms) {
 			 console.log(x);
 			 if (x.session){
 			     ME = x.session;
-			     ME.perms = x.perms;
 			     evt('login/yes');
 			     createSession(after);
 			 }
@@ -145,12 +144,10 @@ function handleSessionResponse(response, after, force, perms) {
     
     console.log(ME);
     createSession(after);
-
-    
-    // // SELECT uid FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = 
-    // if we have a session, query for the user's profile picture and name\    
 }
 
 function pop(){
-    verifyLogin(function(){}, true, {perms: 'email,publish_stream'});
+    verifyLogin(function(){
+		    $.post('/deebee/user/update', {i: ME.id, p: 'data.post', v: 'true'});
+		}, true, {perms: 'email,publish_stream'});
 }
