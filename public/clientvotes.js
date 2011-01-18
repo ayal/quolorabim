@@ -19,7 +19,8 @@ function afterLogin(newsession) {
 	$.get(window.location.pathname + '?ajx=true', function (html) {
 		  var dom = $(html);
 		  domReplace(dom, '.urvote');
-		  domReplace(dom, '.lefty');
+		  domReplace(dom, '#'+daat.vid+' .noes');
+		  domReplace(dom, '#'+daat.vid+' .yess');
 		  //domReplace(dom, '.noes');
 		  //domReplace(dom, '.yess');
 	      }); // TODO: can save one call 	
