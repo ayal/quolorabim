@@ -270,7 +270,7 @@ app.post('/evt/:ename/?(:etype)?', function (req, res) {
 
 app.get('/sess', function (req, res) {
 	    if (req.session.user)
-		res.send(res.session.user._id.toHexString());
+		res.send(req.session.user._id.toHexString());
 	    else
 		res.send('NO');
 	});
