@@ -17,7 +17,7 @@
       |פשוט להצביע!
     .text.right
       |כדי להצביע עליך להכנס לעמוד של
-      a(href='/example')
+      a(href='/votes/example')
         |הצבעה כלשהי
       |וללחוץ על אחד הכפתורים:
     .text.right

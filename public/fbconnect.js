@@ -73,6 +73,7 @@ $(document).ready(
     });
 
 function evt(name, data){
+    console.log(name);
     $.post('/evt/' + name, data || {}, function(){});
 }
 
@@ -103,15 +104,21 @@ function createSession(after) {
 	  });
 }
 
-function verifyLogin(after, force) {
+function verifyLogin(after, force, perms) {
     console.log('verifying login');
     FB.getLoginStatus( function (res) {
-			   handleSessionResponse(res, after, force);
+			   handleSessionResponse(res, after, force, perms);
 		       });   
 }
 
+var ME = null;
+
 // handle a session response from any of the auth related calls
-function handleSessionResponse(response, after, force) {
+function handleSessionResponse(response, after, force, perms) {
+    bperms = {perms: 'email'};
+    if (!perms)
+	perms = bperms;
+
     console.log('is there a session?');
 
     if (!response.session) {
@@ -128,16 +135,20 @@ function handleSessionResponse(response, after, force) {
 			 }
 			 else{
 			     evt('login/no');
-			     console.log('could not log-in');
 			 }
-		     });
+		     }, perms);
 	}
         return;
     }
     ME = response.session;
+    console.log(ME);
     createSession(after);
 
     
     // // SELECT uid FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = 
     // if we have a session, query for the user's profile picture and name\    
+}
+
+function pop(){
+    verifyLogin(function(){}, true, {perms: 'email,publish_stream'});
 }

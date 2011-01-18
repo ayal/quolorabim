@@ -399,7 +399,7 @@ var cfg = {
     fbconnect: true,
     session: false,
     appUrl: appUrl
-}
+};
 
 function voteStatus(vote, fbuid) {
 
@@ -412,6 +412,12 @@ function voteStatus(vote, fbuid) {
 	lvoted = decodeURIComponent('%D7%98%D7%A8%D7%9D%20%D7%94%D7%A6%D7%91%D7%A2%D7%AA');;
     return lvoted;
 }
+
+app.get('/example', function(req, res, next) {
+	    res.redirect('/votes/4d336b13b6adce0e6e000001?layout=true');	    
+});
+
+
 
 app.get('/votes/:id', function(req, res, next) {
 	    //	    if (!checkSession(req, res)) {
