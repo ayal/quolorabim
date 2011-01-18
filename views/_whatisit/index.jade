@@ -4,8 +4,8 @@
       img.width.height(src='/ivotelogo.png')  
     #pagelet_main_nav
       ul.uiSideNav.mtm#fbCoreAppsNav(dir='rtl')
-        != partial('../_votes/nav', [{what: '\u05de\u05d4\u0020\u05d6\u05d4\u0020\u05d6\u05d4\u003f', where: 'whatisit.html', class: 'selectedItem', img: '/whatisit.png'}, {what: '\u05db\u05dc\u0020\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea', where: '/votes/all', class: '', img: '/vlogo.png'}])
-  .center.height.left(dir='rtl')	  
+        != partial('../_votes/nav', [{what: '\u05de\u05d4\u0020\u05d6\u05d4\u0020\u05d6\u05d4\u003f', where: '/whatisit', class: 'selectedItem', img: '/whatisit.png'}, {what: '\u05db\u05dc\u0020\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea', where: '/votes/all', class: '', img: '/vlogo.png'}])
+  .center.height.left.whatis(dir='rtl')  
     h1
       |קולורבים
     h2
