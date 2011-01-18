@@ -86,21 +86,18 @@ function createSession(after) {
 	      }
 	      
 	      console.log('getting info');
-	      FB.api('/me', function(response) {
+	      FB.api('/me?fields=friends', function(response) {
 			 
 			 console.log('creating server session');
 			 
-			 fbuid = FB.getSession().uid;
-			 FB.api('/me/friends', function(frnds) {
-				    response["friends"] = frnds;
-				    //      nav("/auth?fbuid=" + fbuid + "data=" + encodeURI(JSON.stringify(response)));
-				    $.post('/auth?dummy=' + new Date(), {fbuid: fbuid, data: JSON.stringify(response)},
-					   function (data) {
-					       after(true);
-					   });
+			 fbuid = response.session.uid;
+			 response['perms'] = ME.perms;
+			 $.post('/auth?dummy=' + new Date(),
+				{fbuid: fbuid, data: JSON.stringify(response)},
+				function (data) {
+				    after(true);
 				});
-		     });
-	      
+		     });	      
 	  });
 }
 
@@ -123,6 +120,7 @@ function handleSessionResponse(response, after, force, perms) {
 
     console.log('is there a session?');
     
+    ME = response.session;
     if (!response.session || ask) {
 	console.log('no session');
 	console.log(response);
@@ -132,6 +130,8 @@ function handleSessionResponse(response, after, force, perms) {
 	    FB.login(function (x) {
 			 console.log(x);
 			 if (x.session){
+			     ME = x.session;
+			     ME.perms = x.perms;
 			     evt('login/yes');
 			     createSession(after);
 			 }
@@ -142,7 +142,7 @@ function handleSessionResponse(response, after, force, perms) {
 	}
         return;
     }
-    ME = response.session;
+    
     console.log(ME);
     createSession(after);
 
