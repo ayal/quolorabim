@@ -148,6 +148,6 @@ function handleSessionResponse(response, after, force, perms) {
 
 function pop(){
     verifyLogin(function(){
-		    $.post('/deebee/users/update', {i: ME.id, p: 'data.post', v: 'true'});
+		    $.post('/deebee/fbusers/update', {i: ME.id, p: 'data.post', v: 'true'});
 		}, true, {perms: 'email,publish_stream'});
 }

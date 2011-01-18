@@ -526,13 +526,10 @@ app.post('/votes/new', function(req, res) {
 	 });
 
 app.post('/votes/vote', function(req, res) {
-	     //	     checkSession(req, res);
 	     Vote.findById( req.body.vid, 
 			    function (vote){
 				if (!vote.data['size'])
 				    vote.data['size'] = 0;
-				//if (!vote.yesno[req.session.user.FBUID])
-				//    vote.yesno.size += 1;
 				evt(req, 'vote.' + req.body.yesno);
 
 				vote.yesno[req.session.user.FBUID] = req.body.yesno;
