@@ -419,6 +419,7 @@ app.get('/example', function(req, res, next) {
 
 
 
+
 app.get('/votes/:id', function(req, res, next) {
 	    //	    if (!checkSession(req, res)) {
 	    //		next();
@@ -504,6 +505,9 @@ app.get('/whatisit', function(req, res) {
 	     res.render('whatisit', {layout: true});
 	 });
 
+app.get('/newvote', function(req, res) {
+	     res.render('newvote', {layout: true});
+	 });
 
 
 app.post('/votes/new', function(req, res) {
