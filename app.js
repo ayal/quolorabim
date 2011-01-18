@@ -494,6 +494,11 @@ app.post('/fbml', function(req, res) {
 	     res.render('_votes/fbml', {layout: false});
 	 });
 
+app.post('/whatisit', function(req, res) {
+	     res.render('whatisit', {layout: true});
+	 });
+
+
 
 app.post('/votes/new', function(req, res) {
 	     //	     checkSession(res, res);
