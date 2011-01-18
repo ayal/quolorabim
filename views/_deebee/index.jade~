@@ -1,0 +1,2 @@
+ul
+!= #votes.left.center!= partial('avote', votes) 

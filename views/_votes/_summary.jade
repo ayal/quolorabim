@@ -1,0 +1,10 @@
+.tot.right(dir='rtl')
+  | #{summary.count} #{decodeURIComponent(summary.text)} (#{Math.floor(summary.count * 100 / summary.tot)}%)
+.yimg
+  - each val, key in vote.yesno
+    - if (val === summary.word && friends && friends[key])
+      != partial('auserpic', [{uid: key, name: vote.users[key].data.name, showname: true}])
+  - each val, key in vote.yesno
+    - if (val === summary.word && (!friends || (friends && !friends[key])))
+      != partial('auserpic', [{uid: key, name: vote.users[key].data.name, showname: true}])
+ 

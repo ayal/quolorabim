@@ -1,0 +1,3 @@
+.vote
+  h2= vote.data.title
+  .date= vote.date

@@ -1,0 +1,10 @@
+.yimg
+  .tot.right
+    | #{asummary.count} #{asummary.text}
+  - each val, key in avote.yesno
+    - console.log(friends)
+    - if (friends && friends[key])
+      != partial('auserpic', [{uid: key, name: avote.users[key].data.name, showname: false}])
+  - each val, key in avote.yesno
+    - if (!friends || (friends && !friends[key]))
+      != partial('auserpic', [{uid: key, name: avote.users[key].data.name, showname: false}])

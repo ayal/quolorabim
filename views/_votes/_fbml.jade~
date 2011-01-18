@@ -1,0 +1,6 @@
+fb:profile-pic(uid='loggedinuser')
+fb:wall
+  fb:wallpost(uid='100001083158634')
+    |what the fuck
+    fb:wallpost-action
+fb:      

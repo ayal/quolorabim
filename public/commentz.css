@@ -1,0 +1,19 @@
+input[type="checkbox"]{
+    display: none;
+}
+
+.connected label {
+   display: none;
+}
+
+.wallkit_subtitle{
+    display: none;
+}
+
+.profile_pic, .connect_widget_vertical_center{
+    display: none;
+}
+
+.composer {
+    padding: 0px 0px 0px 0px !important;
+}

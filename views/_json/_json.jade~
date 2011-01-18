@@ -1,0 +1,20 @@
+- if (json._partials)
+  | ------
+  div#root!= partial('json', [json._partials])
+- else
+  #shmoe
+  - each val, key in json
+    #joe
+    - var class = '';
+    - if (key === '_id') class = 'ID';
+    span.key(id=key,class=class)
+      |#{key} :
+      - if (val[0] == '{')
+        span.val
+          - var next = JSON.parse(val)
+            div(style='margin-left:50px')!= partial('json', [next])
+      - else
+        - if (val === '' || ! val)
+          - val = 'none'
+        span.eval
+          |#{val}

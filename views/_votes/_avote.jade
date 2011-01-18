@@ -1,0 +1,33 @@
+- var vid =avote._id.toHexString(), postry = "postit({vid: '" + vid + "', yesno: 'yes', query: '?flat=true'})", postrn = "postit({vid: '" + vid + "', yesno: 'no', query: '?flat=true'})";
+- var rmpost = "rmpost({vid: '" + vid + "', yesno: 'yes'})";
+- var turl = 'votes/' + vid + '?layout=true';
+- if (layout === true)
+  - turl = avote.data.vurl;
+- var yess = 0, noes = 0;
+  - each val, key in avote.yesno
+    - val == 'yes' ? yess += 1 : noes += 1
+.content.height.width.left#vid('id'=vid)
+  .width.right
+    .centerup.width.right
+      div.vote
+        .ttlyesno.right.width
+          .vtitle.right.width.height 
+            span.pie.right(yes=yess,no=noes,h='1.5em')
+            .vlink.right
+              - var navit = "navapp('" + turl + "');return false;";
+              a.right.width(href='#', onclick=navit)
+                |#{avote.data.title}
+              //.stitle.right(dir='rtl')=avote.data.stitle
+              .urvote.right.width
+                |#{avote.voted}
+          .yesnokill.right.height
+            .imgwrp
+              a.right(href='#', onclick=postrn, class="bno")
+                //img(src='/rlike.png')
+            .imgwrp
+              a.right(href='#', onclick=postry, class="byes")
+                //img(src='/glike.png')
+            //span(onclick=rmpost, class="byes")
+            //  | KILL
+        .yess.varea
+          != partial('asummary', [{text: '\u003a\u05d4\u05e6\u05d1\u05d9\u05e2\u05d5', word: 'yes', count: yess + noes}])

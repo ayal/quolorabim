@@ -1,0 +1,139 @@
+function domReplace(dom, cls) {
+    var newels = dom.find(cls);
+    if ($(cls)[1]){
+	$.each($(cls), function(i, v){
+		   var newel = newels[i];
+		   $(v).replaceWith(newel);
+	       });
+    }
+    else {
+	$(cls).replaceWith(newels);
+    }
+    
+}
+
+function afterLogin(newsession) {
+    if (newsession){
+
+	console.log('im going to call the server');
+	$.get(window.location.pathname + '?ajx=true', function (html) {
+		  var dom = $(html);
+		  domReplace(dom, '.urvote');
+		  domReplace(dom, '.lefty');
+		  //domReplace(dom, '.noes');
+		  //domReplace(dom, '.yess');
+	      }); // TODO: can save one call 	
+    }
+}
+
+$(document).ready(function(){
+		      $( ".info" ).dialog({
+					      height: 140,
+					      modal: true,
+					      autoOpen: false,
+					      resizable: false,
+					      position: 'top'
+					  });
+
+		      $("td a").click(function (){
+				       evt('click', {uri: this.href});
+				   });
+		      
+ 		      
+		      
+		  });
+
+function notconnected() {
+
+}
+
+function info(what){
+    $(what).dialog("open");
+    return false;
+}
+
+
+
+
+function postit(daat) {
+    $('.loading').show();
+    verifyLogin(function () {
+		    console.log(daat);
+		    $.post('../../votes/vote', daat, function () {
+			       var query = daat.query ? daat.query + '&' : '?';
+			       query += 'ajx=true';
+			       $.get('../../votes/' + daat.vid + query, function (html) {
+					 var dom = $('<div>' + html + '</div>');
+					 domReplace(dom, '#'+daat.vid+' .urvote');
+					 domReplace(dom, '#'+daat.vid+' .noes');
+					 domReplace(dom, '#'+daat.vid+' .yess');
+					 $('.loading').hide();
+				     }); // TODO: can save one call 
+			   });
+		    
+		    var hebvote = daat.yesno == 'no' ? '\u05e0\u05d2\u05d3' : '\u05d1\u05e2\u05d3';
+		    console.log('whatz');
+		    var name = $('.x').text();
+		    var link = appUrl.substr(0, appUrl.length - 1 ) + window.location.pathname + "?layout=true&ref=" + ME.uid;
+		    var message = '\u05d4\u05e6\u05d1\u05e2\u05ea\u05d9\u0020' + hebvote + ' - ' + name;
+
+		    FB.ui(
+			{
+			    method: 'feed',
+			    name: name,
+			    link: link,
+			    picture: 'http://work.thewe.net/ivotelogo.png',
+			    caption:'ChoiceBook',
+			    description: 'Face your choices!',
+			    message: message
+			},
+			function(response) {
+			    
+			    if (!$.browser.msie)
+				$($('.fb_dialog_advanced')[1]).css({display: 'none'});
+			    else
+				$($('.fb_dialog_legacy')[1]).css({display: 'none'});
+			    
+			    
+			    if (response && response.post_id) {
+				evt('shared/yes');
+			    } else {
+				evt('shared/no');
+			    }
+			}
+		    );
+
+		    
+		    if ($.browser.msie){
+			$($('.fb_dialog_legacy')[0]).css({display: 'none'});
+			$($('.fb_dialog_legacy')[1]).css({display: 'none'});			
+		    }
+		    else{
+			$($('.fb_dialog_advanced')[0]).css({display: 'none'});
+			$($('.fb_dialog_advanced')[1]).css({display: 'none'});    
+		    }
+
+
+
+
+
+		    setTimeout(function () {
+				   if ($.browser.msie)
+				       $($('.fb_dialog_legacy')[1]).css({display: 'block'});
+				   else
+				       $($('.fb_dialog_advanced')[1]).css({display: 'block'});
+				   
+
+			       }, 3500);
+		    
+		    
+		    return true;
+		}, true)
+    
+    
+    ;
+}
+
+
+
+

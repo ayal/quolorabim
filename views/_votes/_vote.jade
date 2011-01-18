@@ -1,0 +1,100 @@
+- var vid =vote._id.toHexString(), postry = "postit({vid: '" + vid + "', yesno: 'yes'})", postrn = "postit({vid: '" + vid + "', yesno: 'no'})";
+- var rmpost = "rmpost({vid: '" + vid + "', yesno: 'yes'})";
+- var curl = cfg.appUrl + 'votes/' + vid + '?layout=true';
+- curl = 'http://www.facebook.com/plugins/feedback.php?limit=10&href=' + encodeURIComponent(curl);
+- if (layout === true)
+  - var turl = vote.data.vurl;
+- var yess = 0, noes = 0;
+  - each val, key in vote.yesno
+    - val == 'yes' ? yess += 1 : noes += 1
+.content.height.width.left(id=vid)
+  .lefty.height.left
+    .vimg.width
+      #pagelet_main_nav
+        ul.uiSideNav.mtm#fbCoreAppsNav(dir='rtl')
+          != partial('nav', [{what: vote.data.title, where: '#', class: 'selectedItem', img: ''}, {what: '\u05de\u05d4\u0020\u05d6\u05d4\u0020\u05d6\u05d4\u003f', where: '/whatisit.html', class: '', img: '/whatisit.png'}, {what: '\u05db\u05dc\u0020\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea', where: '/votes/all', class: '', img: '/vlogo.png'}])
+      .yesnokill.right
+        .btns.width
+          .imgwrp
+            a.right(href='#', onclick=postrn, class="bno")
+              img(src='/rlike.png')
+              .imgtxt
+                |\u05d0\u05e0\u05d9 \u05e0\u05d2\u05d3
+          .imgwrp
+            a.right(href='#', onclick=postry, class="byes")
+              img(src='/glike.png')
+              .imgtxt
+                |\u05d0\u05e0\u05d9 \u05d1\u05e2\u05d3
+        //span(onclick=rmpost, class="byes")
+        //  | KILL
+    div(class="noes varea")
+      != partial('summary', [{classes: 'noes varea', text: '%D7%A0%D7%92%D7%93', word: 'no', count: noes, tot: noes + yess}])
+    .yess.varea
+      != partial('summary', [{classes: 'yess varea', text: '%D7%91%D7%A2%D7%93', word: 'yes', count: yess, tot: noes + yess}])
+    .othervts.width
+    .more.width
+  .center.height.left
+    .centerup.width.left
+      div(class='vote')
+        .ttlyesno.right.width
+          .vtitle.right.height 
+            .vlink.right
+              .x
+                |#{vote.data.title}
+              .stitle.right(dir='rtl')=vote.data.stitle
+          .urvote.left
+            |#{voted}           
+    .centermiddle.width.right
+      .more.right.width
+        table.right.width(dir='rtl')
+          - if (vote.data.status)
+            tr
+              td='\u05e1\u05d8\u05d8\u05d5\u05e1'
+              td
+                |#{vote.data.status}
+          - if (vote.data.laws)                  
+            tr
+              td='\u05e0\u05d5\u05e1\u05d7\u05d9\u0020\u05d4\u05d4\u05e6\u05e2\u05d4'
+              td
+                - var i = 1;
+                - each key in JSON.parse(vote.data.laws)
+                  a(href=key.law, target='_blank')
+                    img(src='/alaw.png', title=key.time)
+          - if (vote.data.votes)
+            tr
+              td='\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea\u0020\u05d1\u05de\u05dc\u05d9\u05d0\u05d4'
+              td
+                - var i = 0;
+                - each key in JSON.parse(vote.data.votes)
+                  - i++
+                  a(href=key.url, target='_blank')
+                    - var imgttl = '\u05d1\u05e2\u05d3' + ': ' + key.yesno.split('/')[0] + ' ' + '\u05e0\u05d2\u05d3' + ': ' + key.yesno.split('/')[1] + ' ' + key.time;
+                    //img(src='/avote.gif', title=imgttl)
+                    span.pie.right(yes=key.yesno.split('/')[0],no=key.yesno.split('/')[1],title=imgttl,h='1.0em')
+          - if (vote.data.commitees) 
+            tr
+              td='\u05ea\u05de\u05dc\u05d5\u05dc\u0020\u05d4\u05d5\u05d5\u05e2\u05d3\u05d5\u05ea'
+              td
+                - var i = 1;
+                - each key in JSON.parse(vote.data.commitees)
+                  a(href=key.url, target='_blank')
+                    img(src='/acommittee.png', title=key.time)            
+          - if (vote.data.vurl)
+            tr
+              td='\u05d4\u05d4\u05e6\u05d1\u05e2\u05d4\u0020\u05d1\u05d0\u05ea\u05e8\u0020\u05db\u05e0\u05e1\u05ea\u0020\u05e4\u05ea\u05d5\u05d7\u05d4'
+              td
+                - var navit = "navapp('" + turl + "');return false;";
+                a(href=turl, target='_blank')= vote.data.title
+          - if (vote.data.links && vote.data.links.length > 0)
+            tr
+              td='\u05e7\u05d9\u05e9\u05d5\u05e8\u05d9\u05dd'
+              td
+                - each key in vote.data.links.split(',')
+                  a(href=key, target='_blank')
+                    img(src='/link.png')
+    .centerdown.width.left
+      .cmnts.right.width
+        iframe.comments(frameborder='0', height='1100px', src=curl, width="480px", name="comments123")
+        //fb:comments(title='kaka',xid='kakanumber', url=curl)
+    
+    

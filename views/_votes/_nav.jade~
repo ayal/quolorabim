@@ -1,0 +1,9 @@
+li.key-pp.open#navItem_nf(class=nav.class)
+  a.item(href=nav.where)
+    span.count.blue-bubble-float-right.uiSideNavCount.hidden_elem
+      span.countValue.fss
+      span.maxCountIndicator
+    span.imgWrap
+      img(src=nav.img)
+    span.linkWrap=nav.what
+span.loadingIndicator
