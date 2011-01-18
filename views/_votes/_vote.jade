@@ -2,7 +2,7 @@
 - var rmpost = "rmpost({vid: '" + vid + "', yesno: 'yes'})";
 - var curl = cfg.appUrl + 'votes/' + vid + '?layout=true&ref=CMT';
 - if (cuser)
-  - curl += cuser.uid;
+  - curl += cuser.FBUID;
 - curl = 'http://www.facebook.com/plugins/feedback.php?limit=10&href=' + encodeURIComponent(curl);
 - if (layout === true)
   - var turl = vote.data.vurl;
@@ -97,7 +97,6 @@
     .centerdown.width.left
       .cmnts.right.width
         //iframe.comments(frameborder='0', height='1100px', src=curl, width="480px", name="comments123")
-        - curl = encodeURIComponent(curl)
-        fb:comments(xid=vid, url=curl)
+        fb:comments(xid=vid, url=curl, css='http://work.thewe.net/commentz.css', url=curl)
     
     
