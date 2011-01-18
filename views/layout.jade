@@ -2,7 +2,7 @@
 html(xmlns:fb="http://www.facebook.com/2008/fbml")
   head
     - var title = 'iVote'
-    - if (vote)
+    - if (typeof vote != 'undefined' && vote)
       - title += ' - ' + vote.data.title;
     title= title
     link(rel="stylesheet", href="/sass/theme.css")
