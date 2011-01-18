@@ -5,6 +5,9 @@ li.key-pp.open#navItem_nf(class=nav.class)
       span.countValue.fss
       span.maxCountIndicator
     span.imgWrap
+    - if (img && img != pie)
       img(src=nav.img)
+    - else
+      span.pie.right(yes=yess,no=noes,title='',h='1.0em')
     span.linkWrap=nav.what
 span.loadingIndicator
