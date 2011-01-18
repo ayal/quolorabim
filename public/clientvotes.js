@@ -20,6 +20,8 @@ function afterLogin(newsession) {
 		  var dom = $(html);
 		  domReplace(dom, '.urvote');
 		  domReplace(dom, '.lefty');
+		  domReplace(dom, '.cmnts');
+		  
 		  pieit();
 		  //domReplace(dom, '.noes');
 		  //domReplace(dom, '.yess');
