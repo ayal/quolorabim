@@ -20,8 +20,13 @@ function afterLogin(newsession) {
 		  var dom = $(html);
 		  domReplace(dom, '.urvote');
 		  domReplace(dom, '.lefty');
-		  domReplace(dom, '.cmnts');
 		  
+		  var cmts = $('.cmts iframe');
+		  if (cmts){
+		      cmts.attr('src', cmts.attr('src').replace('CMT', 'CMT' + ME.uid));
+		      console.log('baby');
+		  }
+		      
 		  pieit();
 		  //domReplace(dom, '.noes');
 		  //domReplace(dom, '.yess');
