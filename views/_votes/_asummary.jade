@@ -1,11 +1,12 @@
 .yimg
   .tot.right
     | #{asummary.count} #{asummary.text}
+  - var unknown = {data : {name: 'unknown'}};
   - each val, key in avote.yesno
-    - if (!avote.users[key]) avote.users[key].data = {name: 'unknown'};
+    - if (!avote.users[key]) avote.users[key] = unknown;
     - if (friends && friends[key])
       != partial('auserpic', [{uid: key, name: avote.users[key].data.name, showname: false}])
   - each val, key in avote.yesno
-    - if (!avote.users[key]) avote.users[key].data = {name: 'unknown'};
+    - if (!avote.users[key]) avote.users[key] = unknown;
     - if (!friends || (friends && !friends[key]))
       != partial('auserpic', [{uid: key, name: avote.users[key].data.name, showname: false}])
