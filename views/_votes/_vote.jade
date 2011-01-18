@@ -1,6 +1,8 @@
 - var vid =vote._id.toHexString(), postry = "postit({vid: '" + vid + "', yesno: 'yes'})", postrn = "postit({vid: '" + vid + "', yesno: 'no'})";
 - var rmpost = "rmpost({vid: '" + vid + "', yesno: 'yes'})";
-- var curl = cfg.appUrl + 'votes/' + vid + '?layout=true';
+- var curl = cfg.appUrl + 'votes/' + vid + '?layout=true&ref=CMT';
+- if (cuser)
+  - curl += cuser.uid;
 - curl = 'http://www.facebook.com/plugins/feedback.php?limit=10&href=' + encodeURIComponent(curl);
 - if (layout === true)
   - var turl = vote.data.vurl;
@@ -94,7 +96,8 @@
                     img(src='/link.png')
     .centerdown.width.left
       .cmnts.right.width
-        iframe.comments(frameborder='0', height='1100px', src=curl, width="480px", name="comments123")
-        //fb:comments(title='kaka',xid='kakanumber', url=curl)
+        //iframe.comments(frameborder='0', height='1100px', src=curl, width="480px", name="comments123")
+	- curl = encodeURIComponent(curl)
+        fb:comments(xid=vid, url=curl)
     
     

@@ -62,9 +62,6 @@ function info(what){
     return false;
 }
 
-
-
-
 function postit(daat) {
     $('.loading').show();
     verifyLogin(function () {
@@ -76,8 +73,6 @@ function postit(daat) {
 					 var dom = $('<div>' + html + '</div>');
 					 domReplace(dom, '#'+daat.vid+' .urvote');
 					 domReplace(dom, '.lefty');
-//					 domReplace(dom, '#'+daat.vid+' .noes');
-//					 domReplace(dom, '#'+daat.vid+' .yess');
 					 pieit();
 					 $('.loading').hide();
 				     }); // TODO: can save one call 
@@ -95,8 +90,8 @@ function postit(daat) {
 			    name: name,
 			    link: link,
 			    picture: 'http://work.thewe.net/ivotelogo.png',
-			    caption:'ChoiceBook',
-			    description: 'Face your choices!',
+			    caption:'קולורבים',
+			    description: 'חברים בוחרים',
 			    message: message
 			},
 			function(response) {
@@ -105,7 +100,6 @@ function postit(daat) {
 				$($('.fb_dialog_advanced')[1]).css({display: 'none'});
 			    else
 				$($('.fb_dialog_legacy')[1]).css({display: 'none'});
-			    
 			    
 			    if (response && response.post_id) {
 				evt('shared/yes');
@@ -125,10 +119,6 @@ function postit(daat) {
 			$($('.fb_dialog_advanced')[1]).css({display: 'none'});    
 		    }
 
-
-
-
-
 		    setTimeout(function () {
 				   if ($.browser.msie)
 				       $($('.fb_dialog_legacy')[1]).css({display: 'block'});
@@ -137,13 +127,8 @@ function postit(daat) {
 				   
 
 			       }, 3500);
-		    
-		    
 		    return true;
-		}, true)
-    
-    
-    ;
+		}, true);
 }
 
 

@@ -75,13 +75,12 @@ function evt(req, wt, data){
     if (uri.query.ajx)
 	return;
 
-    var who = req.socket && req.socket.remoteAddress;
+    var who = data.ip = req.socket && req.socket.remoteAddress;
     if (req.session.user) {
 	who = req.session.user.FBUID;
     }
     else {
 	data.agent = req.headers['user-agent'] || '';
-	data.ip = who;
     }
 
     var d = new Date();
