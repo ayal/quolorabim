@@ -116,10 +116,10 @@ var ME = null;
 // handle a session response from any of the auth related calls
 function handleSessionResponse(response, after, force, perms) {
     bperms = {perms: 'email'};
+
+    var ask = typeof perms != 'undefined';
     if (!perms)
-	perms = bperms;
-    
-    var ask = response.perms != perms.perms;
+	perms = bperms;    
 
     console.log('is there a session?');
     
