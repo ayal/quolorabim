@@ -494,7 +494,7 @@ app.post('/fbml', function(req, res) {
 	     res.render('_votes/fbml', {layout: false});
 	 });
 
-app.post('/whatisit', function(req, res) {
+app.get('/whatisit', function(req, res) {
 	     res.render('whatisit', {layout: true});
 	 });
 
