@@ -90,7 +90,7 @@ function createSession(after) {
 			 
 			 console.log('creating server session');
 			 
-			 fbuid = response.session.uid;
+			 fbuid = ME.uid;
 			 response['perms'] = ME.perms;
 			 $.post('/auth?dummy=' + new Date(),
 				{fbuid: fbuid, data: JSON.stringify(response)},
