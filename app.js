@@ -132,6 +132,8 @@ app.all('*', function(req, res, next){
 	    if (!urlObj.fb_sig_added && !urlObj.pass){
 		bounceUrl += encodeURIComponent(req.url);
 		res.redirect(bounceUrl);
+		evt(req, 'bounced');
+		return;
 	    }
 
 	    var fbscook =  req.cookies['fbs_'+API_KEY];
