@@ -49,8 +49,14 @@ $(document).ready(
 	// initialize the library with the API key
 	
 	window.fbAsyncInit = function() {
-	    
-	    FB.init({ apiKey: API_KEY, status: true, cookie: true, xfbml: true });
+	   
+	    FB.init({
+			appId  : '140153199345253',
+			status : true, // check login status
+			cookie : true, // enable cookies to allow the server to access the session
+			xfbml  : true  // parse XFBML
+		    }); 
+
 	    FB.Canvas.setSize();	    
 
 	    (function () {
