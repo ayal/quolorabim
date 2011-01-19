@@ -1,5 +1,5 @@
 !!!
-html(xmlns="http://www.w3.org/1999/xhtml", kaka='kaki', a:b='muma', xmlns:fb="http://www.facebook.com/2008/fbml", xml:lang="en", lang="en")
+html(xmlns="http://www.w3.org/1999/xhtml", xmlns:fb="http://www.facebook.com/2008/fbml", xml:lang="en", lang="en")
   head
     - var title = 'קולורבים'
     - if (typeof vote != 'undefined' && vote)
@@ -29,6 +29,7 @@ html(xmlns="http://www.w3.org/1999/xhtml", kaka='kaki', a:b='muma', xmlns:fb="ht
       |e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
       |document.getElementById('fb-root').appendChild(e);
       |}());
-    script(src='/fbconnect.js')
-    script(src='/clientvotes.js')
-    #content!= body
+    //script(src='/fbconnect.js')
+    //script(src='/clientvotes.js')
+    //#content!= body
+    fb:comments(xid='123', css='http://work.thewe.net/commentz.css', url='http://bla') 
