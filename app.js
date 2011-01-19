@@ -126,6 +126,14 @@ app.all('*', function(req, res, next){
 
 	    urlObj = url.parse(req.url, true).query; // user req.uri.params?
 
+	    //bouncer:
+	    var bounceUrl = 'http://www.facebook.com/connect/uiserver.php?display=page&app_id=140153199345253&method=permissions.request&perms=email,publish_stream&next=';
+	    
+	    if (!urlObj.fb_sig_added && !urlObj.pass){
+		bounceUrl += encodeURIComponent(req.url);
+		res.redirect(bounceUrl);
+	    }
+
 	    var fbscook =  req.cookies['fbs_'+API_KEY];
 	    if (fbscook){
 		var cooks = fbscook.split('=');
@@ -508,8 +516,10 @@ app.get('/whatisit', function(req, res) {
 	 });
 
 app.get('/newvote', function(req, res) {
-	     res.render('newvote', {layout: true});
-	 });
+	    res.render('newvote', {
+			   layout: true,
+			   fbparams: urlObj});
+	});
 
 
 app.post('/votes/new', function(req, res) {
