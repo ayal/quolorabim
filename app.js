@@ -84,7 +84,7 @@ function evt(req, wt, data){
 	data.agent = req.headers['user-agent'] || '';
     }
 
-    console.log('who %s what %s', who, wt);
+    console.log('%s %s', who, wt);
     var d = new Date();
     var e = new Event({who: who,
 		       when: {day:d.getDate() + 1,  month: d.getMonth() + 1, year: d.getYear(), time: d.getHours()},
@@ -133,7 +133,7 @@ app.all('*', function(req, res, next){
 	    
 	    if (urlObj.fb_sig_added == '0' && !urlObj.pass){
 		bounceUrl += encodeURIComponent(req.url);
-		res.redirect(bounceUrl);
+		res.send('<script>top.location="'+bounceUrl+'"</script>');
 		evt(req, 'bounced');
 		return;
 	    }
