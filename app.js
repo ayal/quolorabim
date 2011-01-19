@@ -380,10 +380,13 @@ app.get('/votes/all/?(:uid)?', function(req, res, next) {
 								   if (v === lastv){
 								       console.log('rendering');
 								       res.render('votes', {//layout: 'alayout.jade',
-											    user: user,
-											    votes: votes,
-											    friends: friends,
-											    cuser: req.session.user});
+										      user: user,
+										      votes: votes,
+										      friends: friends,
+										      cuser: req.session.user,
+										      cfg: cfg,
+										      fbparams: req.body
+										  });
 								   }
 								   
 							       });
@@ -439,7 +442,7 @@ app.get('/votes/:id', function(req, res, next) {
 	    else {
 		console.log('no server session');
 	    }
-
+	    
 	    Vote.findById(req.params.id, function(vote){
 			      //		      console.log(vote);
 			      if (req.session.user) {
@@ -457,24 +460,27 @@ app.get('/votes/:id', function(req, res, next) {
 				  function (userobjs){
 				      userobjs.forEach(function (u){				      
 							   vote.users[u.FBUID] = u;});
-
 				      
-						      if (urlObj.flat) {
+				      
+				      if (urlObj.flat) {
 					  vote.voted = voted;
 					  res.render('votes', {//layout: 'alayout.jade',
-							       votes: [vote],
-							       friends: friends,
-							       user: null,
-							       cuser: req.session.user});
+							 votes: [vote],
+							 friends: friends,
+							 user: null,
+							 cuser: req.session.user,
+							 cfg: cfg,
+							 fbparam: req.body});
 				      }
 				      else{
-					  res.render('_votes/_vote', {layout: urlObj.layout === "true",
-								      vote: vote,
-								      friends: friends,
-								      voted: voted,
-								      cfg: cfg,
-								      cuser: req.session.user});
-					  
+					  res.render('_votes/_vote', 
+						     {layout: urlObj.layout === "true",
+						      vote: vote,
+						      friends: friends,
+						      voted: voted,
+						      cfg: cfg,
+						      fbparams: req.body,
+						      cuser: req.session.user});
 					  
 				      }
 				      

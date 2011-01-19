@@ -15,7 +15,7 @@ html(xmlns="http://www.w3.org/1999/xhtml", xmlns:fb="http://www.facebook.com/200
   body
     #fb-root
     script
-      |var cfg = #{JSON.stringify(req.body)}
+      |var fbparams = #{JSON.stringify(fbparams)}
     script(src='/fbconnect.js')
     script(src='/clientvotes.js')
     #content!= body
