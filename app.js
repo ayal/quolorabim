@@ -128,6 +128,7 @@ app.all('*', function(req, res, next){
 	    if (fbscook){
 		var cooks = fbscook.split('=');
 		if (req.session && req.session.user && req.session.user.FBUID != cooks[cooks.length - 1]){
+		    console.log('session is different than cookie');
 		    req.session.user = null;
 		}
 
@@ -322,11 +323,7 @@ app.all('/auth', function (req, res){
 	});
 
 app.get('/votes/all/?(:uid)?', function(req, res, next) {
-	    //	    if (!checkSession(req, res)) {
-	    //		next();
-	    //		return;
-	    //	    }
-
+	    var urlObj = url.parse(req.url, true).query; // user req.uri.params?
 	    console.log('getting votes ' + req.session.user);
 	    var friends = {}; 
 	    if (req.session.user){
@@ -385,7 +382,7 @@ app.get('/votes/all/?(:uid)?', function(req, res, next) {
 										      friends: friends,
 										      cuser: req.session.user,
 										      cfg: cfg,
-										      fbparams: req.body
+										      fbparams: urlObj
 										  });
 								   }
 								   
@@ -423,10 +420,6 @@ app.get('/example', function(req, res, next) {
 
 
 app.get('/votes/:id', function(req, res, next) {
-	    //	    if (!checkSession(req, res)) {
-	    //		next();
-	    //		return;
-	    //	    }
 	    evt(req, 'view.vote');
 	    var urlObj = url.parse(req.url, true).query; // user req.uri.params?
 	    
@@ -470,7 +463,7 @@ app.get('/votes/:id', function(req, res, next) {
 							 user: null,
 							 cuser: req.session.user,
 							 cfg: cfg,
-							 fbparam: req.body});
+							 fbparam: urlObj});
 				      }
 				      else{
 					  res.render('_votes/_vote', 
@@ -479,7 +472,7 @@ app.get('/votes/:id', function(req, res, next) {
 						      friends: friends,
 						      voted: voted,
 						      cfg: cfg,
-						      fbparams: req.body,
+						      fbparams: urlObj,
 						      cuser: req.session.user});
 					  
 				      }
