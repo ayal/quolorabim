@@ -379,7 +379,7 @@ app.get('/votes/all/?(:uid)?', function(req, res, next) {
 								   
 								   if (v === lastv){
 								       console.log('rendering');
-								       res.render('votes', {layout: 'alayout.jade',
+								       res.render('votes', {//layout: 'alayout.jade',
 											    user: user,
 											    votes: votes,
 											    friends: friends,
@@ -461,7 +461,7 @@ app.get('/votes/:id', function(req, res, next) {
 				      
 						      if (urlObj.flat) {
 					  vote.voted = voted;
-					  res.render('votes', {layout: 'alayout.jade',
+					  res.render('votes', {//layout: 'alayout.jade',
 							       votes: [vote],
 							       friends: friends,
 							       user: null,

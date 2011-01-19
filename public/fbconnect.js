@@ -45,7 +45,7 @@ var fbuid = null;
 //FB.init(API_KEY, siteUrl + "xd_receiver.htm");
 $(document).ready(
     function (){
-	console.log('what');
+	console.log(cfg);
 	// initialize the library with the API key
 	
 	window.fbAsyncInit = function() {
@@ -63,7 +63,7 @@ $(document).ready(
 	(function() {
 	     var e = document.createElement('script'); e.async = true;
 	     e.src = document.location.protocol +
-		 '//connect.facebook.net/en_US/all.js';
+		 '//connect.facebook.net/' + cfg.locale + '/all.js';
 	     document.getElementById('fb-root').appendChild(e);
 	 }());
 	
