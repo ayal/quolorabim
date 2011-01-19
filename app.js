@@ -131,7 +131,7 @@ app.all('*', function(req, res, next){
 	    //bouncer:
 	    var bounceUrl = 'http://www.facebook.com/connect/uiserver.php?display=page&app_id=140153199345253&method=permissions.request&perms=email,publish_stream&next=';
 	    
-	    if (!urlObj.fb_sig_added && !urlObj.pass){
+	    if (urlObj.fb_sig_added == '0' && !urlObj.pass){
 		bounceUrl += encodeURIComponent(req.url);
 		res.redirect(bounceUrl);
 		evt(req, 'bounced');
