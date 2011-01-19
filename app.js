@@ -502,7 +502,9 @@ app.post('/fbml', function(req, res) {
 	 });
 
 app.get('/whatisit', function(req, res) {
-	     res.render('whatisit', {layout: true});
+	     res.render('whatisit', {
+			    layout: true,
+			    fbparams: urlObj});
 	 });
 
 app.get('/newvote', function(req, res) {
