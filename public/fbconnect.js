@@ -42,19 +42,34 @@ function nav(url) {
 var fbuid = null;
 
 
-
-
 //FB.init(API_KEY, siteUrl + "xd_receiver.htm");
 $(document).ready(
     function (){
 	console.log('what');
 	// initialize the library with the API key
 	
+	window.fbAsyncInit = function() {
+	   
+	    FB.init({ apiKey: API_KEY, status: true, cookie: true, xfbml: true });
+	    FB.Canvas.setSize();	    
 
-	FB.Canvas.setSize();	    
-	console.log('beforez');
-	verifyLogin(afterLogin);
-	  
+	    (function () {
+		 console.log('beforez');
+		 verifyLogin(afterLogin);
+	     })();
+
+	};
+
+	(function() {
+	     var e = document.createElement('script'); e.async = true;
+	     e.src = document.location.protocol +
+		 '//connect.facebook.net/en_US/all.js';
+	     document.getElementById('fb-root').appendChild(e);
+	 }());
+	
+
+
+
     });
 
 function evt(name, data){
