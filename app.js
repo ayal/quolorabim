@@ -67,6 +67,7 @@ var Event = db.model('Event');
 
 
 function evt(req, wt, data){
+
     var tp = wt.split('.')[1] || 'none';
     wt = wt.split('.')[0];
 
@@ -83,6 +84,7 @@ function evt(req, wt, data){
 	data.agent = req.headers['user-agent'] || '';
     }
 
+    console.log('who %s what %s', who, wt);
     var d = new Date();
     var e = new Event({who: who,
 		       when: {day:d.getDate() + 1,  month: d.getMonth() + 1, year: d.getYear(), time: d.getHours()},
