@@ -118,11 +118,13 @@ app.configure(function(){
 		  
 	      });
 
-
+var urlObj = null;
 app.all('*', function(req, res, next){
 	    res.header('P3P', 'CP="NOI ADM DEV COM NAV OUR STP"'); 
 	    // after ie bug with redirect in fb app - I CHANGED THE CONNECT STATIC PROVIDER
 	    // maybe mmove this to the tops to avoid code change - check in fiddler
+
+	    urlObj = url.parse(req.url, true).query; // user req.uri.params?
 
 	    var fbscook =  req.cookies['fbs_'+API_KEY];
 	    if (fbscook){
@@ -151,7 +153,7 @@ app.configure('production', function (){
 
 
 function checkSession(req, res, next) {
-    var urlObj = url.parse(req.url, true).query;
+
     var inFrame = urlObj.fb_sig_in_iframe ? 1 : 0;
     inFrame = urlObj.flg ? urlObj.flg : inFrame;
     console.log(urlObj);
@@ -188,7 +190,7 @@ app.get('/deebee/:cname/agg', function (req, res) {
 });
 
 app.get('/deebee/:cname/query', function (req, res) {
-	    var urlObj = url.parse(req.url, true).query;
+
 	    var grpKey = '';
 	    urlObj.grpKey.split(',').forEach(function(key){
 						 grpKey += "this." + key + '+ "_" +';
@@ -323,7 +325,7 @@ app.all('/auth', function (req, res){
 	});
 
 app.get('/votes/all/?(:uid)?', function(req, res, next) {
-	    var urlObj = url.parse(req.url, true).query; // user req.uri.params?
+
 	    console.log('getting votes ' + req.session.user);
 	    var friends = {}; 
 	    if (req.session.user){
@@ -421,7 +423,7 @@ app.get('/example', function(req, res, next) {
 
 app.get('/votes/:id', function(req, res, next) {
 	    evt(req, 'view.vote');
-	    var urlObj = url.parse(req.url, true).query; // user req.uri.params?
+
 	    
 	    //TODO: template here
 	    var friends = {}; 

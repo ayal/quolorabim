@@ -94,7 +94,7 @@ function postit(daat) {
 		    var hebvote = daat.yesno == 'no' ? '\u05e0\u05d2\u05d3' : '\u05d1\u05e2\u05d3';
 		    console.log('whatz');
 		    var name = $('.x').text();
-		    var link = appUrl.substr(0, appUrl.length - 1 ) + window.location.pathname + "?layout=true&ref=" + ME.uid;
+		    var link = appUrl.substr(0, appUrl.length - 1 ) + window.location.pathname + "?layout=true&ref=SHR" + ME.uid;
 		    var message = '\u05d4\u05e6\u05d1\u05e2\u05ea\u05d9\u0020' + hebvote + ' - ' + name;
 
 		    FB.ui(
