@@ -203,35 +203,37 @@ app.get('/deebee/:cname/query', function (req, res) {
 			res.send(objs);
 			return;
 		    }, true);
+	    } else {
+		
+		
+
+		urlObj.grpKey.split(',').forEach(function(key){
+						     grpKey += "this." + key + '+ "_" +';
+						 });
+		grpKey += '"done"';
+		var map = "function(){return emit(" + grpKey + ", 1);}";
+
+		var reduce = function(key, vals){
+		    var sum=0;
+		    for(var i in vals) sum += vals[i];
+		    return sum;
+		};
+
+		mod._collection.mapReduce(map, reduce, query, function (e, mr){
+					      console.log(e);
+					      mr.find(function (e, crsr){
+							  console.log(e);
+							  crsr.toArray(function(e, arr){
+									   console.log(e);
+									   console.log(arr); 
+									   res.send(arr);
+								       });
+						      });
+					  });
+
+
+
 	    }
-
-	    urlObj.grpKey.split(',').forEach(function(key){
-						 grpKey += "this." + key + '+ "_" +';
-					     });
-	    grpKey += '"done"';
-	    var map = "function(){return emit(" + grpKey + ", 1);}";
-
-	    var reduce = function(key, vals){
-		var sum=0;
-		for(var i in vals) sum += vals[i];
-		return sum;
-	    };
-
-	    mod._collection.mapReduce(map, reduce, query, function (e, mr){
-					  console.log(e);
-					  mr.find(function (e, crsr){
-						      console.log(e);
-						      crsr.toArray(function(e, arr){
-								       console.log(e);
-								       console.log(arr); 
-								       res.send(arr);
-								   });
-						  });
-				      });
-
-
-
-	    
 	});
 
 app.post('/deebee/:cname/update', function (req, res) {
