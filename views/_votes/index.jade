@@ -3,13 +3,13 @@
 - var userSelected = '';
 - var allSelected = 'selectedItem';
 .lefty.height.left
-  .vimg.width
+  .vimg
     - if (user)
       - var picurl = 'http://graph.facebook.com/' + user.FBUID + '/picture?type=large';
       - if (cuser && user.FBUID === cuser.FBUID)
         - userSelected = 'selectedItem'
       - allSelected = '';
-        img.width.height(src=picurl)
+        img.right.height(src=picurl)
     - else
       img.width.height(src='/ivotelogo.png')
     - if (cuser)
