@@ -28,6 +28,7 @@ function afterLogin(newsession) {
 		  }
 		      
 		  pieit();
+		  FB.Canvas.setSize();	    
 		  //domReplace(dom, '.noes');
 		  //domReplace(dom, '.yess');
 	      }); // TODO: can save one call 	
