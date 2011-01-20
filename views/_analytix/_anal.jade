@@ -3,7 +3,9 @@
   //span=anal.when.month
   span
     |#{JSON.stringify(anal)}
-  span=anal.who
+    |#{anal['who']}
+    |#{anal.who}
+  span= anal.who
   span=anal.what
   span=anal.type
   span=anal.where
