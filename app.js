@@ -213,7 +213,7 @@ app.get('/deebee/:cname/query', function (req, res) {
 						      crsr.toArray(function(e, arr){
 								       console.log(e);
 								       console.log(arr); 
-								       res.send(JSON.stringify(arr));
+								       res.send(arr);
 								   });
 						  });
 				      });
