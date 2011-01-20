@@ -209,7 +209,7 @@ app.get('/deebee/:cname/query', function (req, res) {
 		console.log('all');
 		mod.find(query).sort(srt).all(
 		    function (objs){
-			res.send(objs);
+			res.render('analytix', {layout: false, objs: objs});
 			return;
 		    }, true);
 	    } 
