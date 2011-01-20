@@ -71,9 +71,8 @@ function evt(req, wt, data){
     var tp = wt.split('.')[1] || 'none';
     wt = wt.split('.')[0];
 
-    uri = require('url').parse(req.url, true);
     data = data || {};
-    if (uri.query.ajx)
+    if (urlObj.ajx)
 	return;
 
     var who = data.ip = req.socket && req.socket.remoteAddress;
@@ -88,7 +87,7 @@ function evt(req, wt, data){
     var d = new Date();
     var e = new Event({who: who,
 		       when: {day:d.getDate() + 1,  month: d.getMonth() + 1, year: d.getYear(), time: d.getHours()},
-		       where: uri.pathname, ref: uri.query['ref'] || 'nowhere',
+		       where: urlObj.pathname, ref: urlObj['ref'] || '-',
 		       what: wt,
 		       type: tp, 
 		       data: data});
@@ -129,14 +128,14 @@ app.all('*', function(req, res, next){
 	    urlObj = url.parse(req.url, true).query; // user req.uri.params?
 
 	    //bouncer:
-	    var bounceUrl = 'http://www.facebook.com/connect/uiserver.php?display=page&app_id=140153199345253&method=permissions.request&perms=email,publish_stream&next=';
+/*	    var bounceUrl = 'http://www.facebook.com/connect/uiserver.php?display=page&app_id=140153199345253&method=permissions.request&perms=email,publish_stream&next=';
 	    
 	    if (urlObj.fb_sig_added == '0' && !urlObj.pass){
-		bounceUrl += encodeURIComponent(req.url);
-		res.send('<script>top.location="'+bounceUrl+'"</script>');
+		bounceUrl += appUrl + urlObj;
+		res.send('<script>top.location="' + bounceUrl + '"</script>');
 		evt(req, 'bounced');
 		return;
-	    }
+	    }*/
 
 	    var fbscook =  req.cookies['fbs_'+API_KEY];
 	    if (fbscook){
@@ -152,7 +151,9 @@ app.all('*', function(req, res, next){
 
 	});
 
-
+app.all('/', function (req, res) {
+	    res.redirect('/votes/all');
+	});
 
 // TODO: find out about development stuff
 app.configure('development', function (){
@@ -163,26 +164,6 @@ app.configure('production', function (){
 		  app.use(express.errorHandler());
 	      });
 
-
-function checkSession(req, res, next) {
-
-    var inFrame = urlObj.fb_sig_in_iframe ? 1 : 0;
-    inFrame = urlObj.flg ? urlObj.flg : inFrame;
-    console.log(urlObj);
-    
-    console.log('checking session');
-    if (req.session.user) {
-	console.log('fbuid: ' + req.session.user.FBUID);
-	return true;
-    }
-    else {
-	console.log('NO SESSION! next: ' + req.url);
-	req.session.next = inFrame ? appUrl + req.url : req.url;
-	res.redirect('/sessionHanlder.html');
-    }
-    
-    return false;
-}
 
 
 app.get('/deebee', function (req, res) {

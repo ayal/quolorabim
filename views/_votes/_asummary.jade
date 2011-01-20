@@ -2,11 +2,14 @@
   .tot.right
     | #{asummary.count} #{asummary.text}
   - var unknown = {data : {name: 'unknown'}};
+  - var i = 0;
   - each val, key in avote.yesno
+    - i++;
     - if (!avote.users[key]) avote.users[key] = unknown;
-    - if (friends && friends[key])
+    - if (friends && friends[key]  && i < 11)
       != partial('auserpic', [{uid: key, name: avote.users[key].data.name, showname: false}])
   - each val, key in avote.yesno
+    - i++
     - if (!avote.users[key]) avote.users[key] = unknown;
-    - if (!friends || (friends && !friends[key]))
+    - if ((!friends || (friends && !friends[key])) && i < 11)
       != partial('auserpic', [{uid: key, name: avote.users[key].data.name, showname: false}])
