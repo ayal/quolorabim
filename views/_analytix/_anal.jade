@@ -1,13 +1,8 @@
-.anal
-  //span=anal.when.day
-  //span=anal.when.month
-  span
-    - var str = JSON.stringify(anal)
-    |#{str}
-    |#{typeof anal}
-    - var anal = JSON.parse(str);
-    |#{anal['who']}
-    |#{anal.who}
+ - var str = JSON.stringify(anal)
+ - var anal = JSON.parse(str);
+ .anal
+  span=anal.when.day
+  span=anal.when.month
   span= anal.who
   span=anal.what
   span=anal.type
