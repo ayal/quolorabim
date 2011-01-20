@@ -197,18 +197,17 @@ app.get('/deebee/:cname/query', function (req, res) {
 		console.log(urlObj.filter);
 		eval('var query = ' + urlObj.filter);
 	    }
-	    var subs = {
-		};
+	    var srt = [[]];
 	    
-	    if (urlObj.subs){
-		console.log(urlObj.subs);
-		eval('var subs = ' + urlObj.subs);
+	    if (urlObj.srt){
+		console.log(urlObj.srt);
+		eval('var srt = ' + urlObj.srt);
 	    }
 
 
 	    if (urlObj.grpKey === '*'){
 		console.log('all');
-		mod.find(query, subs).all(
+		mod.find(query).sort(srt).all(
 		    function (objs){
 			res.send(objs);
 			return;
