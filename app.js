@@ -88,7 +88,8 @@ function evt(req, wt, data){
     var d = new Date();
     var e = new Event({who: who,
 		       when: {day:d.getDate() + 1,  month: d.getMonth() + 1, year: d.getYear(), time: d.getHours()},
-		       where: urlObj.pathname, ref: urlObj['ref'] || '-',
+		       where: uri.pathname,
+		       ref: urlObj['ref'] || '-',
 		       what: wt,
 		       type: tp,
 		       ticks: d.getTime(),
@@ -121,13 +122,14 @@ app.configure(function(){
 		  
 	      });
 
+var uri = null;
 var urlObj = null;
 app.all('*', function(req, res, next){
 	    res.header('P3P', 'CP="NOI ADM DEV COM NAV OUR STP"'); 
 	    // after ie bug with redirect in fb app - I CHANGED THE CONNECT STATIC PROVIDER
 	    // maybe mmove this to the tops to avoid code change - check in fiddler
-
-	    urlObj = url.parse(req.url, true).query; // user req.uri.params?
+	    uri = url.parse(req.url, true);
+	    urlObj = uri.query; // user req.uri.params?
 
 	    //bouncer:
 /*	    var bounceUrl = 'http://www.facebook.com/connect/uiserver.php?display=page&app_id=140153199345253&method=permissions.request&perms=email,publish_stream&next=';
