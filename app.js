@@ -53,14 +53,15 @@ mongoose.model('FBUser', {
 var FBUser = db.model('FBUser');
 
 mongoose.model('Vote', {
-		   properties: ['author', 'date', 'yesno', 'data']
+		   properties: ['author', 'date', 'yesno', 'data'],
+		   indexes: ['author']
 	       });
 
 var Vote = db.model('Vote');
 
 mongoose.model('Event', {
 		   properties: ['who', 'when', 'where', 'ref', 'what', 'type', 'ticks', 'data'],
-		   indexes: ['who', 'what']
+		   indexes: ['who', 'what', 'ticks']
 	       });
 
 var Event = db.model('Event');
@@ -87,7 +88,7 @@ function evt(req, wt, data){
     console.log('%s %s', who, wt);
     var d = new Date();
     var e = new Event({who: who,
-		       when: {day:d.getDate() + 1,  month: d.getMonth() + 1, year: d.getYear(), time: d.getHours()},
+		       when: {day:d.getDate(),  month: d.getMonth() + 1, year: d.getYear(), time: d.getHours() + 2},
 		       where: uri.pathname,
 		       ref: urlObj['ref'] || '-',
 		       what: wt,
@@ -102,9 +103,6 @@ var fakeStream = {
 	console.log(str);
 	console.log('--');
     }};
-
-
-
 
 app.configure(function(){
 		  app.use(express.methodOverride());
@@ -516,6 +514,13 @@ app.get('/whatisit', function(req, res) {
 			    layout: true,
 			    fbparams: urlObj});
 	 });
+
+app.get('/analytix', function(req, res) {
+	     res.render('whatisit', {
+			    layout: true,
+			    fbparams: urlObj});
+	 });
+
 
 app.get('/newvote', function(req, res) {
 	    res.render('newvote', {
