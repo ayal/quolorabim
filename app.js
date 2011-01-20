@@ -184,7 +184,22 @@ app.get('/deebee/:cname/agg', function (req, res) {
 
 app.get('/deebee/:cname/query', function (req, res) {
 
+	    var mod = db.model(req.params.cname.substr(0, req.params.cname.length - 1));
 	    var grpKey = '';
+
+	    if (urlObj.filter){
+		console.log(urlObj.filter);
+		eval('var query = ' + urlObj.filter);
+	    }
+
+	    if (!urlObj.grpKey){
+		mod.find(query).all(
+		    function (objs){
+			res.send(objs);
+			return;
+		    }, true);
+	    }
+
 	    urlObj.grpKey.split(',').forEach(function(key){
 						 grpKey += "this." + key + '+ "_" +';
 					     });
@@ -200,12 +215,8 @@ app.get('/deebee/:cname/query', function (req, res) {
 	    var query = {
 		
 	    };
-	    if (urlObj.filter){
-		console.log(urlObj.filter);
-		eval('var query = ' + urlObj.filter);
-	    }
 
-	    var mod = db.model(req.params.cname.substr(0, req.params.cname.length - 1));
+
 	    mod._collection.mapReduce(map, reduce, query, function (e, mr){
 					  console.log(e);
 					  mr.find(function (e, crsr){
