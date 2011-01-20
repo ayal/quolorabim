@@ -196,7 +196,8 @@ app.get('/deebee/:cname/query', function (req, res) {
 		eval('var query = ' + urlObj.filter);
 	    }
 
-	    if (!urlObj.grpKey){
+	    if (urlObj.grpKey === '*'){
+		console.log('all');
 		mod.find(query).all(
 		    function (objs){
 			res.send(objs);
