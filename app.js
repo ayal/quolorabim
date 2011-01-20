@@ -46,7 +46,8 @@ var appUrl = 'http://apps.facebook.com/kolorabim/';
 // TODO: add indexes
 
 mongoose.model('FBUser', {
-		   properties: ['FBUID', 'data', 'yesno']
+		   properties: ['FBUID', 'data', 'yesno'],
+		   indexes: ['FBUID']
 	       });
 
 var FBUser = db.model('FBUser');
@@ -58,8 +59,8 @@ mongoose.model('Vote', {
 var Vote = db.model('Vote');
 
 mongoose.model('Event', {
-		   properties: ['who', 'when', 'where', 'ref', 'what', 'type', 'data'],
-		   indexes: ['who']
+		   properties: ['who', 'when', 'where', 'ref', 'what', 'type', 'ticks', 'data'],
+		   indexes: ['who', 'what']
 	       });
 
 var Event = db.model('Event');
@@ -89,7 +90,8 @@ function evt(req, wt, data){
 		       when: {day:d.getDate() + 1,  month: d.getMonth() + 1, year: d.getYear(), time: d.getHours()},
 		       where: urlObj.pathname, ref: urlObj['ref'] || '-',
 		       what: wt,
-		       type: tp, 
+		       type: tp,
+		       ticks: d.getTime(),
 		       data: data});
     e.save();
 }
