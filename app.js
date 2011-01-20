@@ -225,7 +225,7 @@ app.get('/deebee/:cname/query', function (req, res) {
 							  console.log(e);
 							  crsr.toArray(function(e, arr){
 									   console.log(e);
-									   console.log(arr); 
+									   
 									   res.send(arr);
 								       });
 						      });
