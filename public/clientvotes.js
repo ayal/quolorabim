@@ -45,11 +45,18 @@ function pieit() {
 function onLoad(){
     
     $('.imgwrp img').fadeTo("fast", 0.6);
-
+    
     $(".imgwrp img").hover(function(){
+
+			       if (!$(this).data('ow'))
+				   $(this).data('ow', $(this).width());
+
+			       if (!$(this).data('oh'))
+				   $(this).data('oh', $(this).height());
+
 			       $(this).stop().animate({"opacity": "1", width: $(this).width() + 10, height: $(this).height() + 10}, "slow");
 			   },function(){
-			       $(this).stop().animate({"opacity": "0.6", width: $(this).width() - 10, height: $(this).height() - 10}, "slow");
+			       $(this).stop().animate({"opacity": "0.6", width: $(this).data('ow'), height: $(this).data('oh')}, "slow");
 			   });
     
 
