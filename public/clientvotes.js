@@ -47,9 +47,9 @@ function onLoad(){
     $('.imgwrp img').fadeTo("fast", 0.6);
 
     $(".imgwrp img").hover(function(){
-			       $(this).stop().animate({"opacity": "1"}, "slow");
+			       $(this).stop().animate({"opacity": "1", width: $(this).width + 20}, "slow");
 			   },function(){
-			       $(this).stop().animate({"opacity": "0.6"}, "slow");
+			       $(this).stop().animate({"opacity": "0.6", width: $(this).width - 20}, "slow");
 			   });
     
 
