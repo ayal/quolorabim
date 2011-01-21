@@ -210,29 +210,24 @@ app.get('/deebee/:cname/query', function (req, res) {
 		mod.find(query).sort(srt).all(
 		    function (objs){
 			for (var i = 0; i < objs.length; i++) {
+			   
 			    var obj = objs[i].__doc;
 			    
-			    if (!obj.when || !obj.when.day){
-				console.log(obj);
-				console.log(obj.when);
-			    }
-				
-
-
 			    obj['order'] = i;
-			    if (obj.when){
-				obj['day'] = obj.when.day;
-				obj['month'] = obj.when.month;
-				obj['hour'] = obj.when.hours;
-				obj['minute'] = obj.when.minute;
-			    }
-			    if (obj.data)
-				obj['ip'] = obj.data.ip;
+
+			    obj['day'] = obj.when.day;
+			    obj['month'] = obj.when.month;
+			    obj['hour'] = obj.when.hours || 0;
+			    obj['minute'] = obj.when.minute || 0;
+			    
+			    obj['ip'] = obj.data.ip;
+
 			    delete obj.when;
 			    delete obj.data;
 			    delete obj['ticks'];
 			    delete obj['_id'];
 			}
+
 			res.render('analytix', {layout: 'analayout.jade', grid: true, objs: objs});
 			return;
 		    }, true);
