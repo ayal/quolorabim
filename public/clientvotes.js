@@ -45,13 +45,22 @@ function pieit() {
 }
 
 $(document).ready(function(){
-		      $( ".info" ).dialog({
+/*		      $( ".info" ).dialog({
 					      height: 140,
 					      modal: true,
 					      autoOpen: false,
 					      resizable: false,
 					      position: 'top'
-					  });
+					  });*/
+
+		      $('.imgwrp img').fadeTo("fast", 0.6);
+
+		      $(".imgwrp img").hover(function(){
+						 this.fadeTo("fast", 1.0); // This sets the opacity to 100% on hover
+					     },function(){
+   						 this.fadeTo("fast", 0.6); // This sets the opacity back to 60% on mouseout
+					     });
+		      
 
 		      $("td a").click(function (){
 				       evt('click', {uri: this.href});

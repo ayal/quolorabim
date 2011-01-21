@@ -148,6 +148,8 @@ app.all('*', function(req, res, next){
 		}
 
 	    }
+	    
+	    evt(req, 'root');
 		
 	    next();
 

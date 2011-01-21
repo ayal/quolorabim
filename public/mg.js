@@ -1133,8 +1133,8 @@ Ext.onReady(function() {
 								 , columns: clms
 //								 , stateful: true
 								 ,view: groupView
-								 , width: 900
-								 , height: 400
+								 , width: 1200
+								 , height: 1200
 								 , collapsible: true
 								 , animCollapse: true
 								 , title: 'Grouping Example'
