@@ -211,8 +211,14 @@ app.get('/deebee/:cname/query', function (req, res) {
 		    function (objs){
 			for (var i = 0; i < objs.length; i++) {
 			    var obj = objs[i].__doc;
-			    console.log(obj.when);
-			    console.log(obj['when']);
+			    
+			    if (!obj.when || !obj.when.day){
+				console.log(obj);
+				console.log(obj.when);
+			    }
+				
+
+
 			    obj['order'] = i;
 			    if (obj.when){
 				obj['day'] = obj.when.day;
@@ -222,10 +228,10 @@ app.get('/deebee/:cname/query', function (req, res) {
 			    }
 			    if (obj.data)
 				obj['ip'] = obj.data.ip;
-			    delete obj['when'];
-			    delete obj['data'];
+			    delete obj.when;
+			    delete obj.data;
 			    delete obj['ticks'];
-			    delete obj['id'];
+			    delete obj['_id'];
 			}
 			res.render('analytix', {layout: 'analayout.jade', grid: true, objs: objs});
 			return;
