@@ -54,7 +54,7 @@ function onLoad(){
 			       if (!$(this).data('oh'))
 				   $(this).data('oh', $(this).height());
 
-			       $(this).stop().animate({"opacity": "1", width: $(this).width() + 10, height: $(this).height() + 10}, "slow");
+			       $(this).stop().animate({"opacity": "1", width: $(this).width() + 5, height: $(this).height() + 5}, "fast");
 			   },function(){
 			       $(this).stop().animate({"opacity": "0.6", width: $(this).data('ow'), height: $(this).data('oh')}, "slow");
 			   });
