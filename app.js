@@ -88,7 +88,7 @@ function evt(req, wt, data){
     console.log('%s %s', who, wt);
     var d = new Date();
     var e = new Event({who: who,
-		       when: {day:d.getDate(),  month: d.getMonth() + 1, year: d.getYear(), time: d.getHours() + 2},
+		       when: {day:d.getDate(),  month: d.getMonth() + 1, year: d.getYear(), hours: d.getHours() + 2, minutes: d.getMinutes()},
 		       where: uri.pathname,
 		       ref: urlObj['ref'] || '-',
 		       what: wt,
@@ -209,7 +209,7 @@ app.get('/deebee/:cname/query', function (req, res) {
 		console.log('all');
 		mod.find(query).sort(srt).all(
 		    function (objs){
-			res.render('analytix', {layout: false, objs: objs});
+			res.render('analytix', {layout: 'analayout.jade', grid: true, objs: objs});
 			return;
 		    }, true);
 	    } 
@@ -518,19 +518,14 @@ app.post('/fbml', function(req, res) {
 	 });
 
 app.get('/whatisit', function(req, res) {
-	     res.render('whatisit', {
+	    evt(req, 'view.whatisit');
+	    res.render('whatisit', {
 			    layout: true,
 			    fbparams: urlObj});
 	 });
-
-app.get('/analytix', function(req, res) {
-	     res.render('whatisit', {
-			    layout: true,
-			    fbparams: urlObj});
-	 });
-
 
 app.get('/newvote', function(req, res) {
+	    evt(req, 'view.newvote');
 	    res.render('newvote', {
 			   layout: true,
 			   fbparams: urlObj});

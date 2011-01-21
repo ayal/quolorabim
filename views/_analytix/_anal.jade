@@ -1,7 +1,7 @@
 - var str = JSON.stringify(anal)
 - var anal = JSON.parse(str);
 .anal
-  .prop=
-    | (#{anal.when.day}/#{anal.when.month} #{anal.when.time}
+  .prop(class='#{anal.what} #{analtype}')
+    | (#{anal.when.day}/#{anal.when.month} #{anal.when.time})
     | #{anal.who} #{anal.what}/#{anal.type}   #{anal.ref} --> #{anal.where}
 br

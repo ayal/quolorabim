@@ -1,1 +1,6 @@
-.all!= partial('anal', objs)
+- if (!grid)
+  .all!= partial('anal', objs)
+-else
+  - var json = 'data = ' + JSON.stringify(objs) + ';'
+  script!= json
+  script(src='mg.js')
