@@ -56,9 +56,9 @@ $(document).ready(function(){
 		      $('.imgwrp img').fadeTo("fast", 0.6);
 
 		      $(".imgwrp img").hover(function(){
-						 this.fadeTo("fast", 1.0); // This sets the opacity to 100% on hover
+						 $(this).stop().animate({"opacity": "1"}, "slow");
 					     },function(){
-   						 this.fadeTo("fast", 0.6); // This sets the opacity back to 60% on mouseout
+						 $(this).stop().animate({"opacity": "0.6"}, "slow");
 					     });
 		      
 
