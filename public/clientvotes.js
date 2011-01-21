@@ -47,9 +47,9 @@ function onLoad(){
     $('.imgwrp img').fadeTo("fast", 0.6);
 
     $(".imgwrp img").hover(function(){
-			       $(this).stop().animate({"opacity": "1", width: $(this).width() + 30, height: $(this).height() + 30}, "slow");
+			       $(this).stop().animate({"opacity": "1", width: $(this).width() + 10, height: $(this).height() + 10}, "slow");
 			   },function(){
-			       $(this).stop().animate({"opacity": "0.6", width: $(this).width() - 20, height: $(this).height() - 20}, "slow");
+			       $(this).stop().animate({"opacity": "0.6", width: $(this).width() - 10, height: $(this).height() - 10}, "slow");
 			   });
     
 
