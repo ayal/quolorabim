@@ -218,7 +218,7 @@ app.get('/deebee/:cname/query', function (req, res) {
 			    obj['day'] = obj.when.day;
 			    obj['month'] = obj.when.month;
 			    obj['hour'] = obj.when.hours || 0;
-			    obj['minute'] = obj.when.minute || 0;
+			    obj['minute'] = obj.when.minutes || 0;
 			    
 			    obj['ip'] = obj.data.ip;
 
