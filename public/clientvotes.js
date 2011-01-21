@@ -19,16 +19,13 @@ function afterLogin(newsession) {
 	$.get(window.location.pathname + '?ajx=true', function (html) {
 		  var dom = $(html);
 		  domReplace(dom, '.urvote');
-		  domReplace(dom, '.lefty');
-		  
+		  domReplace(dom, '#pagelet_main_nav');
+
 		  var cmts = $('.cmnts iframe');
 		  if (cmts){
 		      cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
 		      console.log('baby');
 		  }
-		      
-		  pieit();
-		  FB.Canvas.setSize();	    
 		  //domReplace(dom, '.noes');
 		  //domReplace(dom, '.yess');
 	      }); // TODO: can save one call 	
@@ -44,30 +41,29 @@ function pieit() {
 	      });   
 }
 
+
+function onLoad(){
+    
+    $('.imgwrp img').fadeTo("fast", 0.6);
+
+    $(".imgwrp img").hover(function(){
+			       $(this).stop().animate({"opacity": "1"}, "slow");
+			   },function(){
+			       $(this).stop().animate({"opacity": "0.6"}, "slow");
+			   });
+    
+
+    $("td a").click(function (){
+			evt('click', {uri: this.href});
+		    });
+
+    pieit();
+    FB.Canvas.setSize();	    
+    
+}
+
 $(document).ready(function(){
-/*		      $( ".info" ).dialog({
-					      height: 140,
-					      modal: true,
-					      autoOpen: false,
-					      resizable: false,
-					      position: 'top'
-					  });*/
-
-		      $('.imgwrp img').fadeTo("fast", 0.6);
-
-		      $(".imgwrp img").hover(function(){
-						 $(this).stop().animate({"opacity": "1"}, "slow");
-					     },function(){
-						 $(this).stop().animate({"opacity": "0.6"}, "slow");
-					     });
-		      
-
-		      $("td a").click(function (){
-				       evt('click', {uri: this.href});
-				   });
-
-		      pieit();
-		      
+ 		 onLoad();     
 		  });
 
 function notconnected() {
@@ -89,8 +85,9 @@ function postit(daat) {
 			       $.get('../../votes/' + daat.vid + query, function (html) {
 					 var dom = $('<div>' + html + '</div>');
 					 domReplace(dom, '#'+daat.vid+' .urvote');
-					 domReplace(dom, '.lefty');
-					 pieit();
+					 domReplace(dom, '.noes');
+					 domReplace(dom, '.yess');
+
 					 $('.loading').hide();
 				     }); // TODO: can save one call 
 			       var cmts = $('.cmnts iframe');
