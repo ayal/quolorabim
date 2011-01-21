@@ -211,6 +211,7 @@ app.get('/deebee/:cname/query', function (req, res) {
 		    function (objs){
 			for (var i = 0; i < objs.length; i++) {
 			    var obj = objs[i];
+			    console.log(obj);
 			    obj['order'] = i;
 			    if (obj.when){
 				obj['day'] = obj.when.day;
@@ -218,8 +219,8 @@ app.get('/deebee/:cname/query', function (req, res) {
 				obj['hour'] = obj.when.hours;
 				obj['minute'] = obj.when.minute;
 			    }
-			    
-			    obj['ip'] = obj.data.ip;
+			    if (obj.data)
+				obj['ip'] = obj.data.ip;
 			    delete obj['when'];
 			    delete obj['data'];
 			    delete obj['ticks'];
