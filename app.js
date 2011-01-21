@@ -212,11 +212,11 @@ app.get('/deebee/:cname/query', function (req, res) {
 			for (var i = 0; i < objs.length; i++) {
 			    var obj = objs[i];
 			    obj['order'] = i;
-			    obj['day'] = objs.when.day;
-			    obj['month'] = objs.when.month;
-			    obj['hour'] = objs.when.hours;
-			    obj['minute'] = objs.when.minute;
-			    obj['ip'] = objs.data.ip;
+			    obj['day'] = obj.when.day;
+			    obj['month'] = obj.when.month;
+			    obj['hour'] = obj.when.hours;
+			    obj['minute'] = obj.when.minute;
+			    obj['ip'] = obj.data.ip;
 			    delete obj['when'];
 			    delete obj['data'];
 			    delete obj['ticks'];
