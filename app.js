@@ -88,7 +88,7 @@ function evt(req, wt, data){
     console.log('%s %s', who, wt);
     var d = new Date();
     var e = new Event({who: who,
-		       when: {day:d.getDate(),  month: d.getMonth() + 1, year: d.getYear(), hours: d.getHours() + 2, minutes: d.getMinutes()},
+		       when: {day:d.getDate(),  month: d.getMonth() + 1, year: d.getYear(), hours: (d.getHours() + 2) % 24, minutes: d.getMinutes()},
 		       where: uri.pathname,
 		       ref: urlObj['ref'] || '-',
 		       what: wt,
@@ -148,14 +148,14 @@ app.all('*', function(req, res, next){
 		}
 
 	    }
-	    
-	    evt(req, 'root');
+	   
 		
 	    next();
 
 	});
 
 app.all('/', function (req, res) {
+	    evt(req, 'root');
 	    res.redirect('/votes/all');
 	});
 
