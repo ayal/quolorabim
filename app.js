@@ -209,6 +209,19 @@ app.get('/deebee/:cname/query', function (req, res) {
 		console.log('all');
 		mod.find(query).sort(srt).all(
 		    function (objs){
+			for (var i = 0; i < objs.length; i++) {
+			    var obj = objs[i];
+			    obj['order'] = i;
+			    obj['day'] = objs.when.day;
+			    obj['month'] = objs.when.month;
+			    obj['hour'] = objs.when.hours;
+			    obj['minute'] = objs.when.minute;
+			    obj['ip'] = objs.data.ip;
+			    delete obj['when'];
+			    delete obj['data'];
+			    delete obj['ticks'];
+			    delete obj['id'];
+			}
 			res.render('analytix', {layout: 'analayout.jade', grid: true, objs: objs});
 			return;
 		    }, true);
