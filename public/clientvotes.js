@@ -90,8 +90,7 @@ function postit(daat) {
 			       $.get('../../votes/' + daat.vid + query, function (html) {
 					 var dom = $('<div>' + html + '</div>');
 					 domReplace(dom, '#'+daat.vid+' .urvote');
-					 domReplace(dom, '.noes');
-					 domReplace(dom, '.yess');
+					 domReplace(dom, '.results');
 
 					 $('.loading').hide();
 				     }); // TODO: can save one call 
