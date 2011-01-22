@@ -1,0 +1,15 @@
+.tot.right(dir='rtl')
+  | #{xsummary.count} #{xsummary.text}
+- var unknown = {data : {name: 'unknown'}};
+- var i = 0;
+.yimg
+  - each val, key in xsummary.avote.yesno
+    - i++;
+    - if (!xsummary.avote.users[key]) xsummary.avote.users[key] = unknown;
+    - if (friends && friends[key])
+      != partial('auserpic', [{uid: key, name: xsummary.avote.users[key].data.name, showname: false}])
+  - each val, key in xsummary.avote.yesno
+    - i++
+    - if (!xsummary.avote.users[key]) xsummary.avote.users[key] = unknown;
+    - if (!friends || (friends && !friends[key]))
+      != partial('auserpic', [{uid: key, name: xsummary.avote.users[key].data.name, showname: false}])
