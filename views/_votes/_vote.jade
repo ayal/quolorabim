@@ -29,10 +29,14 @@
                 |\u05d0\u05e0\u05d9 \u05d1\u05e2\u05d3
         //span(onclick=rmpost, class="byes")
         //  | KILL
-    div(class="noes varea")
-      != partial('summary', [{classes: 'noes varea', text: '%D7%A0%D7%92%D7%93', word: 'no', count: noes, tot: noes + yess}])
-    .yess.varea
-      != partial('summary', [{classes: 'yess varea', text: '%D7%91%D7%A2%D7%93', word: 'yes', count: yess, tot: noes + yess}])
+    - if (vote.yesno[cuser.FBUID])
+      div(class="noes varea")
+        != partial('summary', [{classes: 'noes varea', text: '%D7%A0%D7%92%D7%93', word: 'no', count: noes, tot: noes + yess}])
+      .yess.varea
+        != partial('summary', [{classes: 'yess varea', text: '%D7%91%D7%A2%D7%93', word: 'yes', count: yess, tot: noes + yess}])
+    - else
+      .yess.varea
+          != partial('asummary', [{text: '\u003a\u05d4\u05e6\u05d1\u05d9\u05e2\u05d5', word: 'yes', count: yess + noes}])
     .othervts.width
     .more.width
   .center.height.left
