@@ -16,16 +16,20 @@ function afterLogin(newsession) {
     if (newsession){
 
 	console.log('im going to call the server');
+	wait();
 	$.get(window.location.pathname + '?ajx=true', function (html) {
 		  var dom = $(html);
 		  domReplace(dom, '.urvote');
 		  domReplace(dom, '.results');
+		  domReplace(dom, '.yesnokill');
 
 		  var cmts = $('.cmnts iframe');
 		  if (cmts){
 		      cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
 		      console.log('baby');
 		  }
+
+		  stopwait();
 		  //domReplace(dom, '.noes');
 		  //domReplace(dom, '.yess');
 	      }); // TODO: can save one call 	
@@ -99,22 +103,23 @@ function postit(daat) {
 		    console.log(daat);
 		    wait();
 		    $.post('../../votes/vote', daat, function () {
-			       stopwait();
+
 			       var query = daat.query ? daat.query + '&' : '?';
 			       query += 'ajx=true';
 			       $.get('../../votes/' + daat.vid + query, function (html) {
 					 var dom = $('<div>' + html + '</div>');
 					 domReplace(dom, '#'+daat.vid+' .urvote');
 					 domReplace(dom, '.results');
+					 domReplace(dom, '.yesnokill');
 
-			
+
 				     }); // TODO: can save one call 
 			       var cmts = $('.cmnts iframe');
 			       if (cmts){
 				   cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
 				   console.log('baby2');
 			       }
-		 
+			       stopwait();			
 			   });
 		    
 		    var hebvote = daat.yesno == 'no' ? '\u05e0\u05d2\u05d3' : '\u05d1\u05e2\u05d3';
