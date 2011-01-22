@@ -150,7 +150,7 @@ app.all('*', function(req, res, next){
 		    }
 	    	}
 		else {
-
+		    console.log('getting ' + urlObj.fb_sig_user);
 		    FBUser.find({FBUID: urlObj.fb_sig_user}).first(
 			function (user) {
 			    req.session.user = user;
