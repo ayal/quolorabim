@@ -3,13 +3,13 @@
     | #{asummary.count} #{asummary.text}
   - var unknown = {data : {name: 'unknown'}};
   - var i = 0;
-  - each val, key in avote.yesno
+  - each val, key in asummary.avote.yesno
     - i++;
-    - if (!avote.users[key]) avote.users[key] = unknown;
+    - if (!asummary.avote.users[key]) asummary.avote.users[key] = unknown;
     - if (friends && friends[key]  && i < 11)
-      != partial('auserpic', [{uid: key, name: avote.users[key].data.name, showname: false}])
-  - each val, key in avote.yesno
+      != partial('auserpic', [{uid: key, name: asummary.avote.users[key].data.name, showname: false}])
+  - each val, key in asummary.avote.yesno
     - i++
-    - if (!avote.users[key]) avote.users[key] = unknown;
+    - if (!asummary.avote.users[key]) asummary.avote.users[key] = unknown;
     - if ((!friends || (friends && !friends[key])) && i < 11)
-      != partial('auserpic', [{uid: key, name: avote.users[key].data.name, showname: false}])
+      != partial('auserpic', [{uid: key, name: asummary.avote.users[key].data.name, showname: false}])
