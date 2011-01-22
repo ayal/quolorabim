@@ -118,7 +118,7 @@ function handleSessionResponse(response, after, force, perms) {
 
     
     var ask = 
-	fbparams.fb_sig_dded == '0' ||
+	fbparams.fb_sig_added == '0' ||
 	fbparams.fb_sig_ext_perms.indexOf('publish_stream') == -1;
 
     if (!perms)
