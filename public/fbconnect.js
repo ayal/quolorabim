@@ -116,8 +116,11 @@ var ME = null;
 function handleSessionResponse(response, after, force, perms) {
     bperms = {perms: 'email,publish_stream'};
 
-    console.log('perms: ' + fbparams.fb_sig_ext_perms);
-    var ask = fbparams.fb_sig_ext_perms.indexOf('publish_stream') == -1;
+    
+    var ask = 
+	fbparams.fb_sig_dded == '0' ||
+	fbparams.fb_sig_ext_perms.indexOf('publish_stream') == -1;
+
     if (!perms)
 	perms = bperms;    
     
