@@ -149,15 +149,6 @@ app.all('*', function(req, res, next){
 			next();
 		    }
 	    	}
-		else {
-		    console.log('getting ' + urlObj.fb_sig_user);
-		    FBUser.find({FBUID: urlObj.fb_sig_user}).first(
-			function (user) {
-			    console.log('????????????????????');
-			    req.session.user = user;
-			    next();
-			});
-		}
 		
 	    }
 	});
@@ -428,6 +419,7 @@ app.get('/votes/all/?(:uid)?', function(req, res, next) {
 										      votes: votes,
 										      friends: friends,
 										      cuser: req.session.user,
+										      cuid: urlObj.fb_sig_user,
 										      cfg: cfg,
 										      fbparams: urlObj
 										  });
@@ -467,8 +459,9 @@ app.get('/example', function(req, res, next) {
 
 
 app.get('/votes/:id', function(req, res, next) {
-	    console.log('1111111111111111111');
 	    evt(req, 'view.vote');
+
+	    
 	    //TODO: template here
 	    var friends = {}; 
 	    var voted = '';
@@ -483,14 +476,18 @@ app.get('/votes/:id', function(req, res, next) {
 	    }
 	    
 	    Vote.findById(req.params.id, function(vote){
-			      console.log('GOTVOTE');
-			      if (req.session.user) {
+			      //		      console.log(vote);
+
+			      var uid = urlObj.fb_sig_user;
+			      if (!uid && req.session.user ) {
 				  if (!vote){
 				      res.send('what?');
 				      return;
 				  }
-				  voted = voteStatus(vote, req.session.user.FBUID);
+				  uid = req.session.user.FBUID; 
 			      }
+
+			      voted = voteStatus(vote, uid);
 
 			      vote.users = {};
 			      console.log(Object.keys(vote.yesno));
@@ -500,15 +497,15 @@ app.get('/votes/:id', function(req, res, next) {
 				      userobjs.forEach(function (u){				      
 							   vote.users[u.FBUID] = u;});
 				      
-
+				      
 				      if (urlObj.flat) {
-					  console.log('RENDERING');
 					  vote.voted = voted;
 					  res.render('votes', {//layout: 'alayout.jade',
 							 votes: [vote],
 							 friends: friends,
 							 user: null,
 							 cuser: req.session.user,
+							 cuid: urlObj.fb_sig_user,							 
 							 cfg: cfg,
 							 fbparam: urlObj});
 				      }
@@ -520,7 +517,8 @@ app.get('/votes/:id', function(req, res, next) {
 						      voted: voted,
 						      cfg: cfg,
 						      fbparams: urlObj,
-						      cuser: req.session.user});
+						      cuser: req.session.user,
+						      cuid: urlObj.fb_sig_user});
 					  
 				      }
 				      
