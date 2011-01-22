@@ -153,6 +153,7 @@ app.all('*', function(req, res, next){
 		    console.log('getting ' + urlObj.fb_sig_user);
 		    FBUser.find({FBUID: urlObj.fb_sig_user}).first(
 			function (user) {
+			    console.log('????????????????????');
 			    req.session.user = user;
 			    next();
 			});
