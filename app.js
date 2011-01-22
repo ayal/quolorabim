@@ -142,16 +142,22 @@ app.all('*', function(req, res, next){
 	    var fbscook =  req.cookies['fbs_'+API_KEY];
 	    if (fbscook){
 		var cooks = fbscook.split('=');
-		if (req.session && req.session.user && req.session.user.FBUID != cooks[cooks.length - 1]){
-		    console.log('session is different than cookie');
-		    req.session.user = null;
+		if (req.session && req.session.user){
+		    if (req.session.user.FBUID != cooks[cooks.length - 1]) {
+			console.log('session is different than cookie');
+			req.session.user = null;
+			next();
+		    }
+	    	}
+		else {
+
+		    FBUser.find({FBUID: fbuid}).first(
+			function (user) {
+			    req.session.user = user;
+			});
 		}
-
-	    }
-	   
 		
-	    next();
-
+	    }
 	});
 
 app.all('/', function (req, res) {
