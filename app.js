@@ -154,8 +154,12 @@ app.all('*', function(req, res, next){
 		
 	    }
 	    else {
-		if (req.session && req.session.user){
-
+		else if (req.session && req.session.user){
+		    if (urlObj.fb_sig_added == '0') {
+			evt(req, 'Xsess2');
+			req.session.user = null;
+		    }
+		    
 		    CUID = req.session.user.FBUID;
 		}
 	    }
