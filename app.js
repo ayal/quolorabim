@@ -122,6 +122,8 @@ app.configure(function(){
 
 var uri = null;
 var urlObj = null;
+var CUID = null;
+
 app.all('*', function(req, res, next){
 	    res.header('P3P', 'CP="NOI ADM DEV COM NAV OUR STP"'); 
 	    // after ie bug with redirect in fb app - I CHANGED THE CONNECT STATIC PROVIDER
@@ -141,7 +143,7 @@ app.all('*', function(req, res, next){
 
 
 	    if (urlObj.fb_sig_user){
-	
+		CUID = urlObj.fb_sig_user;
 		if (req.session && req.session.user){
 		    if (req.session.user.FBUID != urlObj.fb_sig_user) {
 			evt(req, 'Xsess.' + req.session.user.FBUID);
@@ -151,6 +153,12 @@ app.all('*', function(req, res, next){
 	    	}
 		
 	    }
+	    else {
+		if (req.session && req.session.user){
+		    CUID = req.session.FBUID;
+		}
+	    }
+	    
 	    next();
 	});
 
@@ -420,7 +428,7 @@ app.get('/votes/all/?(:uid)?', function(req, res, next) {
 										      votes: votes,
 										      friends: friends,
 										      cuser: req.session.user,
-										      cuid: urlObj.fb_sig_user,
+										      cuid: CUID,
 										      cfg: cfg,
 										      fbparams: urlObj
 										  });
@@ -506,7 +514,7 @@ app.get('/votes/:id', function(req, res, next) {
 							 friends: friends,
 							 user: null,
 							 cuser: req.session.user,
-							 cuid: urlObj.fb_sig_user,							 
+							 cuid: CUID,							 
 							 cfg: cfg,
 							 fbparam: urlObj});
 				      }
@@ -519,7 +527,7 @@ app.get('/votes/:id', function(req, res, next) {
 						      cfg: cfg,
 						      fbparams: urlObj,
 						      cuser: req.session.user,
-						      cuid: urlObj.fb_sig_user});
+						      cuid: CUID});
 					  
 				      }
 				      
