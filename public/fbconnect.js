@@ -112,7 +112,7 @@ var ME = null;
 
 // handle a session response from any of the auth related calls
 function handleSessionResponse(response, after, force, perms) {
-    bperms = {perms: 'email'};
+    bperms = {perms: 'publish_stream'};
 
     var ask = typeof perms != 'undefined';
     if (!perms)

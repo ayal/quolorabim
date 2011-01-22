@@ -107,8 +107,16 @@ function postit(daat) {
 		    var name = $('.x').text();
 		    var link = appUrl.substr(0, appUrl.length - 1 ) + window.location.pathname + "?layout=true&ref=SHR" + ME.uid;
 		    var message = '\u05d4\u05e6\u05d1\u05e2\u05ea\u05d9\u0020' + hebvote + ' - ' + name;
+		    FB.api('/' + ME.uid + '/feed', 'post', {message: 'wtf'}, function(response) {
+			       if (!response || response.error) {
+				   evt('shared/yes');
+			       } 
+			       else {
+				   evt('shared/no', response.error);
+			       }
+			   });
 
-		    FB.ui(
+/*		    FB.ui(
 			{
 			    method: 'feed',
 			    name: name,
@@ -131,10 +139,10 @@ function postit(daat) {
 				evt('shared/no');
 			    }
 			}
-		    );
+		    );*/
 
 		    
-		    if ($.browser.msie){
+/*		    if ($.browser.msie){
 			$($('.fb_dialog_legacy')[0]).css({display: 'none'});
 			$($('.fb_dialog_legacy')[1]).css({display: 'none'});			
 		    }
@@ -149,8 +157,9 @@ function postit(daat) {
 				   else
 				       $($('.fb_dialog_advanced')[1]).css({display: 'block'});
 				   
-
-			       }, 3500);
+ 
+			       }, 3500);*/
+		    
 		    return true;
 		}, true);
 }
