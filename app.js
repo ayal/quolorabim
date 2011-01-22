@@ -154,6 +154,7 @@ app.all('*', function(req, res, next){
 		    FBUser.find({FBUID: cooks[cooks.length - 1]}).first(
 			function (user) {
 			    req.session.user = user;
+			    next();
 			});
 		}
 		
