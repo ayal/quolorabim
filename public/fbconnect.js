@@ -50,10 +50,6 @@ console.log(fbparams);
 	    FB.init({ apiKey: API_KEY, status: true, cookie: true, xfbml: true });
 	    FB.Canvas.setSize();	    
 
-	    (function () {
-		 console.log('beforez');
-		 verifyLogin(afterLogin);
-	     })();
 
 	};
 
