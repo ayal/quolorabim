@@ -69,6 +69,7 @@ function onLoad(){
 		    });
 
     pieit();
+    stopwait();
 }
 
 $(document).ready(function(){
@@ -89,6 +90,8 @@ function wait(){
     $('.loading').show();
     $('.btns').hide();
 }
+
+wait();
 
 function stopwait(){
     
