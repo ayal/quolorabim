@@ -74,13 +74,16 @@ $(document).ready(
 
     });
 
+
 function evt(name, data){
     console.log(name);
     $.post('/evt/' + name, data || {}, function(){});
 }
 
 function createSession(after) {
+    wait();
     $.get('/sess', function(res){
+	      stopwait();
 	      if (res != 'NO') {
 		  ME.id = res;
 		  console.log('session already exists');
@@ -89,8 +92,9 @@ function createSession(after) {
 	      }
 	      
 	      console.log('getting info');
+	      wait();
 	      FB.api('/me?fields=friends', function(response) {
-			 
+			 stopwait();	 
 			 console.log('creating server session');
 			 
 			 fbuid = ME.uid;
@@ -103,8 +107,17 @@ function createSession(after) {
 	  });
 }
 
+function wait(){
+    
+}
+
+function stopwait(){
+    
+}
+
 function verifyLogin(after, force, perms) {
     console.log('verifying login');
+    wait();
     FB.getLoginStatus( function (res) {
 			   handleSessionResponse(res, after, force, perms);
 		       });   
@@ -115,7 +128,7 @@ var ME = null;
 // handle a session response from any of the auth related calls
 function handleSessionResponse(response, after, force, perms) {
     bperms = {perms: 'email,publish_stream'};
-
+    stopwait();
     
     var ask = 
 	fbparams.fb_sig_added == '0' ||
@@ -131,7 +144,9 @@ function handleSessionResponse(response, after, force, perms) {
 	notconnected();
 	if (force) {
 	    evt('login/ask');
+	    wait();
 	    FB.login(function (x) {
+			 stopwait();
 			 console.log(x);
 			 if (x.session){
 			     ME = x.session;

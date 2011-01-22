@@ -80,13 +80,26 @@ function info(what){
     return false;
 }
 
+function wait(){
+    
+    $('.loading').show();
+    $('.btns').hide();
+}
 
+function stopwait(){
+    
+    $('.loading').hide();
+    $('.btns').show();
+
+}
 
 function postit(daat) {
-    $('.loading').show();
+    
     verifyLogin(function () {
 		    console.log(daat);
+		    wait();
 		    $.post('../../votes/vote', daat, function () {
+			       stopwait();
 			       var query = daat.query ? daat.query + '&' : '?';
 			       query += 'ajx=true';
 			       $.get('../../votes/' + daat.vid + query, function (html) {
@@ -94,7 +107,7 @@ function postit(daat) {
 					 domReplace(dom, '#'+daat.vid+' .urvote');
 					 domReplace(dom, '.results');
 
-					 $('.loading').hide();
+			
 				     }); // TODO: can save one call 
 			       var cmts = $('.cmnts iframe');
 			       if (cmts){
@@ -118,11 +131,14 @@ function postit(daat) {
 			    description: 'חברים בוחרים',
 			    message: message
 			};
+		    wait();
 		    FB.api('/' + ME.uid + '/feed', 'post', msg, function(response) {
 			       if (!response || response.error) {
+				   stopwait();
 				   evt('shared/no', response.error);
 			       } 
 			       else {
+				   stopwait();
 				   evt('shared/yes');
 			       }
 			   });
