@@ -486,22 +486,15 @@ app.get('/votes/:id', function(req, res, next) {
 	    }
 	    
 	    Vote.findById(req.params.id, function(vote){
-			      //		      console.log(vote);
-
-			      var uid = urlObj.fb_sig_user;
-			      if (!uid && req.session.user ) {
-				  if (!vote){
-				      res.send('what?');
-				      return;
-				  }
-				  uid = req.session.user.FBUID; 
+			      if (!vote){
+				  res.send('what?');
+				  return;
 			      }
-
-			      voted = voteStatus(vote, uid);
+			      console.log('CUID ' + CUID);
+			      voted = voteStatus(vote, CUID);
 
 			      vote.users = {};
-			      console.log(Object.keys(vote.yesno));
-			      
+
 			      FBUser.find({FBUID: {$in: Object.keys(vote.yesno)}}).all(
 				  function (userobjs){
 				      userobjs.forEach(function (u){				      
