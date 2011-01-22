@@ -154,7 +154,7 @@ app.all('*', function(req, res, next){
 		
 	    }
 	    else {
-		else if (req.session && req.session.user){
+		if (req.session && req.session.user){
 		    if (urlObj.fb_sig_added == '0') {
 			evt(req, 'Xsess2');
 			req.session.user = null;
