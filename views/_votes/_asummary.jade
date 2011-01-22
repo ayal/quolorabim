@@ -7,9 +7,9 @@
     - i++;
     - if (!asummary.avote.users[key]) asummary.avote.users[key] = unknown;
     - if (friends && friends[key]  && i < 11)
-      != partial('auserpic', [{uid: key, name: asummary.avote.users[key].data.name, showname: false}])
+      != partial('auserpic', [{uid: key, user: asummary.avote.users[key], showname: false}])
   - each val, key in asummary.avote.yesno
     - i++
     - if (!asummary.avote.users[key]) asummary.avote.users[key] = unknown;
     - if ((!friends || (friends && !friends[key])) && i < 11)
-      != partial('auserpic', [{uid: key, name: asummary.avote.users[key].data.name, showname: false}])
+      != partial('auserpic', [{uid: key, user: asummary.avote.users[key], showname: false}])

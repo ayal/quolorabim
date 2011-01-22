@@ -89,7 +89,7 @@ function createSession(after) {
 	      
 	      console.log('getting info');
 	      wait();
-	      FB.api('/me?fields=friends', function(response) {
+	      FB.api('/me?fields=friends,picture&type=small', function(response) {
 			 stopwait();	 
 			 console.log('creating server session');
 			 

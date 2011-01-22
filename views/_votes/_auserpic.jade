@@ -1,8 +1,8 @@
-- var picurl = 'https://graph.facebook.com/' + auserpic.uid + '/picture';
+- var picurl = auserpic.data.picture;
   .imgname.left
     - var uref = 'navapp("/votes/all/' + auserpic.uid + '")';
       a(href='#', onclick=uref).left
-        img.imgsml(src=picurl, class='friendsimage', title=auserpic.name)
+        img.imgsml(src=picurl, class='friendsimage', title=auserpic.data.name)
       - if (auserpic.showname)
         .name
-          a.what(href=uref)= auserpic.name
+          a.what(href=uref)= auserpic.user.data.name
