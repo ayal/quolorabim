@@ -116,11 +116,10 @@ var ME = null;
 function handleSessionResponse(response, after, force, perms) {
     bperms = {perms: 'email,publish_stream'};
 
+    console.log('perms: ' + fbparams.fb_sig_ext_perms);
     var ask = fbparams.fb_sig_ext_perms.indexOf('publish_stream') == -1;
     if (!perms)
 	perms = bperms;    
-
-    console.log('is there a session?');
     
     ME = response.session;
     if (!response.session || ask) {
