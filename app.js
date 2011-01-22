@@ -156,8 +156,7 @@ app.all('*', function(req, res, next){
 	    else {
 		if (req.session && req.session.user){
 
-		    CUID = req.session.FBUID;
-		    console.log('CUID: ' + CUID);
+		    CUID = req.session.user.FBUID;
 		}
 	    }
 	    
