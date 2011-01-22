@@ -139,19 +139,19 @@ app.all('*', function(req, res, next){
 		return;
 	    }*/
 
-	    var fbscook =  req.cookies['fbs_'+API_KEY];
-	    if (fbscook){
-		var cooks = fbscook.split('=');
+
+	    if (urlObj.fb_sig_user){
+	
 		if (req.session && req.session.user){
-		    if (req.session.user.FBUID != cooks[cooks.length - 1]) {
-			console.log('session is different than cookie');
+		    if (req.session.user.FBUID != urlObj.fb_sig_user) {
+			evt(req, 'Xsess.' + req.session.user.FBUID);
 			req.session.user = null;
 			next();
 		    }
 	    	}
 		else {
 
-		    FBUser.find({FBUID: cooks[cooks.length - 1]}).first(
+		    FBUser.find({FBUID: urlObj.fb_sig_user}).first(
 			function (user) {
 			    req.session.user = user;
 			    next();
