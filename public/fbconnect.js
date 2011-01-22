@@ -113,8 +113,8 @@ var ME = null;
 // handle a session response from any of the auth related calls
 function handleSessionResponse(response, after, force, perms) {
     bperms = {perms: 'email,publish_stream'};
-    console.log(fbparams.fb_ext_perms.indexOf('publish_stream'));
-    var ask = fbparams.fb_ext_perms.indexOf('publish_stream') == -1;
+
+    var ask = fbparams.fb_sig_ext_perms.indexOf('publish_stream') == -1;
     if (!perms)
 	perms = bperms;    
 
