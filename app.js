@@ -159,8 +159,10 @@ app.all('*', function(req, res, next){
 			evt(req, 'Xsess2');
 			req.session.user = null;
 		    }
+		    else {
+			CUID = req.session.user.FBUID;	
+		    }
 		    
-		    CUID = req.session.user.FBUID;
 		}
 	    }
 	    
