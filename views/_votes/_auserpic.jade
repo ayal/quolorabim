@@ -1,7 +1,7 @@
 - var picurl = auserpic.user.data.picture;
   .imgname.left
-      - var inref = 'navapp("/votes/all/' + auserpic.uid + '")';
-      - var uref = 'navapp("' + auserpic.user.data.link + '")';
+    - var inref = 'navapp("/votes/all/' + auserpic.uid + '")';
+    - var uref = 'navapp("' + auserpic.user.data.link + '")';
       a(href='#', onclick=uref).left
         img.imgsml(src=picurl, class='friendsimage', title=auserpic.user.data.name)
       - if (auserpic.showname)
