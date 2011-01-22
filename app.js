@@ -467,9 +467,8 @@ app.get('/example', function(req, res, next) {
 
 
 app.get('/votes/:id', function(req, res, next) {
+	    console.log('1111111111111111111');
 	    evt(req, 'view.vote');
-
-	    
 	    //TODO: template here
 	    var friends = {}; 
 	    var voted = '';
