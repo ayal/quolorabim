@@ -124,7 +124,7 @@ function postit(daat) {
 				   evt('shared/yes');
 			       }
 			   });
-
+		    $('.loading').hide();
 /*		    FB.ui(
 			{
 			    method: 'feed',

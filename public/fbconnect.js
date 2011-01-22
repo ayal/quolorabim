@@ -42,10 +42,7 @@ function nav(url) {
 var fbuid = null;
 
 
-//FB.init(API_KEY, siteUrl + "xd_receiver.htm");
-$(document).ready(
-    function (){
-	console.log(fbparams);
+console.log(fbparams);
 	// initialize the library with the API key
 	
 	window.fbAsyncInit = function() {
@@ -66,6 +63,11 @@ $(document).ready(
 		 '//connect.facebook.net/' + fbparams.fb_sig_locale + '/all.js';
 	     document.getElementById('fb-root').appendChild(e);
 	 }());
+	
+
+//FB.init(API_KEY, siteUrl + "xd_receiver.htm");
+$(document).ready(
+    function (){
 	
 
 
