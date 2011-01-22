@@ -504,7 +504,9 @@ app.get('/votes/:id', function(req, res, next) {
 			      FBUser.find({FBUID: {$in: Object.keys(vote.yesno)}}).all(
 				  function (userobjs){
 				      userobjs.forEach(function (u){				      
-							   vote.users[u.FBUID] = u;});
+							   vote.users[u.FBUID] = u;
+							   console.log(vote);
+						       });
 				      
 				      
 				      if (urlObj.flat) {
