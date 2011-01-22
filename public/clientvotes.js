@@ -19,7 +19,7 @@ function afterLogin(newsession) {
 	$.get(window.location.pathname + '?ajx=true', function (html) {
 		  var dom = $(html);
 		  domReplace(dom, '.urvote');
-		  domReplace(dom, '#pagelet_main_nav');
+		  domReplace(dom, '.results');
 
 		  var cmts = $('.cmnts iframe');
 		  if (cmts){
@@ -80,6 +80,8 @@ function info(what){
     return false;
 }
 
+
+
 function postit(daat) {
     $('.loading').show();
     verifyLogin(function () {
@@ -124,7 +126,7 @@ function postit(daat) {
 				   evt('shared/yes');
 			       }
 			   });
-		    $('.loading').hide();
+
 /*		    FB.ui(
 			{
 			    method: 'feed',
