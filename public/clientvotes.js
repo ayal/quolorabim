@@ -107,12 +107,21 @@ function postit(daat) {
 		    var name = $('.x').text();
 		    var link = appUrl.substr(0, appUrl.length - 1 ) + window.location.pathname + "?layout=true&ref=SHR" + ME.uid;
 		    var message = '\u05d4\u05e6\u05d1\u05e2\u05ea\u05d9\u0020' + hebvote + ' - ' + name;
-		    FB.api('/' + ME.uid + '/feed', 'post', {message: 'wtf'}, function(response) {
+	
+		    var msg = {
+			    name: name,
+			    link: link,
+			    picture: 'http://work.thewe.net/ivotelogo.png',
+			    caption:'קולורבים',
+			    description: 'חברים בוחרים',
+			    message: message
+			};
+		    FB.api('/' + ME.uid + '/feed', 'post', msg, function(response) {
 			       if (!response || response.error) {
-				   evt('shared/yes');
+				   evt('shared/no', response.error);
 			       } 
 			       else {
-				   evt('shared/no', response.error);
+				   evt('shared/yes');
 			       }
 			   });
 
