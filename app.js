@@ -483,7 +483,7 @@ app.get('/votes/:id', function(req, res, next) {
 	    }
 	    
 	    Vote.findById(req.params.id, function(vote){
-			      //		      console.log(vote);
+			      console.log('GOTVOTE');
 			      if (req.session.user) {
 				  if (!vote){
 				      res.send('what?');
@@ -500,8 +500,9 @@ app.get('/votes/:id', function(req, res, next) {
 				      userobjs.forEach(function (u){				      
 							   vote.users[u.FBUID] = u;});
 				      
-				      
+
 				      if (urlObj.flat) {
+					  console.log('RENDERING');
 					  vote.voted = voted;
 					  res.render('votes', {//layout: 'alayout.jade',
 							 votes: [vote],
