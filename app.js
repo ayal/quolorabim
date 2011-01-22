@@ -146,11 +146,12 @@ app.all('*', function(req, res, next){
 		    if (req.session.user.FBUID != urlObj.fb_sig_user) {
 			evt(req, 'Xsess.' + req.session.user.FBUID);
 			req.session.user = null;
-			next();
+	
 		    }
 	    	}
 		
 	    }
+	    next();
 	});
 
 app.all('/', function (req, res) {
