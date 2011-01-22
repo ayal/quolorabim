@@ -22,7 +22,7 @@
       .yesnokill.right
         img.loading(src='/loading40.gif')
         .btns.width
-	  - if (!cuid || !vote.yesno[cuid])
+          - if (!cuid || !vote.yesno[cuid])
             .imgwrp
               a.right(href='#', onclick=postrn, class="bno")
                 img(src='/rlike.png')
