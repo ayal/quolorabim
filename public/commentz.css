@@ -1,7 +1,10 @@
+/*input[type="checkbox"]{
+    display: none;
+}
 
 .connected label {
    display: none;
-}
+}*/
 
 .wallkit_subtitle{
     display: none;
