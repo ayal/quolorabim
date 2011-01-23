@@ -100,6 +100,13 @@ function stopwait(){
 
 }
 
+function dialog(href){
+    $.get(href, function(dom){
+	      $(dom).dialog({modal: true, show: 'slide'});
+	  });
+    
+}
+
 function postit(daat) {
     
     verifyLogin(function () {

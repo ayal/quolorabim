@@ -1,4 +1,8 @@
-- var nuv = 'navapp("' + nav.where + '")'
+- var nuv = '';
+- if (nav.dialog)
+  - nuv = 'dialog("' + nav.where + '")';
+- else
+  - nuv = 'navapp("' + nav.where + '")'
 li.key-pp.open#navItem_nf(class=nav.class)
   a.item(href='#', onclick=nuv)
     span.count.blue-bubble-float-right.uiSideNavCount.hidden_elem
