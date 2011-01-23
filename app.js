@@ -560,8 +560,8 @@ app.post('/fbml', function(req, res) {
 
 app.get('/whatisit', function(req, res) {
 	    evt(req, 'view.whatisit');
-	    res.render('whatisit', {
-			    layout: true,
+	    res.render('faq', {
+			    layout: false,
 			    fbparams: urlObj});
 	 });
 
