@@ -102,7 +102,7 @@ function stopwait(){
 
 function dialog(href){
     $.get(href, function(dom){
-	      $(dom).dialog({modal: true, show: 'slide', position: [32,182], width: 693, height: 460});
+	      $(dom).dialog({modal: true, show: 'slide', position: [40,182], width: 700, height: 460});
 	      pieit();
 	  });
     
