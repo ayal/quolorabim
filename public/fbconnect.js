@@ -128,7 +128,7 @@ function handlesess(after) {
 	fbparams.fb_sig_added == '0' ||
 	fbparams.fb_sig_ext_perms.indexOf('publish_stream') == -1;
 
-    if (fbparam.fb_sig_user){
+    if (fbparams.fb_sig_user){
 	ME['uid'] = fbparam.fb_sig_user;
     }
     
