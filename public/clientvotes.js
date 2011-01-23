@@ -137,7 +137,7 @@ function postit(daat) {
 		    console.log('whatz');
 		    var name = $('.x').text();
 		    var link = appUrl.substr(0, appUrl.length - 1 ) + window.location.pathname + "?layout=true&ref=SHR" + ME.uid;
-		    var message = '\u05d4\u05e6\u05d1\u05e2\u05ea\u05d9\u0021';
+		    var message = 'אני הצבעתי! מה אתם עשיתם היום?!';
 	
 		    var msg = {
 			    name: name,
