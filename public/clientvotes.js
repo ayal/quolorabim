@@ -114,7 +114,7 @@ function postit(daat) {
 					 domReplace(dom, '#'+daat.vid+' .urvote');
 					 domReplace(dom, '.results');
 					 domReplace(dom, '.yesnokill');
-
+					 domReplace(dom, '#pagelet_main_nav');
 
 				     }); // TODO: can save one call 
 			       var cmts = $('.cmnts iframe');
@@ -191,7 +191,7 @@ function postit(daat) {
 				       $($('.fb_dialog_legacy')[1]).css({display: 'block'});
 				   else
 				       $($('.fb_dialog_advanced')[1]).css({display: 'block'});
-				   
+t				   
  
 			       }, 3500);*/
 		    

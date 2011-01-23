@@ -77,6 +77,7 @@ function evt(name, data){
 }
 
 function createSession(after) {
+    console.log('calling server on the phone');
     wait();
     $.get('/sess', function(res){
 	      stopwait();
@@ -113,13 +114,49 @@ function stopwait(){
 
 function verifyLogin(after, force, perms) {
     console.log('verifying login');
-    wait();
-    FB.getLoginStatus( function (res) {
+    handlesess(after);
+    /*FB.getLoginStatus( function (res) {
 			   handleSessionResponse(res, after, force, perms);
-		       });   
+		       });   */
 }
 
-var ME = null;
+var ME = {};
+
+function handlesess(after) {
+    
+    var ask = 
+	fbparams.fb_sig_added == '0' ||
+	fbparams.fb_sig_ext_perms.indexOf('publish_stream') == -1;
+
+    if (fbparam.fb_sig_user){
+	ME['uid'] = fbparam.fb_sig_user;
+    }
+    
+    if (ask) {
+	console.log('no session');
+	
+	evt('login/ask');
+	wait();
+	FB.login(function (x) {
+		     stopwait();
+		     console.log(x);
+		     if (x.session){
+			 ME = x.session;
+			 evt('login/yes');
+			 createSession(after);
+		     }
+		     else {
+			 evt('login/no');
+		     }
+		 }, {perms: 'email,publish_stream'});
+	
+        return;
+    }
+    
+    console.log('no need to ask: ' + ME.uid);
+    createSession(after);
+
+}
 
 // handle a session response from any of the auth related calls
 function handleSessionResponse(response, after, force, perms) {
@@ -159,10 +196,4 @@ function handleSessionResponse(response, after, force, perms) {
     
     console.log(ME);
     createSession(after);
-}
-
-function pop(){
-    verifyLogin(function(){
-		    $.post('/deebee/fbusers/update', {i: ME.id, p: 'data.post', v: 'true'});
-		}, true, {perms: 'email,publish_stream'});
 }
