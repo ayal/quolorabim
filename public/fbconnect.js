@@ -67,7 +67,6 @@ console.log(fbparams);
 $(document).ready(
     function (){
 	
-	FB.Canvas.setSize();	    
 
 
     });

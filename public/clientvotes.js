@@ -73,7 +73,7 @@ function onLoad(){
 }
 
 $(document).ready(function(){
- 		 onLoad();     
+ 		      onLoad();     
 		  });
 
 function notconnected() {
