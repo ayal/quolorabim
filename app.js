@@ -561,7 +561,7 @@ app.post('/fbml', function(req, res) {
 app.get('/whatisit', function(req, res) {
 	    evt(req, 'view.whatisit');
 	    res.render('faq', {
-			    layout: false,
+			    layout: urlObj.layout === 'true' ? true : false,
 			    fbparams: urlObj});
 	 });
 
