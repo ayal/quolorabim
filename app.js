@@ -176,7 +176,7 @@ app.all('*', function(req, res, next){
 
 app.all('/', function (req, res) {
 	    evt(req, 'root');
-	    res.redirect('/votes/all');
+	    res.redirect('/whatisit?layout=true');
 	});
 
 // TODO: find out about development stuff
