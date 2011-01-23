@@ -166,7 +166,12 @@ app.all('*', function(req, res, next){
 		}
 	    }
 	    
+	    console.log('CUID ' + CUID);
+
 	    next();
+	    
+	    
+	    
 	});
 
 app.all('/', function (req, res) {
@@ -476,7 +481,7 @@ app.get('/example', function(req, res, next) {
 
 app.get('/votes/:id', function(req, res, next) {
 	    evt(req, 'view.vote');
-
+	    
 	    
 	    //TODO: template here
 	    var friends = {}; 
@@ -496,7 +501,6 @@ app.get('/votes/:id', function(req, res, next) {
 				  res.send('what?');
 				  return;
 			      }
-			      console.log('CUID ' + CUID);
 			      voted = voteStatus(vote, CUID);
 
 			      vote.users = {};
@@ -505,7 +509,6 @@ app.get('/votes/:id', function(req, res, next) {
 				  function (userobjs){
 				      userobjs.forEach(function (u){				      
 							   vote.users[u.FBUID] = u;
-							   console.log(vote);
 						       });
 				      
 				      
