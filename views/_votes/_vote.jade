@@ -14,7 +14,7 @@
     .vimg.width
       #pagelet_main_nav
         ul.uiSideNav.mtm#fbCoreAppsNav(dir='rtl')
-          - var navs = [{what: vote.data.title, where: '#', class: 'selectedItem', img: 'pie', yess: yess, noes: noes}, {what: '\u05de\u05d4\u0020\u05d6\u05d4\u0020\u05d6\u05d4\u003f', where: 'whatisit', class: '', img: '/whatisit.png'}];
+          - var navs = [{what: vote.data.title, where: '#', class: 'selectedItem', img: 'pie', yess: yess, noes: noes}, {what: '\u05de\u05d4\u0020\u05d6\u05d4\u0020\u05d6\u05d4\u003f', where: 'whatisit', class: '', img: '/whatisit.png', dialog: true}];
           //- navs.push({what: '\u05db\u05dc\u0020\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea', where: '/votes/all', class: '', img: '/vlogo.png'});
           != partial('nav', navs)
       .yesnokill.right
