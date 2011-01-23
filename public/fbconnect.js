@@ -47,8 +47,10 @@ console.log(fbparams);
 	
 	window.fbAsyncInit = function() {
 	   
+	    FB.Canvas.setSize();	    
 	    FB.init({ apiKey: API_KEY, status: true, cookie: true, xfbml: true });
 	    FB.Canvas.setSize();	    
+	    
 
 
 	};
@@ -65,7 +67,7 @@ console.log(fbparams);
 $(document).ready(
     function (){
 	
-
+	FB.Canvas.setSize();	    
 
 
     });
