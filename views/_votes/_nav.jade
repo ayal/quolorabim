@@ -1,7 +1,7 @@
 - var nuv = '';
 - if (nav.dialog)
   - nuv = 'dialog("' + nav.where + '")';
-- else
+- else if (nav.where != '#')
   - nuv = 'navapp("' + nav.where + '")'
 li.key-pp.open#navItem_nf(class=nav.class)
   a.item(href='#', onclick=nuv)
