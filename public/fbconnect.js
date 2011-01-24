@@ -139,9 +139,7 @@ function enter(after){
     if (signedIn()){
 	if (!inDb()){
 	    console.log('notInDb');
-	    FB.getLoginStatus( function (res) {
-				   handleSessionResponse(createSession);
-			       });   
+	    FB.getLoginStatus(createSession);   
 
 	}
 	console.log('signed in');	
