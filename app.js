@@ -106,7 +106,7 @@ var uri = null;
 var urlObj = null;
 var CUID = null;
 
-function cookid(){
+function cookid(req){
     var fbs = req.cookies['fbs_' + API_KEY];
     var cid = null;
     console.log('cooks: ' + fbs);
@@ -181,7 +181,7 @@ app.all('*', function(req, res, next){
 	    else {
 		if (req.session && req.session.user){
 		    
-		    if (cookid() != req.session.user.FBUID) {
+		    if (cookid(req) != req.session.user.FBUID) {
 			evt(req, 'Xsess2');
 			req.session.user = null;
 		    }
