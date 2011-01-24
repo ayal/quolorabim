@@ -1,33 +1,15 @@
+// application page!
+// TODO: error handling inside and outside 4044
 // jslint
 // friends activity
 // css + js cache dummy cachebuster
-// decide on permissions
-// node.js analytics - add email
 // //http://developers.facebook.com/docs/reference/fbml/google-analytics/
-// log from client to server
-// config appid
-// feeds + SOCIAL STUFF
-// funnel
 // SEO stuff
-// emcas stuf - git etc
-// node.js repl
 // session expiry?
-// TODO: add to git
 // TODO: read on scaling node.js and mongodb
-// TODO: read on node.js logs
-// TODO: error handling inside and outside 4044
-// TODO: caching?
-// TODO: phunnelz
-// RODO: more express stuff - static provider?
 // TODO: production stuff gzip..
 // RODO: do oauth or authenticate otherwise
-// remove compilation call to fake css
 // http://www.hongkiat.com/blog/tips-tricks-for-your-business-facebook-fan-page/ (share, popup for voters, )
-//comments: use title, url, cssbust, xid - http://forum.developers.facebook.net/viewtopic.php?id=56459
-// who invited, how i came here...
-// all configs - fbconnect/canvas, api_kkey etc..
-// application page!
-// clean logs clean expres/jade/connect files
 
 var express = require('express'),
 url  = require('url');
@@ -357,6 +339,7 @@ app.all('/auth', function (req, res){
 			response = 'firsttime';
 			console.log('user not in db');
 			var data = JSON.parse(jdata);
+			console.log(data);
 			var friendsArr = data.friends.data; // friends should be updated not just filled once
 			friendsArr.push(null); // because reduce sucks?
 			data["friends"] = friendsArr.reduce(
