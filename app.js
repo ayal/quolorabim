@@ -143,7 +143,7 @@ app.all('*', function(req, res, next){
 	    }*/
 
 	    var cooks = fbcooks(req);
-	    if (cooks.uid) {
+	    if (cooks.uid && !urlObj.fb_sig_user) {
 		urlObj.fb_sig_user = cooks.uid;
 	    }
 	    
