@@ -83,7 +83,7 @@ function createSession(after) {
 	      if (res != 'NO') {
 		  ME.id = res;
 		  console.log('session already exists');
-		  after(false);
+		  if (after) after(false);
 		  return;
 	      }
 	      
@@ -97,7 +97,7 @@ function createSession(after) {
 			 $.post('/auth?dummy=' + new Date(),
 				{fbuid: fbuid, data: JSON.stringify(response)},
 				function (data) {
-				    after(true);
+				    if (after) after(true);
 				});
 		     });	      
 	  });
