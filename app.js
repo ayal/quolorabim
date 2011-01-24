@@ -128,6 +128,7 @@ app.all('*', function(req, res, next){
 
 		CUID = urlObj.fb_sig_user;
 		if (req.session && req.session.user){
+		    urlObj["indb"] = true;
 		    if (req.session.user.FBUID != urlObj.fb_sig_user) {
 			evt(req, 'Xsess.' + req.session.user.FBUID);
 			req.session.user = null;
@@ -135,7 +136,7 @@ app.all('*', function(req, res, next){
 		    }
 		    console.log('CUID ' + CUID);
 		    next();
-				
+		    
 	    	}
 		else {
 		    console.log('updating user in session for uid: %s', CUID);
@@ -144,6 +145,7 @@ app.all('*', function(req, res, next){
 					if (user){
 					    console.log('found user in db');
 					    req.session.user = user;
+					    urlObj["indb"] = true;
 					}
 
 					else{
