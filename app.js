@@ -124,15 +124,28 @@ app.all('*', function(req, res, next){
 	    }*/
 
 
-	    if (urlObj.fb_sig_user){
+	    if (urlObj.fb_sig_user) {
+
 		CUID = urlObj.fb_sig_user;
 		if (req.session && req.session.user){
 		    if (req.session.user.FBUID != urlObj.fb_sig_user) {
 			evt(req, 'Xsess.' + req.session.user.FBUID);
 			req.session.user = null;
-	
+			
 		    }
+		    console.log('CUID ' + CUID);
+		    next();
+				
 	    	}
+		else {
+		    console.log('updating user in session');
+		    FBUser.findById(CUID,
+				    function (user){
+					req.session.user = user;
+				    });
+		    
+		}
+		
 		
 	    }
 	    else {
@@ -146,11 +159,11 @@ app.all('*', function(req, res, next){
 		    }
 		    
 		}
+		console.log('CUID ' + CUID);
+		next();
+		
 	    }
 	    
-	    console.log('CUID ' + CUID);
-
-	    next();
 	    
 	    
 	    
