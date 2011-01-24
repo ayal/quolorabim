@@ -41,7 +41,7 @@ function pieit() {
     pies.each(function(i, pie){
 		  $(pie).sparkline([$(pie).attr('yes'),
 				    $(pie).attr('no')],
-				   {type: 'pie', sliceColors: ['#ADDFAD', '#FF7878'], height: $(pie).attr('h')} ); 		      
+				   {type: 'pie', sliceColors: ['#ADDFAD', '#EF3540'], height: $(pie).attr('h')} ); 		      
 	      });   
 }
 
