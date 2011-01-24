@@ -138,11 +138,18 @@ app.all('*', function(req, res, next){
 				
 	    	}
 		else {
-		    console.log('updating user in session ' + CUID);
+		    console.log('updating user in session for uid: %s', CUID);
 		    FBUser.find({FBUID: CUID}).first(
 				    function (user){
-					console.log('setting user', user);
-					req.session.user = user;
+					if (user){
+					    console.log('found user in db');
+					    req.session.user = user;
+					}
+
+					else{
+					    console.log('could not find user in db');
+					}
+
 					next();
 				    });
 		    
