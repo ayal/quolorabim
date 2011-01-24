@@ -85,7 +85,7 @@ function createSession(after) {
     $.get('/sess', function(res){
 	      stopwait();
 	      if (res != 'NO') {
-		  ME.id = res;
+		  ME.uid = res;
 		  console.log('session already exists');
 		  if (after) after(false);
 		  return;
@@ -128,10 +128,11 @@ var ME = {};
 function signedIn(){
     if (fbparams.fb_sig_user){
 	ME['uid'] = fbparams.fb_sig_user;
+	return true;
     }
     
-    return fbparams.fb_sig_added != '0' &&
-	fbparams.fb_sig_ext_perms.indexOf('publish_stream') > -1;
+    return false;
+    
 }
 
 function inDb(){
@@ -155,7 +156,7 @@ function enter(after){
 }
 
 function click(after){
-    
+
     if (signedIn()){
 	console.log('signed in');	
 	after();	
@@ -164,6 +165,7 @@ function click(after){
 	console.log('NOT signed in');	
 	evt('login/ask');
 	wait();
+
 	FB.login(function (x) {
 		     stopwait();
 		     console.log(x);

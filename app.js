@@ -106,22 +106,24 @@ var uri = null;
 var urlObj = null;
 var CUID = null;
 
-function cookid(req){
+function fbcooks(req) {
     var fbs = req.cookies['fbs_' + API_KEY];
-    var cid = null;
-    console.log('cooks: ' + fbs);
+    var cookz = {
+	
+    };
+    console.log('cooks: ' + req.cookies);
     if (fbs) {
 	fbs.split('&').forEach(
 	    function(fubu){
 		
 		var name =  fubu.split('=')[0];	
-		if (name == 'uid'){
-		      cid = fubu.split('=')[1];	
-		}
+		var val = fubu.split('=')[1];	
+		cookz[name] = val;
+		
 		
 	    });
     }
-    return cid;
+    return cookz;
 }
 
 app.all('*', function(req, res, next){
@@ -141,9 +143,13 @@ app.all('*', function(req, res, next){
 		return;
 	    }*/
 
-
+	    var cooks = fbcooks(req);
+	    if (cooks.uid) {
+		urlObj.fb_sig_user = cooks.uid;
+	    }
+	    
 	    if (urlObj.fb_sig_user) {
-
+		
 		CUID = urlObj.fb_sig_user;
 		if (req.session && req.session.user){
 		    urlObj["indb"] = true;
@@ -180,16 +186,12 @@ app.all('*', function(req, res, next){
 	    }
 	    else {
 		if (req.session && req.session.user){
-		    
-		    if (cookid(req) != req.session.user.FBUID) {
-			evt(req, 'Xsess2');
-			req.session.user = null;
-		    }
+		    evt(req, 'Xsess2');
+		    req.session.user = null;
+		    CUID = null;
 		}
-
-		CUID = null;
-		next();
 		
+		next();
 	    }
 	    
 	    
