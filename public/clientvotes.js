@@ -48,6 +48,10 @@ function pieit() {
 
 function onLoad(){
     
+    
+    $('img').attr('title',$('img').
+		  attr('title').replace('\\n','\n'));
+
     $('.imgwrp img').fadeTo("fast", 0.6);
     
     $(".imgwrp img").hover(function(){
