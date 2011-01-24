@@ -162,12 +162,13 @@ app.all('*', function(req, res, next){
 	    }
 	    else {
 		if (req.session && req.session.user){
-
-			evt(req, 'Xsess2');
-			req.session.user = null;
+		    
+		    evt(req, 'Xsess2');
+		    req.session.user = null;
 		    
 		}
-		console.log('CUID ' + CUID);
+
+		CUID = null;
 		next();
 		
 	    }
