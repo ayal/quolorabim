@@ -128,9 +128,11 @@ var ME = {};
 function signedIn(){
     if (fbparams.fb_sig_user) {
 	ME['uid'] = fbparams.fb_sig_user;
+	console.log('signed in as ' + ME.uid);	
 	return true;
     }
     
+    console.log('not signed in');
     return false;
     
 }
@@ -149,10 +151,10 @@ function enter(after){
 		     });   
 
 	}
-	console.log('signed in');	
+
     }
     else {
-	console.log('NOT signed in');	
+
     }
     after();
 }

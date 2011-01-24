@@ -144,6 +144,7 @@ app.all('*', function(req, res, next){
 
 	    var cooks = fbcooks(req);
 	    if (cooks.uid && !urlObj.fb_sig_user) {
+		console.log('cooks tells me you are ' + cooks.uid);
 		urlObj.fb_sig_user = cooks.uid;
 	    }
 	    
@@ -151,17 +152,13 @@ app.all('*', function(req, res, next){
 		
 		CUID = urlObj.fb_sig_user;
 		if (req.session && req.session.user){
-		    urlObj["indb"] = true;
 		    if (req.session.user.FBUID != urlObj.fb_sig_user) {
 			evt(req, 'Xsess.' + req.session.user.FBUID);
 			req.session.user = null;
-			CUID = null;
 		    }
-		    console.log('CUID ' + CUID);
-		    next();
-		    
 	    	}
-		else {
+
+		if (!req.session.user){
 		    console.log('updating user in session for uid: %s', CUID);
 		    FBUser.find({FBUID: CUID}).first(
 			function (user){
@@ -178,8 +175,12 @@ app.all('*', function(req, res, next){
 			    
 			    next();
 			});
-		    
 		}
+		else {
+		    next();
+		}
+		
+		
 		
 		
 	    }
