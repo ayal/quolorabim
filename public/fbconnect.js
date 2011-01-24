@@ -50,7 +50,6 @@ console.log(fbparams);
 	    FB.Canvas.setSize();	    
 	    FB.init({ apiKey: API_KEY, status: true, cookie: true, xfbml: true });
 	    FB.Canvas.setSize();	    
-	    createSession(function(){});
 	};
 
 	(function() {
@@ -111,7 +110,7 @@ function stopwait(){
     
 }
 
-function verifyLogin(after, force, perms) {
+function verifyLogin(after) {
     console.log('verifying login');
     handlesess(after);
     /*FB.getLoginStatus( function (res) {
@@ -120,6 +119,51 @@ function verifyLogin(after, force, perms) {
 }
 
 var ME = {};
+
+function signedIn(){
+    if (fbparams.fb_sig_user){
+	ME['uid'] = fbparams.fb_sig_user;
+    }
+    
+    return fbparams.fb_sig_added != '0' &&
+	fbparams.fb_sig_ext_perms.indexOf('publish_stream') > -1;
+}
+
+function enter(after){
+    if (signedIn()){
+	console.log('signed in');	
+    }
+    else {
+	console.log('NOT signed in');	
+    }
+    after();
+}
+
+function click(after){
+    
+    if (signedIn()){
+	console.log('signed in');	
+	after();	
+    }
+    else {
+	console.log('NOT signed in');	
+	evt('login/ask');
+	wait();
+	FB.login(function (x) {
+		     stopwait();
+		     console.log(x);
+		     if (x.session){
+			 ME = x.session;
+			 evt('login/yes');
+			 createSession(after);
+		     }
+		     else {
+			 evt('login/no');
+		     }
+		 }, {perms: 'email,publish_stream'});
+    }
+}
+
 
 function handlesess(after) {
     

@@ -114,7 +114,7 @@ function dialog(href){
 
 function postit(daat) {
     
-    verifyLogin(function () {
+    click(function () {
 		    console.log(daat);
 		    wait();
 		    $.post('../../votes/vote', daat, function () {
