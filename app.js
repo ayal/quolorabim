@@ -141,6 +141,7 @@ app.all('*', function(req, res, next){
 		    console.log('updating user in session');
 		    FBUser.findById(CUID,
 				    function (user){
+					console.log('setting user', user);
 					req.session.user = user;
 					next();
 				    });
