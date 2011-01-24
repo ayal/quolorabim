@@ -147,6 +147,7 @@ app.all('*', function(req, res, next){
 					}
 
 					else{
+					    urlObj["indb"] = false;
 					    console.log('could not find user in db');
 					}
 
@@ -377,7 +378,7 @@ app.all('/auth', function (req, res){
 					   yesno: {},
 					   data: data});
 			user.save(function (){console.log('saved user');});
-
+			
 		    }
 		    req.session.user = user;
 		    evt(req, 'auth');

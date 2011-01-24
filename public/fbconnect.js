@@ -130,8 +130,20 @@ function signedIn(){
 	fbparams.fb_sig_ext_perms.indexOf('publish_stream') > -1;
 }
 
+function inDb(){
+    
+    return !!fbparams.indb;
+}
+
 function enter(after){
     if (signedIn()){
+	if (!inDb()){
+	    console.log('notInDb');
+	    FB.getLoginStatus( function (res) {
+				   handleSessionResponse(createSession);
+			       });   
+
+	}
 	console.log('signed in');	
     }
     else {
