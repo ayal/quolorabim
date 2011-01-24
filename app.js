@@ -115,7 +115,7 @@ function cookid(req){
 	    function(fubu){
 		
 		var name =  fubu.split('=')[0];	
-		if (name == 'c_user'){
+		if (name == 'uid'){
 		      cid = fubu.split('=')[1];	
 		}
 		
