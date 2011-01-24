@@ -155,7 +155,7 @@ app.all('*', function(req, res, next){
 		    if (req.session.user.FBUID != urlObj.fb_sig_user) {
 			evt(req, 'Xsess.' + req.session.user.FBUID);
 			req.session.user = null;
-			
+			CUID = null;
 		    }
 		    console.log('CUID ' + CUID);
 		    next();
