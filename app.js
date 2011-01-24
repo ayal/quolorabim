@@ -138,8 +138,8 @@ app.all('*', function(req, res, next){
 				
 	    	}
 		else {
-		    console.log('updating user in session');
-		    FBUser.findById(CUID,
+		    console.log('updating user in session ' + CUID);
+		    FBUser.find({FBUID: CUID}).first(
 				    function (user){
 					console.log('setting user', user);
 					req.session.user = user;
