@@ -106,6 +106,24 @@ var uri = null;
 var urlObj = null;
 var CUID = null;
 
+function cookid(){
+    var fbs = req.cookies['fbs_' + API_KEY];
+    var cid = null;
+    console.log('cooks: ' + fbs);
+    if (fbs) {
+	fbs.split('&').forEach(
+	    function(fubu){
+		
+		var name =  fubu.split('=')[0];	
+		if (name == 'c_user'){
+		      cid = fubu.split('=')[1];	
+		}
+		
+	    });
+    }
+    return cid;
+}
+
 app.all('*', function(req, res, next){
 	    res.header('P3P', 'CP="NOI ADM DEV COM NAV OUR STP"'); 
 	    // after ie bug with redirect in fb app - I CHANGED THE CONNECT STATIC PROVIDER
@@ -163,9 +181,10 @@ app.all('*', function(req, res, next){
 	    else {
 		if (req.session && req.session.user){
 		    
-		    evt(req, 'Xsess2');
-		    req.session.user = null;
-		    
+		    if (cookid() != req.session.user.FBUID) {
+			evt(req, 'Xsess2');
+			req.session.user = null;
+		    }
 		}
 
 		CUID = null;
