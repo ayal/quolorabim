@@ -126,7 +126,7 @@ function verifyLogin(after) {
 var ME = {};
 
 function signedIn(){
-    if (fbparams.fb_sig_user){
+    if (fbparams.fb_sig_user) {
 	ME['uid'] = fbparams.fb_sig_user;
 	return true;
     }
@@ -144,7 +144,9 @@ function enter(after){
     if (signedIn()){
 	if (!inDb()){
 	    console.log('notInDb');
-	    FB.getLoginStatus(function(x){createSession(after, x);});   
+	    FB.login(function(x){
+			 createSession(after, x);
+		     });   
 
 	}
 	console.log('signed in');	
