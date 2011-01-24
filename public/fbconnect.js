@@ -50,6 +50,7 @@ console.log(fbparams);
 	    FB.Canvas.setSize();	    
 	    FB.init({ apiKey: API_KEY, status: true, cookie: true, xfbml: true });
 	    FB.Canvas.setSize();	    
+	    enter();
 	};
 
 	(function() {
@@ -162,81 +163,4 @@ function click(after){
 		     }
 		 }, {perms: 'email,publish_stream'});
     }
-}
-
-
-function handlesess(after) {
-    
-    var ask = 
-	fbparams.fb_sig_added == '0' ||
-	fbparams.fb_sig_ext_perms.indexOf('publish_stream') == -1;
-
-    if (fbparams.fb_sig_user){
-	ME['uid'] = fbparams.fb_sig_user;
-    }
-    
-    if (ask) {
-	console.log('no session');
-	
-	evt('login/ask');
-	wait();
-	FB.login(function (x) {
-		     stopwait();
-		     console.log(x);
-		     if (x.session){
-			 ME = x.session;
-			 evt('login/yes');
-			 createSession(after);
-		     }
-		     else {
-			 evt('login/no');
-		     }
-		 }, {perms: 'email,publish_stream'});
-	
-        return;
-    }
-    
-    console.log('no need to ask: ' + ME.uid);
-    createSession(after);
-
-}
-
-// handle a session response from any of the auth related calls
-function handleSessionResponse(response, after, force, perms) {
-    bperms = {perms: 'email,publish_stream'};
-    stopwait();
-    
-    var ask = 
-	fbparams.fb_sig_added == '0' ||
-	fbparams.fb_sig_ext_perms.indexOf('publish_stream') == -1;
-
-    if (!perms)
-	perms = bperms;    
-    
-    ME = response.session;
-    if (!response.session || ask) {
-	console.log('no session');
-	console.log(response);
-	notconnected();
-	if (force) {
-	    evt('login/ask');
-	    wait();
-	    FB.login(function (x) {
-			 stopwait();
-			 console.log(x);
-			 if (x.session){
-			     ME = x.session;
-			     evt('login/yes');
-			     createSession(after);
-			 }
-			 else{
-			     evt('login/no');
-			 }
-		     }, perms);
-	}
-        return;
-    }
-    
-    console.log(ME);
-    createSession(after);
 }
