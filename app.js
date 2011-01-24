@@ -109,7 +109,7 @@ var CUID = null;
 function fbcooks(req) {
     var fbs = req.cookies['fbs_' + API_KEY];
     var cookz = {};
-    console.log('cooks', req.cookies);
+    console.log('cookf', req.cookies);
     if (fbs) {
 	fbs.split('&').forEach(
 	    function(fubu){
