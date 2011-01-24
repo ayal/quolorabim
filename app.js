@@ -109,7 +109,10 @@ var CUID = null;
 function fbcooks(req) {
     var fbs = req.cookies['fbs_' + API_KEY];
     var cookz = {};
-    console.log('cookf', req.cookies);
+
+    console.log('cook');
+    console.log(req.cookies);
+
     if (fbs) {
 	fbs.split('&').forEach(
 	    function(fubu){
@@ -181,12 +184,10 @@ app.all('*', function(req, res, next){
 		
 	    }
 	    else {
-		if (req.session && req.session.user){
-		    evt(req, 'Xsess2');
-		    req.session.user = null;
-		    CUID = null;
-		}
-		
+
+		evt(req, 'Xsess2');
+		req.session.user = null;
+		CUID = null;
 		next();
 	    }
 	    
