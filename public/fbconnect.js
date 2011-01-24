@@ -76,6 +76,10 @@ function evt(name, data){
 }
 
 function createSession(after) {
+    if (!after) after = function(){
+	
+    };
+
     console.log('calling server on the phone');
     wait();
     $.get('/sess', function(res){
