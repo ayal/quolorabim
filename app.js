@@ -141,20 +141,20 @@ app.all('*', function(req, res, next){
 		else {
 		    console.log('updating user in session for uid: %s', CUID);
 		    FBUser.find({FBUID: CUID}).first(
-				    function (user){
-					if (user){
-					    console.log('found user in db');
-					    req.session.user = user;
-					    urlObj["indb"] = true;
-					}
-
-					else{
-					    urlObj["indb"] = false;
-					    console.log('could not find user in db');
-					}
-
-					next();
-				    });
+			function (user){
+			    if (user){
+				console.log('found user in db');
+				req.session.user = user;
+				urlObj["indb"] = true;
+			    }
+			    
+			    else{
+				urlObj["indb"] = false;
+				console.log('could not find user in db');
+			    }
+			    
+			    next();
+			});
 		    
 		}
 		
@@ -162,13 +162,9 @@ app.all('*', function(req, res, next){
 	    }
 	    else {
 		if (req.session && req.session.user){
-		    if (urlObj.fb_sig_added == '0') {
+
 			evt(req, 'Xsess2');
 			req.session.user = null;
-		    }
-		    else {
-			CUID = req.session.user.FBUID;	
-		    }
 		    
 		}
 		console.log('CUID ' + CUID);
