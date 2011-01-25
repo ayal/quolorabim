@@ -125,7 +125,7 @@ function postit(daat) {
 				   domReplace(dom, '.results');
 				   domReplace(dom, '.yesnokill');
 				   domReplace(dom, '#pagelet_main_nav');
-				   setTimeout(pieit,3000);
+				   setTimeout(pieit, 1000);
 			       }); // TODO: can save one call 
 			 var cmts = $('.cmnts iframe');
 			 if (cmts){
