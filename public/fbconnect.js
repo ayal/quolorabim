@@ -50,6 +50,11 @@ console.log(fbparams);
 	    FB.Canvas.setSize();	    
 	    FB.init({ apiKey: API_KEY, status: true, cookie: true, xfbml: true });
 	    FB.Canvas.setSize();	    
+	    console.log('inited!');
+	    setInterval(
+		function(){
+		    console.log('loadstate: ' + FB.Auth._loadState);
+		} , 3000);
 	    enter(function(){});
 	};
 
