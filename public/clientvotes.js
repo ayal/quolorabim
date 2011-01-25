@@ -12,30 +12,6 @@ function domReplace(dom, cls) {
     
 }
 
-function afterLogin(newsession) {
-    if (newsession){
-
-	console.log('im going to call the server');
-	wait();
-	$.get(window.location.pathname + '?ajx=true', function (html) {
-		  var dom = $(html);
-		  domReplace(dom, '.urvote');
-		  domReplace(dom, '.results');
-		  domReplace(dom, '.yesnokill');
-
-		  var cmts = $('.cmnts iframe');
-		  if (cmts){
-		      cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
-		      console.log('baby');
-		  }
-
-		  stopwait();
-		  //domReplace(dom, '.noes');
-		  //domReplace(dom, '.yess');
-	      }); // TODO: can save one call 	
-    }
-}
-
 function pieit() {
     
     var pies = $('.pie');
@@ -50,7 +26,7 @@ function pieit() {
 
 function onLoad(){
     
-    wait();
+    wait(0);
     
     $('img').attr('title',$('img').
 		  attr('title').replace('\\n','\n'));
@@ -108,13 +84,22 @@ function dialog(href){
     
 }
 
+function err(msg){
+    $('<h1>' + msg + '</h1>').dialog({modal: true, show: 'drop', width: 200, height: 200, resizable: false});
+}
+
+
 function postit(daat) {
     
     click(function () {
 	      console.log(daat);
 	      wait(1);
-	      $.post('../../votes/vote', daat, function () {
-			 
+	      $.post('../../votes/vote', daat, function (res) {
+			 if (res != 'OK'){
+			     stopwait();
+			     err('התקשתי לזהות אותך - אנא נסה לרענן את הדף');
+			 }
+
 			 var query = daat.query ? daat.query + '&' : '?';
 			 query += 'ajx=true';
 			 $.get('../../votes/' + daat.vid + query, function (html) {

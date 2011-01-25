@@ -117,7 +117,7 @@ function getu(id, cb) {
 	FBUser.find({FBUID: id}).first(
 	    function (user){
 		if (!user) console.log('% NOT in db.', id);
-		cache[id] = user;
+		else cache[id] = user;
 		cb(user);
 	    });		
     }
@@ -163,13 +163,12 @@ app.all('*', function(req, res, next){
 
 
 
-
+	    var cooks = fbcooks(req);
 	    if (req.QUERY.fb_sig_in_iframe) {
 		
 		if (req.session.fbuid != req.QUERY.fb_sig_user)
 		    evt(req, 'xsess.' + req.session.fbuid + req.QUERY.fb_sig_user);
-	
-		var cooks = fbcooks(req);
+
 		if (cooks.uid && !req.QUERY.fb_sig_user) {
 		    
 		    console.log('QUERYYYYY ');
@@ -649,6 +648,11 @@ app.post('/votes/new', function(req, res) {
 	 });
 
 app.post('/votes/vote', function(req, res) {
+	     if (!req.session.fbuid){
+		 res.send('?');
+		 return;
+	     }
+		 
 	     Vote.findById( req.body.vid, 
 			    function (vote){
 				if (!vote.data['size'])
