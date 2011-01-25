@@ -162,21 +162,31 @@ app.all('*', function(req, res, next){
  }*/
 
 
-	    var cooks = fbcooks(req);
-	    if (cooks.uid && req.QUERY.fb_sig_added && !req.QUERY.fb_sig_user) {
-		console.log('QUERYYYYY ');
-		console.log(req.QUERY);
+
+
+	    if (req.QUERY.fb_sig_user) {
 		
-		console.log('cooks tell me you are %s and not %s', cooks.uid, req.session.fbuid);
-		req.QUERY.fb_sig_user = cooks.uid;
+
+		if (req.session.fbuid != req.QUERY.fb_sig_user)
+		    evt('xsess.' + req.session.fbuid + req.QUERY.fb_sig_user);
+		
+		req.session.fbuid = req.QUERY.fb_sig_user;
+
+		var cooks = fbcooks(req);
+		if (cooks.uid != req.QUERY.fb_sig_user) {
+
+		    console.log('QUERYYYYY ');
+		    console.log(req.QUERY);
+		    
+		    console.log('cooks tell me you are %s and not %s', cooks.uid, req.session.fbuid);
+		    req.QUERY.fb_sig_user = cooks.uid;
+		}
 	    }
 	    
-	    req.session.fbuid = req.QUERY.fb_sig_user;
-
 	    req.session.cuser = function(cb){
 		getu(this.fbuid, cb);
 	    };
-
+	    
 	    console.log('you are ' + req.session.fbuid);
 	    next();
 	    	    
