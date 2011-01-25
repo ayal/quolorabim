@@ -92,7 +92,7 @@ function createSession(after) {
 	      
 	      console.log('user not in db');
 	      wait();
-	      login({}, function(){
+	      login(null, function(){
 			
 			FB.api('/me?fields=friends,picture&type=small', function(response) {
 				   stopwait();	 
@@ -143,23 +143,42 @@ function enter(after){
     after();
 }
 
-function login(perms, after){
+function login(perms, after) {
     console.log('logging in');
-    FB.login(function (x) {
-		 stopwait();
-		 console.log(x);
-		 if (x.session){
-		     ME = x.session;
-		     evt('login/yes');		     
-		 }
-		 else {
-		     evt('login/no');
-		 }
-	     }, perms);
+    wait();
+    FB.getLoginStatus(function(y) {
+			  if (perms) {
+			      console.log('requesting perms');
+			      FB.login(function (x) {
+					   stopwait();
+					   console.log(x);
+					   if (x.session){
+					       ME = x.session;
+					       evt('login/yes');
+					       after();
+					   }
+					   else {
+					       evt('login/no');
+					   }
+					   
+				       }, perms);
+			  }
+			  else {
+			      if (y.session){
+				  console.log('getting to know you..');
+				  stopwait();
+				  after();
+			      }
+			      else {
+				  console.log('nothing i can do.');
+				  stopwait();	  
+			      }
+			  }
+			  
+		      });
 }
 
 function click(after){
-
     if (signedIn()){
 	console.log('signed in');	
 	after();	
@@ -168,6 +187,6 @@ function click(after){
 	console.log('NOT signed in');	
 	evt('login/ask');
 	wait();
-	createSession(after);
+	login({perms: 'email,publish_stream'}, after);
     }
 }
