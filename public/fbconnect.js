@@ -71,11 +71,28 @@ $(document).ready(
 
 
 function evt(name, data){
-    console.log(name);
+    console.log(name + ' ' + data);
     $.post('/evt/' + name, data || {}, function(){});
 }
 
-function createSession(after, perms) {
+
+function getUserData(after){
+    console.log('getting user data');
+    FB.api('/me?fields=friends,picture&type=small',
+	   function(response) {
+	       stopwait();	 
+	       console.log('sending user data ' + response);
+	       
+	       fbuid = ME.uid;
+	       $.post('/auth?dummy=' + new Date(),
+		      {fbuid: fbuid, data: JSON.stringify(response)},
+		      function (data) {
+			  if (after) after(true);
+		      });
+	   });
+}
+
+function createSession(after, moreperms) {
     if (!after) after = function(){
 	
     };
@@ -84,28 +101,30 @@ function createSession(after, perms) {
     wait();
     $.get('/indb', function(res){
 	      stopwait();
+	      var indb = false;
 	      if (res != 'NO') {
 		  console.log('user in db: ' + res);
-		  if (after) after(false);
-		  return;
+		  indb = true;
 	      }
 	      
-	      console.log('user not in db');
-	      wait();
-	      login(perms, function(){
-			
-			FB.api('/me?fields=friends,picture&type=small', function(response) {
-				   stopwait();	 
-				   console.log('sending user data');
-				   
-				   fbuid = ME.uid;
-				   $.post('/auth?dummy=' + new Date(),
-					  {fbuid: fbuid, data: JSON.stringify(response)},
-					  function (data) {
-					      if (after) after(true);
-					  });
-			       });	      
+	      if (indb) {
+		  if (!moreperms) {
+		      console.log('thats it!');   
+		      if (after) after();
+		      return;
+		  }
+		  
+	      }
+	      else {
+		  console.log('user is NOT in db');	  
+	      }
+	      
+	      console.log('login flow');
+	      login(moreperms,
+		    function(){
+			getUserData(after);	      
 		    });
+	      
 	  });
 }
 
@@ -190,7 +209,7 @@ function login(perms, after) {
 
 function click(after){
     if (signedIn() && gotPerms()){
-	after();	
+	createSession(after);
     }
     else {
 	wait();
