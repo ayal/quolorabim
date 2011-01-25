@@ -194,6 +194,11 @@ app.all('*', function(req, res, next){
 	});
 
 var global = 1;
+
+app.all('/cache', function (req, res){
+	    res.send('' + (global++));
+	});
+
 app.all('/cache', function (req, res){
 	    res.send('' + (global++));
 	});
