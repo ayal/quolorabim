@@ -52,14 +52,26 @@ console.log(fbparams);
 	    FB.init({ appId: appId, status: false, cookie: true, xfbml: true });
 	    FB.Canvas.setSize();	    
 	    console.log('inited!');
-	    setInterval(
-		function(){
+	    
+
+	    wait();
+	    var timeout = function (){
+		
+	    
+	    setTimeout(
+		function () {
 		    console.log('loadstate: ' + FB.Auth._loadState);
 		    if ( FB.Auth._loadState == 'loaded'){
 			console.log('LOADED!');
+			stopwait();
 			enter(function(){});
+			return;
 		    }
-		} , 3000);
+		    else {
+			timeout();
+		    }
+		} , 1000);
+	    };
 	};
 
 	(function() {
