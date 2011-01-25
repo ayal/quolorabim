@@ -195,10 +195,9 @@ app.all('*', function(req, res, next){
 
 var global = 1;
 
-app.all('/cols', function (req, res){
-//	    res.send('hi');
-	    res.render("cols", {layout: false,
-				fbparams: {}});
+
+app.get('/channel', function(req, res){
+	    res.send('<script src="http://connect.facebook.net/en_US/all.js"></script>)');
 	});
 
 app.all('/cache', function (req, res){
