@@ -125,17 +125,15 @@ function postit(daat) {
 				   domReplace(dom, '.results');
 				   domReplace(dom, '.yesnokill');
 				   domReplace(dom, '#pagelet_main_nav');
-
+				   setTimeout(pieit,3000);
 			       }); // TODO: can save one call 
 			 var cmts = $('.cmnts iframe');
 			 if (cmts){
 			     cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
 			     console.log('baby2');
 			 }
-
-			 pieit();
 			 stopwait();			
-
+			 
 		     });
 	      
 	      var hebvote = daat.yesno == 'no' ? '\u05e0\u05d2\u05d3' : '\u05d1\u05e2\u05d3';
