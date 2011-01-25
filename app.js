@@ -114,7 +114,7 @@ function getu(id, cb) {
     }
     else {
 	console.log('%s NOT in cache. getting from db...: %s', id);
-	FBUser.find({FBUID: req.session.fbuid}).first(
+	FBUser.find({FBUID: id}).first(
 	    function (user){
 		if (!user) console.log('% NOT in db.', id);
 		cache[id] = user;
