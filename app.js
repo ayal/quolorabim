@@ -142,9 +142,10 @@ app.all('*', function(req, res, next){
 		return;
 	    }*/
 
-	    var cooks = fbcooks(req);
-	    if (cooks.uid && !urlObj.fb_sig_user) {
-		console.log('cooks tells me you are ' + cooks.uid);
+	    next();
+	    /*	    var cooks = fbcooks(req);
+	     if (cooks.uid && !urlObj.fb_sig_user) {
+	     console.log('cooks tells me you are ' + cooks.uid);
 		urlObj.fb_sig_user = cooks.uid;
 	    }
 	    
@@ -156,6 +157,9 @@ app.all('*', function(req, res, next){
 			evt(req, 'Xsess.' + req.session.user.FBUID);
 			req.session.user = null;
 		    }
+
+		    next();
+		    
 	    	}
 
 		if (!req.session.user){
@@ -163,7 +167,7 @@ app.all('*', function(req, res, next){
 		    FBUser.find({FBUID: CUID}).first(
 			function (user){
 			    if (user){
-				console.log('found user in db');
+			    console.log('found user in db');
 				req.session.user = user;
 				urlObj["indb"] = true;
 			    }
@@ -175,9 +179,6 @@ app.all('*', function(req, res, next){
 			    
 			    next();
 			});
-		}
-		else {
-		    next();
 		}
 		
 		
@@ -191,10 +192,15 @@ app.all('*', function(req, res, next){
 		CUID = null;
 		next();
 	    }
+*/	    
 	    
 	    
 	    
-	    
+	});
+
+var global = 1;
+app.all('/cache', function (req, res){
+	    res.send('' + (global++));
 	});
 
 app.all('/', function (req, res) {
