@@ -110,7 +110,6 @@ function getu(id, cb) {
 
     if (cache[id]){
 	console.log('%s in cache.', id);
-	console.log(cache[id]);
 	cb(cache[id]);
     }
     else {
@@ -164,11 +163,11 @@ app.all('*', function(req, res, next){
 
 
 	    var cooks = fbcooks(req);
-	    if (cooks.uid && !req.QUERY.fb_sig_user) {
+	    if (cooks.uid && (req.QUERY != {} && !req.QUERY.fb_sig_user)) {
 		console.log('QUERYYYYY ');
 		console.log(req.QUERY);
-
-		console.log('cooks tells me you are ' + cooks.uid);
+		
+		console.log('cooks tell me you are %s and not %s', cooks.uid, req.session.fbuid);
 		req.QUERY.fb_sig_user = cooks.uid;
 	    }
 	    
@@ -180,58 +179,7 @@ app.all('*', function(req, res, next){
 
 	    console.log('you are ' + req.session.fbuid);
 	    next();
-	    /*	    var cooks = fbcooks(req);
-	     if (cooks.uid && !req.QUERY.fb_sig_user) {
-	     console.log('cooks tells me you are ' + cooks.uid);
-		req.QUERY.fb_sig_user = cooks.uid;
-	    }
-	    
-	    if (req.QUERY.fb_sig_user) {
-		
-		req.session.fbuid = req.QUERY.fb_sig_user;
-		if (req.session && req.session.user){
-		    if (req.session.user.FBUID != req.QUERY.fb_sig_user) {
-			evt(req, 'Xsess.' + req.session.user.FBUID);
-			req.session.user = null;
-		    }
-
-		    next();
-		    
-	    	}
-
-		if (!req.session.user){
-		    console.log('updating user in session for uid: %s', req.session.fbuid);
-		    FBUser.find({FBUID: req.session.fbuid}).first(
-			function (user){
-			    if (user){
-			    console.log('found user in db');
-				req.session.user = user;
-				req.QUERY["indb"] = true;
-			    }
-			    
-			    else{
-				req.QUERY["indb"] = false;
-				console.log('could not find user in db');
-			    }
-			    
-			    next();
-			});
-		}
-		
-		
-		
-		
-	    }
-	    else {
-
-		evt(req, 'Xsess2');
-		req.session.user = null;
-		req.session.fbuid = null;
-		next();
-	    }
-*/	    
-	    
-	    
+	    	    
 	    
 	});
 
