@@ -164,22 +164,23 @@ app.all('*', function(req, res, next){
 
 
 
-	    if (req.QUERY.fb_sig_user) {
+	    if (req.QUERY.fb_sig_in_iframe) {
 		
 		if (req.session.fbuid != req.QUERY.fb_sig_user)
 		    evt(req, 'xsess.' + req.session.fbuid + req.QUERY.fb_sig_user);
-		
-		req.session.fbuid = req.QUERY.fb_sig_user;
-
+	
 		var cooks = fbcooks(req);
-		if (cooks.uid != req.QUERY.fb_sig_user) {
-
+		if (cooks.uid && !req.QUERY.fb_sig_user) {
+		    
 		    console.log('QUERYYYYY ');
 		    console.log(req.QUERY);
 		    
 		    console.log('cooks tell me you are %s and not %s', cooks.uid, req.session.fbuid);
 		    req.QUERY.fb_sig_user = cooks.uid;
 		}
+
+		req.session.fbuid = req.QUERY.fb_sig_user;
+
 	    }
 	    
 	    req.session.cuser = function(cb){
