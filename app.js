@@ -441,7 +441,7 @@ app.all('/auth', function (req, res){
 			
 		    }
 		    cache[user.fbuid] = user;
-		    req.session.fbuid = user.fbuid;
+		    req.session.fbuid = user.FBUID;
 		    evt(req, 'auth');
 		    useris(req);
 		    res.send(response);
@@ -601,7 +601,7 @@ app.get('/votes/:id', function(req, res, next) {
 							       friends = u.friends;
 							   }
 							   
-							   console.log('setting user who voted: ' + u.fbuid);
+							   console.log('setting user who voted: ' + u.FBUID);
 							   vote.users[u.FBUID] = u;
 							   
 						       });
