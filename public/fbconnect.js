@@ -45,42 +45,43 @@ var fbuid = null;
 
 console.log(fbparams);
 	// initialize the library with the API key
-	
-	window.fbAsyncInit = function() {
-	   
-	    FB.Canvas.setSize();	    
-	    FB.init({ appId: appId, status: false, cookie: true, xfbml: true });
-	    FB.Canvas.setSize();	    
-	    console.log('inited!');
-	    
+wait();	
 
-	    wait();
-	    var timeout = function (i){
+window.fbAsyncInit = function() {
+    
+    FB.Canvas.setSize();	    
+    FB.init({ appId: appId, status: false, cookie: true, xfbml: true });
+    FB.Canvas.setSize();	    
+    console.log('inited!');
+    
+
+
+    var timeout = function (i){
+	
+	if (i == 10){
+	    console.log('re-initing');
+	    FB.init({ appId: appId, status: false, cookie: true, xfbml: true });
+	    timeout(i++);
+	}
+	
+	setTimeout(
+	    function () {
 		
-		if (i == 10){
-		    console.log('re-initing');
-		    FB.init({ appId: appId, status: false, cookie: true, xfbml: true });
+		console.log('loadstate: ' + FB.Auth._loadState);
+		if ( FB.Auth._loadState == 'loaded'){
+		    console.log('LOADED!');
+		    stopwait();
+		    enter(function(){});
+		    return;
+		}
+		else {
 		    timeout(i++);
 		}
-		
-		setTimeout(
-		    function () {
-			
-			console.log('loadstate: ' + FB.Auth._loadState);
-			if ( FB.Auth._loadState == 'loaded'){
-			    console.log('LOADED!');
-			    stopwait();
-			    enter(function(){});
-			    return;
-			}
-			else {
-			    timeout(i++);
-			}
-		    } , 1000);
-	    };
+	    } , 1000);
+    };
 
-	    timeout(0);
-	};
+    timeout(0);
+};
 
 	(function() {
 	     var e = document.createElement('script'); e.async = true;
