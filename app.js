@@ -494,8 +494,8 @@ app.get('/votes/all/?(:uid)?', function(req, res, next) {
 							   
 							   var userz =  Object.keys(v.yesno);
 							  
-							   if (v.yesno[req.session.fbuid]){
-							       console.log('% has not voted', req.session.fbuid);
+							   if (!v.yesno[req.session.fbuid]){
+							       console.log('%s has not voted', req.session.fbuid);
 							       userz.push(req.session.fbuid);
 							   }
 							   
@@ -586,13 +586,13 @@ app.get('/votes/:id', function(req, res, next) {
 			      
 			      var userz =  Object.keys(vote.yesno);
 			      
-			      if (vote.yesno[req.session.fbuid]){
-				  console.log('% has not voted', req.session.fbuid);
+			      if (!vote.yesno[req.session.fbuid]){
+				  console.log('%s has not voted', req.session.fbuid);
 				  userz.push(req.session.fbuid);
 			      }
 			      
 			      
-			      FBUser.find({FBUID: {$in: Object.keys(userz)}}).all(
+			      FBUser.find({FBUID: {$in: userz}}).all(
 				  function (userobjs){
 				      userobjs.forEach(function (u){				      
 						
@@ -601,6 +601,7 @@ app.get('/votes/:id', function(req, res, next) {
 							       friends = u.friends;
 							   }
 							   
+							   console.log('setting user who voted: ' + u.fbuid);
 							   vote.users[u.FBUID] = u;
 							   
 						       });
