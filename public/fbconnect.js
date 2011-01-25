@@ -164,6 +164,42 @@ function gotPerms(){
 }
 
 
+function rezling(a,b){
+    console.log('loadstate: ' + FB.Auth._loadState);
+    if(!FB._apiKey){
+	console.log('FB.getLoginStatus() called before calling FB.init().');
+	return;
+    }
+    if(a){
+
+	if(!b && FB.Auth._loadState=='loaded') {
+	    console.log('this should happend');
+	    a({status:FB._userStatus,session:FB._session});
+	    return;
+	}
+    }
+    else{
+	
+	FB.Event.subscribe('FB.loginStatus',a);
+    }
+	
+    if(!b && FB.Auth._loadState=='loading'){
+	console.log('of course');
+	return;
+    }
+    
+    console.log('weird stuff');
+    FB.Auth._loadState='loading';
+    var c = function(d){
+	console.log('yes...');
+	FB.Auth._loadState='loaded';
+	FB.Event.fire('FB.loginStatus',d);
+	FB.Event.clear('FB.loginStatus');
+    };
+    console.log('ok....');
+    FB.ui({method:'auth.status', display:'hidden'},c);
+}
+
 function softlogin(after){
     console.log('soft login....');
     //twait();
@@ -181,7 +217,7 @@ function softlogin(after){
 			      tstop();
 			  }
 			  
-		      }, true);
+		      });
 }
 
 function login(perms, after) {
