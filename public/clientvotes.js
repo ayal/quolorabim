@@ -112,100 +112,103 @@ function dialog(href){
 function postit(daat) {
     
     click(function () {
-		    console.log(daat);
-		    wait();
-		    $.post('../../votes/vote', daat, function () {
+	      console.log(daat);
+	      wait();
+	      $.post('../../votes/vote', daat, function () {
+			 
+			 var query = daat.query ? daat.query + '&' : '?';
+			 query += 'ajx=true';
+			 $.get('../../votes/' + daat.vid + query, function (html) {
+				   var dom = $('<div>' + html + '</div>');
+				   domReplace(dom, '#'+daat.vid+' .urvote');
+				   domReplace(dom, '.results');
+				   domReplace(dom, '.yesnokill');
+				   domReplace(dom, '#pagelet_main_nav');
 
-			       var query = daat.query ? daat.query + '&' : '?';
-			       query += 'ajx=true';
-			       $.get('../../votes/' + daat.vid + query, function (html) {
-					 var dom = $('<div>' + html + '</div>');
-					 domReplace(dom, '#'+daat.vid+' .urvote');
-					 domReplace(dom, '.results');
-					 domReplace(dom, '.yesnokill');
-					 domReplace(dom, '#pagelet_main_nav');
+			       }); // TODO: can save one call 
+			 var cmts = $('.cmnts iframe');
+			 if (cmts){
+			     cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
+			     console.log('baby2');
+			 }
+			 
+			 laypieit();
+			 stopwait();			
 
-				     }); // TODO: can save one call 
-			       var cmts = $('.cmnts iframe');
-			       if (cmts){
-				   cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
-				   console.log('baby2');
-			       }
-			       stopwait();			
-			   });
-		    
-		    var hebvote = daat.yesno == 'no' ? '\u05e0\u05d2\u05d3' : '\u05d1\u05e2\u05d3';
-		    console.log('whatz');
-		    var name = $('.x').text();
-		    var link = appUrl.substr(0, appUrl.length - 1 ) + window.location.pathname + "?layout=true&ref=SHR" + ME.uid;
-		    var message = 'אני הצבעתי! מה אתם עשיתם היום?!';
-	
-		    var msg = {
-			    name: name,
-			    link: link,
-			    picture: 'http://work.thewe.net/ivotelogo.png',
-			    caption:'קולורבים',
-			    description: 'חברים בוחרים',
-			    message: message
-			};
-		    wait();
-		    FB.api('/' + ME.uid + '/feed', 'post', msg, function(response) {
-			       if (!response || response.error) {
-				   stopwait();
-				   evt('shared/no', response.error);
-			       } 
-			       else {
-				   stopwait();
-				   evt('shared/yes');
-			       }
-			   });
+		     });
+	      
+	      var hebvote = daat.yesno == 'no' ? '\u05e0\u05d2\u05d3' : '\u05d1\u05e2\u05d3';
+	      console.log('whatz');
+	      var name = $('.x').text();
+	      var link = appUrl.substr(0, appUrl.length - 1 ) + window.location.pathname + "?layout=true&ref=SHR" + ME.uid;
+	      var message = 'אני הצבעתי! מה אתם עשיתם היום?!';
+	      
+	      var msg = {
+		  name: name,
+		  link: link,
+		  picture: 'http://work.thewe.net/ivotelogo.png',
+		  caption:'קולורבים',
+		  description: 'חברים בוחרים',
+		  message: message
+	      };
+	      wait();
+	      FB.api('/' + ME.uid + '/feed', 'post', msg, function(response) {
+			 if (!response || response.error) {
+			     stopwait();
+			     evt('shared/no', response.error);
+			 } 
+			 else {
+			     stopwait();
+			     evt('shared/yes');
+			 }
+		     });
 
-/*		    FB.ui(
-			{
-			    method: 'feed',
-			    name: name,
-			    link: link,
-			    picture: 'http://work.thewe.net/ivotelogo.png',
-			    caption:'קולורבים',
-			    description: 'חברים בוחרים',
-			    message: message
-			},
-			function(response) {
-			    
-			    if (!$.browser.msie)
-				$($('.fb_dialog_advanced')[1]).css({display: 'none'});
-			    else
-				$($('.fb_dialog_legacy')[1]).css({display: 'none'});
-			    
-			    if (response && response.post_id) {
-				evt('shared/yes');
-			    } else {
-				evt('shared/no');
-			    }
-			}
-		    );*/
+	      /*		    FB.ui(
+	       {
+	       method: 'feed',
+	       name: name,
+	       link: link,
+	       picture: 'http://work.thewe.net/ivotelogo.png',
+	       caption:'קולורבים',
+	       description: 'חברים בוחרים',
+	       message: message
+	       },
+	       function(response) {
+	       
+	       if (!$.browser.msie)
+	       $($('.fb_dialog_advanced')[1]).css({display: 'none'});
+	       else
+	       $($('.fb_dialog_legacy')[1]).css({display: 'none'});
+	       
+	       if (response && response.post_id) {
+	       evt('shared/yes');
+	       } else {
+	       evt('shared/no');
+	       }
+	       }
+	       );*/
 
-		    
-/*		    if ($.browser.msie){
-			$($('.fb_dialog_legacy')[0]).css({display: 'none'});
-			$($('.fb_dialog_legacy')[1]).css({display: 'none'});			
-		    }
-		    else{
-			$($('.fb_dialog_advanced')[0]).css({display: 'none'});
-			$($('.fb_dialog_advanced')[1]).css({display: 'none'});    
-		    }
+	      
+	      /*		    if ($.browser.msie){
+	       $($('.fb_dialog_legacy')[0]).css({display: 'none'});
+	       $($('.fb_dialog_legacy')[1]).css({display: 'none'});			
+	       }
+	       else{
+	       $($('.fb_dialog_advanced')[0]).css({display: 'none'});
+	       $($('.fb_dialog_advanced')[1]).css({display: 'none'});    
+	       }
 
-		    setTimeout(function () {
-				   if ($.browser.msie)
-				       $($('.fb_dialog_legacy')[1]).css({display: 'block'});
-				   else
-				       $($('.fb_dialog_advanced')[1]).css({display: 'block'});
-t				   
- 
-			       }, 3500);*/
-		    
-		    return true;
-		}, true);
+	       setTimeout(function () {
+	       if ($.browser.msie)
+	       $($('.fb_dialog_legacy')[1]).css({display: 'block'});
+	       else
+	       $($('.fb_dialog_advanced')[1]).css({display: 'block'});
+	       t				   
+	       
+	       }, 3500);*/
+	      
+	      return true;
+	  }, true);
 }
 
 
