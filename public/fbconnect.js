@@ -204,7 +204,7 @@ function click(after){
     console.log('click!');
 
     if (gotPerms()){
-	notindb(function(){rawlogin(function(){data(after);});},  function(){rawlogin(after);});
+	notindb(function(){rawlogin(function(){data(after);});},  function(){softlogin(after);});
     }
     else {
 	notindb(function(){permlogin(function(){data(after);});}, function(){permlogin(after);});
