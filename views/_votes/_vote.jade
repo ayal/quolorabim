@@ -20,7 +20,7 @@
       .yesnokill.right
         .loading
           img(src='/loading40.gif')
-        .btns.width.hidden
+        .btns.width.hide
           - if (!cuid || !vote.yesno[cuid])
             .imgwrp
               a.right(href='#null', onclick=postrn, class="bno")
