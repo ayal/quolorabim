@@ -1,5 +1,6 @@
 var appidEncodedUrl = "140153199345253&next=http%3A%2F%2Fapps.facebook.com%2Fnotifymeplease%2Fnext";
 var API_KEY = 'f0b99f4293afe8d7e6823f7b0ee197d1';
+var appId = '140153199345253';
 
 function QS( name )
 {
@@ -48,14 +49,17 @@ console.log(fbparams);
 	window.fbAsyncInit = function() {
 	   
 	    FB.Canvas.setSize();	    
-	    FB.init({ apiKey: API_KEY, status: true, cookie: true, xfbml: true });
+	    FB.init({ appId: appId, status: false, cookie: true, xfbml: true });
 	    FB.Canvas.setSize();	    
 	    console.log('inited!');
 	    setInterval(
 		function(){
 		    console.log('loadstate: ' + FB.Auth._loadState);
+		    if ( FB.Auth._loadState == 'loaded'){
+			console.log('LOADED!');
+			enter(function(){});
+		    }
 		} , 3000);
-	    enter(function(){});
 	};
 
 	(function() {
