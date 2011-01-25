@@ -150,8 +150,7 @@ function login(perms, after){
 		 console.log(x);
 		 if (x.session){
 		     ME = x.session;
-		     evt('login/yes');
-		     createSession(after);
+		     evt('login/yes');		     
 		 }
 		 else {
 		     evt('login/no');
@@ -169,6 +168,6 @@ function click(after){
 	console.log('NOT signed in');	
 	evt('login/ask');
 	wait();
-	login({perms: 'email,publish_stream'}, after);
+	createSession(after);
     }
 }
