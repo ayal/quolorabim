@@ -105,7 +105,7 @@ function stopwait(){
 function dialog(href){
     $.get(href, function(dom){
 	      $(dom).dialog({modal: true, show: 'slide', position: [40,182], width: 700, height: 470, resizable: false});
-	      setTimeout(pieit(), 1200);
+	      setTimeout(pieit, 1200);
 	  });
     
 }
