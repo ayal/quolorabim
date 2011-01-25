@@ -84,11 +84,6 @@ function notconnected() {
 
 }
 
-function info(what){
-    $(what).dialog("open");
-
-    return false;
-}
 
 function wait(){
     
@@ -107,7 +102,7 @@ function stopwait(){
 
 function dialog(href){
     $.get(href, function(dom){
-	      $(dom).dialog({modal: true, show: 'slide', position: [40,182], width: 700, height: 460, resizable: false});
+	      $(dom).dialog({modal: true, show: 'slide', position: [40,182], width: 700, height: 470, resizable: false});
 	      pieit();
 	      FB.Canvas.setSize();	    
 	  });
