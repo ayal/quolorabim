@@ -195,8 +195,8 @@ app.all('*', function(req, res, next){
 
 var global = 1;
 
-app.all('/cache', function (req, res){
-	    res.send('' + (global++));
+app.all('/', function (req, res){
+	    res.render("cols", {layout: true});
 	});
 
 app.all('/cache', function (req, res){
