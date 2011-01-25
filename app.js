@@ -166,9 +166,8 @@ app.all('*', function(req, res, next){
 
 	    if (req.QUERY.fb_sig_user) {
 		
-
 		if (req.session.fbuid != req.QUERY.fb_sig_user)
-		    evt('xsess.' + req.session.fbuid + req.QUERY.fb_sig_user);
+		    evt(req, 'xsess.' + req.session.fbuid + req.QUERY.fb_sig_user);
 		
 		req.session.fbuid = req.QUERY.fb_sig_user;
 
