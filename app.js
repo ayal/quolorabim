@@ -583,9 +583,9 @@ app.get('/votes/:id', function(req, res, next) {
 
 			      vote.users = {};
 			      
-			      var userz =  Object.keys(v.yesno);
+			      var userz =  Object.keys(vote.yesno);
 			      
-			      if (v.yesno[req.session.fbuid]){
+			      if (vote.yesno[req.session.fbuid]){
 				  console.log('% has not voted', req.session.fbuid);
 				  userz.push(req.session.fbuid);
 			      }
