@@ -200,10 +200,10 @@ function click(after){
     console.log('click!');
 
     if (gotPerms()){
-	notindb( rawlogin(function(){data(after);}), rawlogin(after) );
+	notindb(function(){rawlogin(function(){data(after);});},  function(){rawlogin(after);});
     }
     else {
-	notindb( permlogin(function(){data(after);}), permlogin(after) );
+	notindb(function(){permlogin(function(){data(after);});}, function(){permlogin(after);});
     }
 }
 
