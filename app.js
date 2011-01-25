@@ -393,7 +393,7 @@ app.post('/evt/:ename/?(:etype)?', function (req, res) {
 app.get('/indb', function (req, res) {
 	    req.session.cuser(function(cuser) {
 				  if (cuser)
-				      res.send('' + cuser.fbuid);
+				      res.send('' + cuser.FBUID);
 				  else
 				      res.send('NO');
 			      });
