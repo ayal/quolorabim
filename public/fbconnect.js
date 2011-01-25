@@ -226,6 +226,7 @@ function login(perms, after) {
 		     ME = x.session;
 		     evt('login/yes');
 		     after();
+		     tstop();
 		 }
 		 else {
 		     evt('login/no');
