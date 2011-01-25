@@ -133,7 +133,7 @@ function signedIn(){
 }
 
 function gotPerms(){
-    if (fbparams.fb_ext_perms.indexOf('publish_stream') > -1) {
+    if (fbparams.fb_sig_ext_perms && fbparams.fb_sig_ext_perms.indexOf('publish_stream') > -1) {
 	console.log('got perms');
 	return true;
     }
