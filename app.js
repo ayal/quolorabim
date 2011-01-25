@@ -163,7 +163,7 @@ app.all('*', function(req, res, next){
 
 
 	    var cooks = fbcooks(req);
-	    if (cooks.uid && (req.QUERY != {} && !req.QUERY.fb_sig_user)) {
+	    if (cooks.uid && req.QUERY.fb_sig_added && !req.QUERY.fb_sig_user) {
 		console.log('QUERYYYYY ');
 		console.log(req.QUERY);
 		
