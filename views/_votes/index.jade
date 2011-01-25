@@ -1,4 +1,3 @@
-- var cfbuid = '';
 - var cpicurl = '';
 - var userSelected = '';
 - var allSelected = 'selectedItem';
@@ -6,18 +5,17 @@
   .vimg
     - if (user)
       - var picurl = 'http://graph.facebook.com/' + user.FBUID + '/picture?type=large';
-      - if (cuser && user.FBUID === cuser.FBUID)
+      - if (cuid && user.FBUID === cuid)
         - userSelected = 'selectedItem'
       - allSelected = '';
         img.right.height(src=picurl)
     - else
       img.width.right.height(src='/ivotelogo.png')
-    - if (cuser)
-      - cfbuid = cuser.FBUID;
-      - cpicurl = 'http://graph.facebook.com/' + cuser.FBUID + '/picture?type=small';
+    - if (cuid)	
+      - cpicurl = 'http://graph.facebook.com/' + cuid + '/picture?type=small';
   #pagelet_main_nav
     ul.uiSideNav.mtm#fbCoreAppsNav(dir='rtl')
-      != partial('nav', [{what: '\u05de\u05d4\u0020\u05d6\u05d4\u0020\u05d6\u05d4\u003f', where: '/whatisit', class: '', img: '/whatisit.png'}, {what: '\u05db\u05dc\u0020\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea', where: '/votes/all', class: allSelected, img: '/vlogo.png'}, {what: '\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea\u0020\u05e9\u05dc\u05d9', where: '/votes/all/' + cfbuid, class: userSelected, img: cpicurl}])
+      != partial('nav', [{what: '\u05de\u05d4\u0020\u05d6\u05d4\u0020\u05d6\u05d4\u003f', where: '/whatisit', class: '', img: '/whatisit.png'}, {what: '\u05db\u05dc\u0020\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea', where: '/votes/all', class: allSelected, img: '/vlogo.png'}, {what: '\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea\u0020\u05e9\u05dc\u05d9', where: '/votes/all/' + cuid, class: userSelected, img: cpicurl}])
   .othervts.width
     iframe(scrolling='no', width='220px', frameborder='0', style='margin-top:20px;border:none;', height='400px', src='http://www.facebook.com/plugins/likebox.php?id=140153199345253&show_faces=true&header=false&height=400&width=220')
   .more.width

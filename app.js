@@ -56,12 +56,12 @@ function evt(req, wt, data){
     wt = wt.split('.')[0];
 
     data = data || {};
-    if (urlObj.ajx)
+    if (req.QUERY.ajx)
 	return;
 
     var who = data.ip = req.socket && req.socket.remoteAddress;
-    if (req.session.user) {
-	who = req.session.user.FBUID;
+    if (req.session.fbuid) {
+	who = req.session.fbuid;
     }
     else {
 	data.agent = req.headers['user-agent'] || '';
@@ -71,8 +71,8 @@ function evt(req, wt, data){
     var d = new Date();
     var e = new Event({who: who,
 		       when: {day:d.getDate(),  month: d.getMonth() + 1, year: d.getYear(), hours: (d.getHours() + 2) % 24, minutes: d.getMinutes()},
-		       where: uri.pathname,
-		       ref: urlObj['ref'] || '-',
+		       where: req.URI.pathname,
+		       ref: req.QUERY['ref'] || '-',
 		       what: wt,
 		       type: tp,
 		       ticks: d.getTime(),
@@ -102,9 +102,28 @@ app.configure(function(){
 		  
 	      });
 
-var uri = null;
-var urlObj = null;
-var CUID = null;
+var cache = {
+    
+};
+
+function getu(id, cb) {
+
+    if (cache[user.id]){
+	console.log('%s in cache.', id);
+	cb(cache[user.id]);
+    }
+    else {
+	console.log('%s NOT in cache. getting from db...: %s', id);
+	FBUser.find({FBUID: req.session.fbuid}).first(
+	    function (user){
+		if (!user) console.log('% NOT in db.', id);
+		cache[user.id] = user;
+		cb(user);
+	    });		
+    }
+}
+
+
 
 function fbcooks(req) {
     var fbs = req.cookies['fbs_' + API_KEY];
@@ -129,31 +148,45 @@ app.all('*', function(req, res, next){
 	    res.header('P3P', 'CP="NOI ADM DEV COM NAV OUR STP"'); 
 	    // after ie bug with redirect in fb app - I CHANGED THE CONNECT STATIC PROVIDER
 	    // maybe mmove this to the tops to avoid code change - check in fiddler
-	    uri = url.parse(req.url, true);
-	    urlObj = uri.query; // user req.uri.params?
+	    req.URI = url.parse(req.url, true);
+	    req.QUERY = req.URI.query; // user req.uri.params?
 
 	    //bouncer:
 /*	    var bounceUrl = 'http://www.facebook.com/connect/uiserver.php?display=page&app_id=140153199345253&method=permissions.request&perms=email,publish_stream&next=';
 	    
-	    if (urlObj.fb_sig_added == '0' && !urlObj.pass){
-		bounceUrl += appUrl + urlObj;
+	    if (req.QUERY.fb_sig_added == '0' && !req.QUERY.pass){
+		bounceUrl += appUrl + req.QUERY;
 		res.send('<script>top.location="' + bounceUrl + '"</script>');
 		evt(req, 'bounced');
 		return;
-	    }*/
+ }*/
 
-	    next();
-	    /*	    var cooks = fbcooks(req);
-	     if (cooks.uid && !urlObj.fb_sig_user) {
-	     console.log('cooks tells me you are ' + cooks.uid);
-		urlObj.fb_sig_user = cooks.uid;
+
+	    var cooks = fbcooks(req);
+	    if (cooks.uid && !req.QUERY.fb_sig_user) {
+		console.log('cooks tells me you are ' + cooks.uid);
+		req.QUERY.fb_sig_user = cooks.uid;
 	    }
 	    
-	    if (urlObj.fb_sig_user) {
+	    req.session.fbuid = req.QUERY.fb_sig_user;
+
+	    req.session.cuser = function(cb){
+		getu(this.fbuid, cb);
+	    };
+
+	    console.log('you are ' + req.session.fbuid);
+	    
+	    /*	    var cooks = fbcooks(req);
+	     if (cooks.uid && !req.QUERY.fb_sig_user) {
+	     console.log('cooks tells me you are ' + cooks.uid);
+		req.QUERY.fb_sig_user = cooks.uid;
+	    }
+	    
+	    if (req.QUERY.fb_sig_user) {
 		
-		CUID = urlObj.fb_sig_user;
+		req.session.fbuid = req.QUERY.fb_sig_user;
 		if (req.session && req.session.user){
-		    if (req.session.user.FBUID != urlObj.fb_sig_user) {
+		    if (req.session.user.FBUID != req.QUERY.fb_sig_user) {
 			evt(req, 'Xsess.' + req.session.user.FBUID);
 			req.session.user = null;
 		    }
@@ -163,17 +196,17 @@ app.all('*', function(req, res, next){
 	    	}
 
 		if (!req.session.user){
-		    console.log('updating user in session for uid: %s', CUID);
-		    FBUser.find({FBUID: CUID}).first(
+		    console.log('updating user in session for uid: %s', req.session.fbuid);
+		    FBUser.find({FBUID: req.session.fbuid}).first(
 			function (user){
 			    if (user){
 			    console.log('found user in db');
 				req.session.user = user;
-				urlObj["indb"] = true;
+				req.QUERY["indb"] = true;
 			    }
 			    
 			    else{
-				urlObj["indb"] = false;
+				req.QUERY["indb"] = false;
 				console.log('could not find user in db');
 			    }
 			    
@@ -189,7 +222,7 @@ app.all('*', function(req, res, next){
 
 		evt(req, 'Xsess2');
 		req.session.user = null;
-		CUID = null;
+		req.session.fbuid = null;
 		next();
 	    }
 */	    
@@ -244,19 +277,19 @@ app.get('/deebee/:cname/query', function (req, res) {
 	    var mod = db.model(req.params.cname.substr(0, req.params.cname.length - 1));
 	    var grpKey = '';
 
-	    if (urlObj.filter){
-		console.log(urlObj.filter);
-		eval('var query = ' + urlObj.filter);
+	    if (req.QUERY.filter){
+		console.log(req.QUERY.filter);
+		eval('var query = ' + req.QUERY.filter);
 	    }
 	    var srt = [[]];
 	    
-	    if (urlObj.srt){
-		console.log(urlObj.srt);
-		eval('var srt = ' + urlObj.srt);
+	    if (req.QUERY.srt){
+		console.log(req.QUERY.srt);
+		eval('var srt = ' + req.QUERY.srt);
 	    }
 
 
-	    if (urlObj.grpKey === '*'){
+	    if (req.QUERY.grpKey === '*'){
 		console.log('all');
 		mod.find(query).sort(srt).all(
 		    function (objs){
@@ -287,7 +320,7 @@ app.get('/deebee/:cname/query', function (req, res) {
 		
 		
 
-		urlObj.grpKey.split(',').forEach(function(key){
+		req.QUERY.grpKey.split(',').forEach(function(key){
 						     grpKey += "this." + key + '+ "_" +';
 						 });
 		grpKey += '"done"';
@@ -356,19 +389,21 @@ app.post('/evt/:ename/?(:etype)?', function (req, res) {
 	});
 
 
-app.get('/sess', function (req, res) {
-	    if (req.session.user)
-		res.send(req.session.user._id.toHexString());
-	    else
-		res.send('NO');
+app.get('/indb', function (req, res) {
+	    req.session.cuser(function(cuser) {
+				  if (cuser)
+				      res.send(cuser.fbuid);
+				  else
+				      res.send('NO');
+			      });
 	});
 
 function useris(req) {
     var who = req.socket && req.socket.remoteAddress;
     Event.find({who: who}).all(function (evts){
 				   evts.forEach(function (ev) {
-						    console.log('updating %s with %s', ev.who, req.session.user.FBUID);
-						    ev.who = req.session.user.FBUID;
+						    console.log('updating %s with %s', ev.who, req.session.fbuid);
+						    ev.who = req.session.fbuid;
 						    ev.save();
 				   });
 			       });
@@ -404,7 +439,8 @@ app.all('/auth', function (req, res){
 			user.save(function (){console.log('saved user');});
 			
 		    }
-		    req.session.user = user;
+		    cache[user.fbuid] = user;
+		    req.session.fbuid = user.fbuid;
 		    evt(req, 'auth');
 		    useris(req);
 		    res.send(response);
@@ -413,10 +449,11 @@ app.all('/auth', function (req, res){
 
 app.get('/votes/all/?(:uid)?', function(req, res, next) {
 
-	    console.log('getting votes ' + req.session.user);
+	    console.log('getting votes ' + req.session.fbuid);
 	    var friends = {}; 
-	    if (req.session.user){
-		friends = req.session.user.data.friends;		
+
+	    if (req.session.fbuid){
+
 	    }
 	    else {
 		console.log('no session!');
@@ -449,17 +486,30 @@ app.get('/votes/all/?(:uid)?', function(req, res, next) {
 							   v.users = {
 							       
 							   };
-							   if (req.session.user) {
-							       voted = voteStatus(v, req.session.user.FBUID);
+							   if (req.session.fbuid) {
+							       voted = voteStatus(v, req.session.fbuid);
 							   }
 							   v.voted = voted;
-							   FBUser.find({FBUID: {$in: Object.keys(v.yesno)}}).all(
+							   
+							   var userz =  Object.keys(v.yesno);
+							  
+							   if (v.yesno[req.session.fbuid]){
+							       console.log('% has not voted', req.session.fbuid);
+							       userz.push(req.session.fbuid);
+							   }
+							   
+							   FBUser.find({FBUID: {$in: userz}}).all(
 							       function (userobjs){
-
+								   
 								   userobjs.forEach(function (u){
 											if (uid && u.FBUID === uid) {
 											    user = u; // how many times?
 											}
+											if (u.FBUID === req.session.fbuid){
+											    console.log('setting friends for ' + u.FBUID);
+											    friends = u.friends;
+											}
+											
 											v.users[u.FBUID] = u;
 										    });
 								   
@@ -469,10 +519,9 @@ app.get('/votes/all/?(:uid)?', function(req, res, next) {
 										      user: user,
 										      votes: votes,
 										      friends: friends,
-										      cuser: req.session.user,
-										      cuid: CUID,
+										      cuid: req.session.fbuid,
 										      cfg: cfg,
-										      fbparams: urlObj
+										      fbparams: req.QUERY
 										  });
 								   }
 								   
@@ -517,9 +566,8 @@ app.get('/votes/:id', function(req, res, next) {
 	    var friends = {}; 
 	    var voted = '';
 	    var serverSession = false;
-	    if (req.session.user) {
+	    if (req.session.fbuid) {
 		
-		friends = req.session.user.data.friends;		
 		cfg.session = true;
 	    }
 	    else {
@@ -531,38 +579,51 @@ app.get('/votes/:id', function(req, res, next) {
 				  res.send('what?');
 				  return;
 			      }
-			      voted = voteStatus(vote, CUID);
+			      voted = voteStatus(vote, req.session.fbuid);
 
 			      vote.users = {};
-
-			      FBUser.find({FBUID: {$in: Object.keys(vote.yesno)}}).all(
+			      
+			      var userz =  Object.keys(v.yesno);
+			      
+			      if (v.yesno[req.session.fbuid]){
+				  console.log('% has not voted', req.session.fbuid);
+				  userz.push(req.session.fbuid);
+			      }
+			      
+			      
+			      FBUser.find({FBUID: {$in: Object.keys(userz)}}).all(
 				  function (userobjs){
 				      userobjs.forEach(function (u){				      
+						
+							   if (u.FBUID === req.session.fbuid){
+							       console.log('setting friends for ' + u.FBUID);
+							       friends = u.friends;
+							   }
+							   
 							   vote.users[u.FBUID] = u;
+							   
 						       });
 				      
 				      
-				      if (urlObj.flat) {
+				      if (req.QUERY.flat) {
 					  vote.voted = voted;
 					  res.render('votes', {//layout: 'alayout.jade',
 							 votes: [vote],
 							 friends: friends,
 							 user: null,
-							 cuser: req.session.user,
-							 cuid: CUID,							 
+							 cuid: req.session.fbuid,							 
 							 cfg: cfg,
-							 fbparam: urlObj});
+							 fbparam: req.QUERY});
 				      }
 				      else{
 					  res.render('_votes/_vote', 
-						     {layout: urlObj.layout === "true",
+						     {layout: req.QUERY.layout === "true",
 						      vote: vote,
 						      friends: friends,
 						      voted: voted,
 						      cfg: cfg,
-						      fbparams: urlObj,
-						      cuser: req.session.user,
-						      cuid: CUID});
+						      fbparams: req.QUERY,
+						      cuid: req.session.fbuid});
 					  
 				      }
 				      
@@ -591,22 +652,22 @@ app.post('/fbml', function(req, res) {
 app.get('/whatisit', function(req, res) {
 	    evt(req, 'view.whatisit');
 	    res.render('faq', {
-			    layout: urlObj.layout === 'true' ? true : false,
-			    fbparams: urlObj});
+			    layout: req.QUERY.layout === 'true' ? true : false,
+			    fbparams: req.QUERY});
 	 });
 
 app.get('/newvote', function(req, res) {
 	    evt(req, 'view.newvote');
 	    res.render('newvote', {
 			   layout: true,
-			   fbparams: urlObj});
+			   fbparams: req.QUERY});
 	});
 
 
 app.post('/votes/new', function(req, res) {
 	     //	     checkSession(res, res);
 	     console.log('new vote ' + req.body);
-	     var fbuid = req.session.user ? req.session.user : 'remote';
+	     var fbuid = req.session.fbuid ? req.session.fbuid : 'remote';
 	     var vote = new Vote({author: fbuid,
 				  date: new Date(req.body.date),
 				  yesno: {},
@@ -624,18 +685,22 @@ app.post('/votes/vote', function(req, res) {
 				if (!vote.data['size'])
 				    vote.data['size'] = 0;
 				evt(req, 'vote.' + req.body.yesno);
-
-				vote.yesno[req.session.user.FBUID] = req.body.yesno;
+				
+				vote.yesno[req.session.fbuid] = req.body.yesno;
 				vote.data.size = Object.keys(vote.yesno).length;
-
+				
 				vote.save(function () {
 					      console.log('saved user VOTE');
 					  });
-				req.session.user.yesno[req.body.vid] = req.body.yesno;
-				req.session.user.save(function () {
-							  console.log('saved USER vote');
-						      });
-				res.send('OK');
+				
+				req.session.cuser(function(u){
+						      u.yesno[req.body.vid] = req.body.yesno;
+						      u.save(function () {
+								 console.log('saved USER vote');
+							     });
+						      res.send('OK');
+						      
+						  });
 				
 			    });
 	     // TODO: create double index on user

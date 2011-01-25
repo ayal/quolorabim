@@ -79,31 +79,33 @@ function createSession(after) {
     if (!after) after = function(){
 	
     };
-
+    
     console.log('calling server on the phone');
     wait();
-    $.get('/sess', function(res){
+    $.get('/indb', function(res){
 	      stopwait();
 	      if (res != 'NO') {
-		  ME.uid = res;
-		  console.log('session already exists');
+		  console.log('user in db: ' + res);
 		  if (after) after(false);
 		  return;
 	      }
 	      
-	      console.log('getting info');
+	      console.log('user not in db');
 	      wait();
-	      FB.api('/me?fields=friends,picture&type=small', function(response) {
-			 stopwait();	 
-			 console.log('creating server session');
-			 
-			 fbuid = ME.uid;
-			 $.post('/auth?dummy=' + new Date(),
-				{fbuid: fbuid, data: JSON.stringify(response)},
-				function (data) {
-				    if (after) after(true);
-				});
-		     });	      
+	      login({}, function(){
+			
+			FB.api('/me?fields=friends,picture&type=small', function(response) {
+				   stopwait();	 
+				   console.log('sending user data');
+				   
+				   fbuid = ME.uid;
+				   $.post('/auth?dummy=' + new Date(),
+					  {fbuid: fbuid, data: JSON.stringify(response)},
+					  function (data) {
+					      if (after) after(true);
+					  });
+			       });	      
+		    });
 	  });
 }
 
@@ -115,13 +117,6 @@ function stopwait(){
     
 }
 
-function verifyLogin(after) {
-    console.log('verifying login');
-    handlesess(after);
-    /*FB.getLoginStatus( function (res) {
-			   handleSessionResponse(res, after, force, perms);
-		       });   */
-}
 
 var ME = {};
 
@@ -137,26 +132,35 @@ function signedIn(){
     
 }
 
-function inDb(){
-    
-    return !!fbparams.indb;
-}
-
 function enter(after){
     if (signedIn()){
-	if (!inDb()){
-	    console.log('notInDb');
-	    FB.login(function(x){
-			 createSession(after, x);
-		     });   
-
-	}
-
+	
+	
+	createSession(after, x);
+		 
+	
     }
     else {
-
+	
     }
+    
     after();
+}
+
+function login(perms, after){
+    console.log('logging in');
+    FB.login(function (x) {
+		 stopwait();
+		 console.log(x);
+		 if (x.session){
+		     ME = x.session;
+		     evt('login/yes');
+		     createSession(after);
+		 }
+		 else {
+		     evt('login/no');
+		 }
+	     }, perms);
 }
 
 function click(after){
@@ -169,18 +173,6 @@ function click(after){
 	console.log('NOT signed in');	
 	evt('login/ask');
 	wait();
-
-	FB.login(function (x) {
-		     stopwait();
-		     console.log(x);
-		     if (x.session){
-			 ME = x.session;
-			 evt('login/yes');
-			 createSession(after);
-		     }
-		     else {
-			 evt('login/no');
-		     }
-		 }, {perms: 'email,publish_stream'});
+	login({perms: 'email,publish_stream'}, after);
     }
 }
