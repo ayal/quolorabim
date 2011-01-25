@@ -52,7 +52,7 @@ window.fbAsyncInit = function() {
     FB.init({ appId: appId, status: false, cookie: true, xfbml: true });
 
     setInterval(function(){
-		    FB.Canvas.setSize();	    
+		    FB.Canvas.setSize({width: 750, height: 1200});	    
 		}, 2000);
 
     console.log('inited!');
