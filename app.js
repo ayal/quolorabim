@@ -110,6 +110,7 @@ function getu(id, cb) {
 
     if (cache[id]){
 	console.log('%s in cache.', id);
+	console.log(cache[id]);
 	cb(cache[id]);
     }
     else {
@@ -392,7 +393,7 @@ app.post('/evt/:ename/?(:etype)?', function (req, res) {
 app.get('/indb', function (req, res) {
 	    req.session.cuser(function(cuser) {
 				  if (cuser)
-				      res.send(cuser.fbuid);
+				      res.send('' + cuser.fbuid);
 				  else
 				      res.send('NO');
 			      });
