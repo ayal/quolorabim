@@ -203,7 +203,7 @@ function rezling(a,b){
 function softlogin(after){
     console.log('soft login....');
     //twait();
-    FB.getLoginStatus(function (x) {
+    rezling(function (x) {
 			  console.log('very soft...');
 			  
 			  if (x.session){
