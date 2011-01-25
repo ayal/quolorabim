@@ -109,9 +109,9 @@ function stopwait(){
     
 }
 
-function twait(){
+function twait(x){
     try{
-	wait();
+	wait(x);
     } catch (x) {
 	console.log(x);
     }
@@ -134,7 +134,7 @@ function evt(name, data){
 
 function data(after){
     console.log('getting user data');
-    twait();
+    twait(5);
     FB.api('/me?fields=friends,picture&type=small',
 	   function(response) {
 	       console.log('sending user data ' + response);
@@ -149,7 +149,7 @@ function data(after){
 }
 
 function indb(yes, no){
-    twait();
+    twait(6);
     $.get('/indb', function(res){
 	      var indb = false;
 	      if (res != 'NO') {
@@ -195,7 +195,7 @@ function gotPerms(){
 
 function softlogin(after){
     console.log('soft login....');
-    twait();
+    twait(7);
     FB.getLoginStatus(function (x) {
 			  console.log('very soft...');
 			  
@@ -214,7 +214,7 @@ function softlogin(after){
 }
 
 function login(perms, after) {
-    twait();
+    twait(8);
     FB.login(function (x) {
 		 
 		 console.log(x);

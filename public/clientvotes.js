@@ -87,13 +87,11 @@ function notconnected() {
 }
 
 
-function wait(){
-    
+function wait(x){
+    console.log('waiting: ' + x);
     $('.loading').show();
     $('.btns').hide();
 }
-
-wait();
 
 function stopwait(){
     console.log('ready!');
@@ -114,7 +112,7 @@ function postit(daat) {
     
     click(function () {
 	      console.log(daat);
-	      wait();
+	      wait(1);
 	      $.post('../../votes/vote', daat, function () {
 			 
 			 var query = daat.query ? daat.query + '&' : '?';
@@ -150,15 +148,15 @@ function postit(daat) {
 		  description: 'חברים בוחרים',
 		  message: message
 	      };
-	      wait();
+	      wait(2);
 	      FB.api('/' + ME.uid + '/feed', 'post', msg, function(response) {
 			 if (!response || response.error) {
-			     stopwait();
 			     evt('shared/no', response.error);
+			     stopwait();
 			 } 
 			 else {
-			     stopwait();
 			     evt('shared/yes');
+			     stopwait();
 			 }
 		     });
 
