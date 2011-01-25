@@ -138,7 +138,6 @@ function data(after){
     twait();
     FB.api('/me?fields=friends,picture&type=small',
 	   function(response) {
-	       tstop();	 
 	       console.log('sending user data ' + response);
 	       
 	       fbuid = ME.uid;
@@ -153,7 +152,6 @@ function data(after){
 function indb(yes, no){
     twait();
     $.get('/indb', function(res){
-	      tstop();
 	      var indb = false;
 	      if (res != 'NO') {
 		  console.log('user in db: ' + res);
@@ -204,7 +202,7 @@ function softlogin(after){
 			  
 			  if (x.session){
 			      console.log('a session!');
-			      tstop();
+			      
 			      ME = x.session;
 			      after();
 			  }
@@ -219,7 +217,7 @@ function softlogin(after){
 function login(perms, after) {
     twait();
     FB.login(function (x) {
-		 tstop();
+		 
 		 console.log(x);
 		 
 		 if (x.session &&
@@ -232,6 +230,7 @@ function login(perms, after) {
 		 }
 		 else {
 		     evt('login/no');
+		     tstop();
 		 }
 		 
 	     }, perms);
@@ -250,7 +249,7 @@ function permlogin(after){
 function enter(after){
     console.log('welcome');
     if (signedIn()) {
-	indb(function(){}, function(){ softlogin(data); });
+	indb(function(){tstop();}, function(){ softlogin(data); tstop();});
     }
     
     after();
@@ -260,10 +259,12 @@ function click(after){
     console.log('click!');
 
     if (gotPerms()){
-	notindb(function(){rawlogin(function(){data(after);});},  function(){softlogin(after);});
+	notindb(function(){rawlogin(function(){data(after); tstop();});}, 
+		function(){softlogin(after); tstop();});
     }
     else {
-	notindb(function(){permlogin(function(){data(after);});}, function(){permlogin(after);});
+	notindb(function(){permlogin(function(){data(after); tstop();});},
+		function(){permlogin(after); tstop();});
     }
 }
 
