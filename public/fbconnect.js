@@ -133,12 +133,8 @@ function signedIn(){
 }
 
 function enter(after){
-    if (signedIn()){
-	
-	
-	createSession(after, x);
-		 
-	
+    if (signedIn()) {
+	createSession(after);
     }
     else {
 	
