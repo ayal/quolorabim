@@ -55,11 +55,17 @@ console.log(fbparams);
 	    
 
 	    wait();
-	    var timeout = function (){
+	    var timeout = function (i){
 		
-	    
+		if (i == 10){
+		    console.log('re-initing');
+		    FB.init({ appId: appId, status: false, cookie: true, xfbml: true });
+		    timeout(i++);
+		}
+		
 		setTimeout(
 		    function () {
+			
 			console.log('loadstate: ' + FB.Auth._loadState);
 			if ( FB.Auth._loadState == 'loaded'){
 			    console.log('LOADED!');
@@ -68,12 +74,12 @@ console.log(fbparams);
 			    return;
 			}
 			else {
-			    timeout();
+			    timeout(i++);
 			}
 		    } , 1000);
 	    };
 
-	    timeout();
+	    timeout(0);
 	};
 
 	(function() {
@@ -187,42 +193,6 @@ function gotPerms(){
     return false;
 }
 
-
-function rezling(a,b){
-    console.log('loadstate: ' + FB.Auth._loadState);
-    if(!FB._apiKey){
-	console.log('FB.getLoginStatus() called before calling FB.init().');
-	return;
-    }
-    if(a){
-
-	if(!b && FB.Auth._loadState=='loaded') {
-	    console.log('this should happend');
-	    a({status:FB._userStatus,session:FB._session});
-	    return;
-	}
-    }
-    else{
-	
-	FB.Event.subscribe('FB.loginStatus',a);
-    }
-	
-    if(!b && FB.Auth._loadState=='loading'){
-	console.log('of course');
-	return;
-    }
-    
-    console.log('weird stuff');
-    FB.Auth._loadState='loading';
-    var c = function(d){
-	console.log('yes...');
-	FB.Auth._loadState='loaded';
-	FB.Event.fire('FB.loginStatus',d);
-	FB.Event.clear('FB.loginStatus');
-    };
-    console.log('ok....');
-    FB.ui({method:'auth.status', display:'hidden'},c);
-}
 
 function softlogin(after){
     console.log('soft login....');
