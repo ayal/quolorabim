@@ -37,6 +37,7 @@ function afterLogin(newsession) {
 }
 
 function pieit() {
+    console.log('pie');
     var pies = $('.pie');
     pies.each(function(i, pie){
 		  $(pie).sparkline([$(pie).attr('yes'),
@@ -131,8 +132,8 @@ function postit(daat) {
 			     cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
 			     console.log('baby2');
 			 }
-			 
-			 laypieit();
+
+			 pieit();
 			 stopwait();			
 
 		     });
