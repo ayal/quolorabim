@@ -78,9 +78,9 @@ console.log(fbparams);
 
 	(function() {
 	     var e = document.createElement('script'); e.async = true;
-	     e.src='/fbc.js';
-	     /*e.src = document.location.protocol +
-		 '//connect.facebook.net/' + fbparams.fb_sig_locale + '/all.js';*/
+	     //	     e.src='/fbc.js';
+	     e.src = document.location.protocol +
+		 '//connect.facebook.net/' + fbparams.fb_sig_locale + '/all.js';
 	     document.getElementById('fb-root').appendChild(e);
 	 }());
 	
