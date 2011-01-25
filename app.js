@@ -196,9 +196,9 @@ app.all('*', function(req, res, next){
 var global = 1;
 
 app.all('/cols', function (req, res){
-	    res.send('hi');
-/*	    res.render("cols", {layout: true,
-				fbparams: {}});*/
+//	    res.send('hi');
+	    res.render("cols", {layout: false,
+				fbparams: {}});
 	});
 
 app.all('/cache', function (req, res){
