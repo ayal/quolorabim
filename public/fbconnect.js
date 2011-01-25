@@ -179,12 +179,12 @@ function login(perms, after) {
 
 function rawlogin(after){
     console.log('raw login');
-    permlogin({}, after);
+    login({}, after);
 }
 
 function permlogin(after){
     console.log('perm login');
-    permlogin({perms: 'email,publish_stream'}, after);
+    login({perms: 'email,publish_stream'}, after);
 }
 
 function enter(after){
