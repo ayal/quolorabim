@@ -75,7 +75,6 @@ function onLoad(){
 		    });
 
     pieit();
-    stopwait();
 }
 
 $(document).ready(function(){
