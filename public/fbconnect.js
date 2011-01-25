@@ -168,12 +168,17 @@ function softlogin(after){
     console.log('soft login');
     twait();
     FB.getLoginStatus(function (x) {
-			  tstop();
-			  console.log(x);
+			  console.log('very soft...');
+			 
 			  if (x.session){
-			      console.log('after soft login');
+			      console.log('a session!');
+			      tstop();
 			      ME = x.session;
 			      after();
+			  }
+			  else {
+			      console.log('NO session!');
+			      tstop();
 			  }
 			  
 		      });
