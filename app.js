@@ -165,6 +165,7 @@ app.all('*', function(req, res, next){
 
 	    var cooks = fbcooks(req);
 	    if (cooks.uid && !req.QUERY.fb_sig_user) {
+		console.log('QUERY: ' + req.QUERY);
 		console.log('cooks tells me you are ' + cooks.uid);
 		req.QUERY.fb_sig_user = cooks.uid;
 	    }
