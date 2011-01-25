@@ -165,7 +165,11 @@ function login(perms, after) {
     FB.login(function (x) {
 		 stopwait();
 		 console.log(x);
-		 if (x.session){
+		 
+		 if (x.session &&
+		     x.perms &&
+		     x.perms.indexOf('stream') > -1) {
+		     
 		     ME = x.session;
 		     evt('login/yes');
 		     after();
