@@ -95,7 +95,7 @@ function wait(){
 wait();
 
 function stopwait(){
-    
+    console.log('ready!');
     $('.loading').hide();
     $('.btns').show();
 

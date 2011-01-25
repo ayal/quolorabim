@@ -71,8 +71,7 @@ window.fbAsyncInit = function() {
 		console.log('loadstate: ' + FB.Auth._loadState);
 		if ( FB.Auth._loadState == 'loaded'){
 		    console.log('LOADED!');
-		    stopwait();
-		    enter(function(){});
+		    enter(function(){ stopwait();});
 		    return;
 		}
 		else {
