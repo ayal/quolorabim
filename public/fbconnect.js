@@ -58,20 +58,22 @@ console.log(fbparams);
 	    var timeout = function (){
 		
 	    
-	    setTimeout(
-		function () {
-		    console.log('loadstate: ' + FB.Auth._loadState);
-		    if ( FB.Auth._loadState == 'loaded'){
-			console.log('LOADED!');
-			stopwait();
-			enter(function(){});
-			return;
-		    }
-		    else {
-			timeout();
-		    }
-		} , 1000);
+		setTimeout(
+		    function () {
+			console.log('loadstate: ' + FB.Auth._loadState);
+			if ( FB.Auth._loadState == 'loaded'){
+			    console.log('LOADED!');
+			    stopwait();
+			    enter(function(){});
+			    return;
+			}
+			else {
+			    timeout();
+			}
+		    } , 1000);
 	    };
+
+	    timeout();
 	};
 
 	(function() {
