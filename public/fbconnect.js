@@ -75,7 +75,7 @@ function evt(name, data){
     $.post('/evt/' + name, data || {}, function(){});
 }
 
-function createSession(after) {
+function createSession(after, perms) {
     if (!after) after = function(){
 	
     };
@@ -92,7 +92,7 @@ function createSession(after) {
 	      
 	      console.log('user not in db');
 	      wait();
-	      login(null, function(){
+	      login(perms, function(){
 			
 			FB.api('/me?fields=friends,picture&type=small', function(response) {
 				   stopwait();	 
@@ -127,9 +127,18 @@ function signedIn(){
 	return true;
     }
     
-    console.log('not signed in');
+    console.log('NOT signed in');
     return false;
     
+}
+
+function gotPerms(){
+    if (fbparams.fb_ext_perms.indexOf('publish_stream') > -1) {
+	console.log('got perms');
+	return true;
+    }
+    console.log('NO perms');
+    return false;
 }
 
 function enter(after){
@@ -149,6 +158,7 @@ function login(perms, after) {
     FB.getLoginStatus(function(y) {
 			  if (perms) {
 			      console.log('requesting perms');
+			      evt('login/ask');
 			      FB.login(function (x) {
 					   stopwait();
 					   console.log(x);
@@ -179,14 +189,11 @@ function login(perms, after) {
 }
 
 function click(after){
-    if (signedIn()){
-	console.log('signed in');	
+    if (signedIn() && gotPerms()){
 	after();	
     }
     else {
-	console.log('NOT signed in');	
-	evt('login/ask');
 	wait();
-	login({perms: 'email,publish_stream'}, after);
+	createSession(after, {perms: 'email,publish_stream'});
     }
 }
