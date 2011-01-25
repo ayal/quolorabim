@@ -175,7 +175,7 @@ app.all('*', function(req, res, next){
 	    };
 
 	    console.log('you are ' + req.session.fbuid);
-	    
+	    next();
 	    /*	    var cooks = fbcooks(req);
 	     if (cooks.uid && !req.QUERY.fb_sig_user) {
 	     console.log('cooks tells me you are ' + cooks.uid);
