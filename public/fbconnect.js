@@ -45,7 +45,6 @@ var fbuid = null;
 
 console.log(fbparams);
 	// initialize the library with the API key
-wait();	
 
 window.fbAsyncInit = function() {
     
@@ -53,8 +52,6 @@ window.fbAsyncInit = function() {
     FB.init({ appId: appId, status: false, cookie: true, xfbml: true });
     FB.Canvas.setSize();	    
     console.log('inited!');
-    
-
 
     var timeout = function (i){
 	

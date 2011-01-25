@@ -49,6 +49,7 @@ function pieit() {
 
 function onLoad(){
     
+    wait();
     
     $('img').attr('title',$('img').
 		  attr('title').replace('\\n','\n'));
