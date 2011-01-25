@@ -37,8 +37,9 @@ function afterLogin(newsession) {
 }
 
 function pieit() {
-    console.log('pie');
+    
     var pies = $('.pie');
+    console.log('pies: ' + pies.size());
     pies.each(function(i, pie){
 		  $(pie).sparkline([$(pie).attr('yes'),
 				    $(pie).attr('no')],
