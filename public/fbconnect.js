@@ -76,7 +76,7 @@ function evt(name, data){
 }
 
 
-function getUserData(after){
+function data(after){
     console.log('getting user data');
     FB.api('/me?fields=friends,picture&type=small',
 	   function(response) {
@@ -92,40 +92,24 @@ function getUserData(after){
 	   });
 }
 
-function createSession(after, moreperms) {
-    if (!after) after = function(){
-	
-    };
-    
-    console.log('calling server on the phone');
+function indb(yes, no){
     wait();
     $.get('/indb', function(res){
 	      stopwait();
 	      var indb = false;
 	      if (res != 'NO') {
 		  console.log('user in db: ' + res);
-		  indb = true;
-	      }
-	      
-	      if (indb) {
-		  if (!moreperms) {
-		      console.log('thats it!');   
-		      if (after) after();
-		      return;
-		  }
-		  
+		  yes();
 	      }
 	      else {
-		  console.log('user is NOT in db');	  
+		  no();
 	      }
 	      
-	      console.log('login flow');
-	      login(moreperms,
-		    function(){
-			getUserData(after);	      
-		    });
-	      
 	  });
+}
+
+function notindb(yes, no){
+    indb(no, yes);
 }
 
 function wait(){
@@ -152,7 +136,7 @@ function signedIn(){
 }
 
 function gotPerms(){
-    if (fbparams.fb_sig_ext_perms && fbparams.fb_sig_ext_perms.indexOf('publish_stream') > -1) {
+    if (signedIn() && fbparams.fb_sig_ext_perms && fbparams.fb_sig_ext_perms.indexOf('publish_stream') > -1) {
 	console.log('got perms');
 	return true;
     }
@@ -160,59 +144,66 @@ function gotPerms(){
     return false;
 }
 
-function enter(after){
-    if (signedIn()) {
-	createSession(after);
-    }
-    else {
-	
-    }
-    
-    after();
-}
 
-function login(perms, after) {
-    console.log('logging in');
+function softlogin(after){
+    console.log('soft login');
     wait();
-    FB.getLoginStatus(function(y) {
-			  if (perms) {
-			      console.log('requesting perms');
-			      evt('login/ask');
-			      FB.login(function (x) {
-					   stopwait();
-					   console.log(x);
-					   if (x.session){
-					       ME = x.session;
-					       evt('login/yes');
-					       after();
-					   }
-					   else {
-					       evt('login/no');
-					   }
-					   
-				       }, perms);
-			  }
-			  else {
-			      if (y.session){
-				  console.log('getting to know you..');
-				  stopwait();
-				  after();
-			      }
-			      else {
-				  console.log('nothing i can do.');
-				  stopwait();	  
-			      }
+    FB.getLoginStatus(function (x) {
+			  stopwait();
+			  console.log(x);
+			  if (x.session){
+			      console.log('after soft login');
+			      ME = x.session;
+			      after();
 			  }
 			  
 		      });
 }
 
+function login(perms, after) {
+    wait();
+    FB.login(function (x) {
+		 stopwait();
+		 console.log(x);
+		 if (x.session){
+		     ME = x.session;
+		     evt('login/yes');
+		     after();
+		 }
+		 else {
+		     evt('login/no');
+		 }
+		 
+	     }, perms);
+}
+
+function rawlogin(after){
+    console.log('raw login');
+    permlogin({}, after);
+}
+
+function permlogin(after){
+    console.log('perm login');
+    permlogin({perms: 'email,publish_stream'}, after);
+}
+
+function enter(after){
+    console.log('welcome');
+    if (signedIn()) {
+	indb(function(){}, function(){ softlogin(data); });
+    }
+    
+    after();
+}
+
 function click(after){
-    if (signedIn() && gotPerms()){
-	createSession(after);
+    console.log('click!');
+
+    if (gotPerms()){
+	notindb( rawlogin(function(){data(after);}), rawlogin(after) );
     }
     else {
-	wait();
-	createSession(after, {perms: 'email,publish_stream'});
+	notindb( permlogin(function(){data(after);}), permlogin(after) );
     }
 }
+
