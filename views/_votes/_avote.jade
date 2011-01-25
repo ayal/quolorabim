@@ -16,17 +16,17 @@ link(rel="stylesheet", href="/sass/xtheme.css?v=3")
             span.pie.right(yes=yess,no=noes,h='1.5em')
             .vlink.right
               - var navit = "navapp('" + turl + "');return false;";
-              a.right.width(href='#', onclick=navit)
+              a.right.width(href='#null', onclick=navit)
                 |#{avote.data.title}
               //.stitle.right(dir='rtl')=avote.data.stitle
               .urvote.right.width
                 |#{avote.voted}
           .yesnokill.right.height
             .imgwrp
-              a.right(href='#', onclick=postrn, class="bno")
+              a.right(href='#null', onclick=postrn, class="bno")
                 //img(src='/rlike.png')
             .imgwrp
-              a.right(href='#', onclick=postry, class="byes")
+              a.right(href='#null', onclick=postry, class="byes")
                 //img(src='/glike.png')
             //span(onclick=rmpost, class="byes")
             //  | KILL

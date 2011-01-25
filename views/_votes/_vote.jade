@@ -23,12 +23,12 @@
         .btns.width
           - if (!cuid || !vote.yesno[cuid])
             .imgwrp
-              a.right(href='#', onclick=postrn, class="bno")
+              a.right(href='#null', onclick=postrn, class="bno")
                 img(src='/rlike.png')
                 .imgtxt
                   |\u05d0\u05e0\u05d9 \u05e0\u05d2\u05d3
             .imgwrp
-              a.right(href='#', onclick=postry, class="byes")
+              a.right(href='#null', onclick=postry, class="byes")
                 img(src='/glike.png')
                 .imgtxt
                   |\u05d0\u05e0\u05d9 \u05d1\u05e2\u05d3
