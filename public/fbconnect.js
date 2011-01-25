@@ -70,6 +70,31 @@ $(document).ready(
     });
 
 
+function wait(){
+    
+}
+
+function stopwait(){
+    
+}
+
+function twait(){
+    try{
+	wait();
+    } catch (x) {
+	console.log(x);
+    }
+}
+
+function tstop(){
+    try{
+	stopwait();
+    } catch (x) {
+	console.log(x);
+    }
+}
+
+
 function evt(name, data){
     console.log(name + ' ' + data);
     $.post('/evt/' + name, data || {}, function(){});
@@ -78,9 +103,10 @@ function evt(name, data){
 
 function data(after){
     console.log('getting user data');
+    twait();
     FB.api('/me?fields=friends,picture&type=small',
 	   function(response) {
-	       stopwait();	 
+	       tstop();	 
 	       console.log('sending user data ' + response);
 	       
 	       fbuid = ME.uid;
@@ -93,9 +119,9 @@ function data(after){
 }
 
 function indb(yes, no){
-    wait();
+    twait();
     $.get('/indb', function(res){
-	      stopwait();
+	      tstop();
 	      var indb = false;
 	      if (res != 'NO') {
 		  console.log('user in db: ' + res);
@@ -112,13 +138,6 @@ function notindb(yes, no){
     indb(no, yes);
 }
 
-function wait(){
-    
-}
-
-function stopwait(){
-    
-}
 
 
 var ME = {};
@@ -147,9 +166,9 @@ function gotPerms(){
 
 function softlogin(after){
     console.log('soft login');
-    wait();
+    twait();
     FB.getLoginStatus(function (x) {
-			  stopwait();
+			  tstop();
 			  console.log(x);
 			  if (x.session){
 			      console.log('after soft login');
@@ -161,9 +180,9 @@ function softlogin(after){
 }
 
 function login(perms, after) {
-    wait();
+    twait();
     FB.login(function (x) {
-		 stopwait();
+		 tstop();
 		 console.log(x);
 		 
 		 if (x.session &&
