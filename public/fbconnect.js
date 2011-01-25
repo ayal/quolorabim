@@ -167,6 +167,7 @@ function gotPerms(){
 function softlogin(after){
     console.log('soft login....');
     //twait();
+    console.log(FB.getLoginStatus);
     FB.getLoginStatus(function (x) {
 			  console.log('very soft...');
 			 
