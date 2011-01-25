@@ -195,7 +195,7 @@ app.all('*', function(req, res, next){
 
 var global = 1;
 
-app.all('/', function (req, res){
+app.all('/cols', function (req, res){
 	    res.render("cols", {layout: true});
 	});
 
