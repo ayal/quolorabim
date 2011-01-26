@@ -1,6 +1,10 @@
 .faq
+  - var height = stream ? '750' : '400'
+  - var hpx = height + 'px'
+  - var width = '220'
+  - var wpx = width + 'px'  
   .like.left
-    iframe(scrolling='no', width='220px', frameborder='0', style='margin-top:20px;border:none;', height='400px', src='http://www.facebook.com/plugins/likebox.php?id=140153199345253&show_faces=true&header=false&height=400&width=220&stream=' + stream)
+    iframe(scrolling='no', width=wpx, frameborder='0', style='margin-top:20px;border:none;', height=hpx, src='http://www.facebook.com/plugins/likebox.php?id=140153199345253&show_faces=true&header=false&height=' + height + '&width=' + width + '&stream=' + stream)
   .all.left
     .h1
       |קולורבים
