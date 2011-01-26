@@ -40,6 +40,13 @@ function nav(url) {
     top.location = url;
 }
 
+function navperm(){
+    var url = 'http://www.facebook.com/connect/uiserver.php?app_id=' + appId + '&next=' + 
+	window.top.location.href
+	+ '&display=page&perms=email,publish_stream&method=permissions.request';
+    nav(url);
+}
+
 var fbuid = null;
 
 
@@ -214,14 +221,14 @@ function softlogin(after){
 }
 
 function nopop() {
-    evt('popblocked');
-    err('ניסיתי לשאול אותך משהו ולא ענית.. יכול להיות שחלון ניסה לקפוץ ומשהו הפריע לו?');
+    evt('navperms');
+    navperms();
     tstop();
 }
 
 function login(perms, after) {
     twait(8);
-    var hndl = setTimeout(nopop, 15000);
+    var hndl = setTimeout(nopop, 25000);
     FB.login(function (x) {
 		 clearTimeout(hndl);
 		 console.log(x);
