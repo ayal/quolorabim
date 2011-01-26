@@ -653,6 +653,7 @@ app.post('/votes/new', function(req, res) {
 
 app.post('/votes/vote', function(req, res) {
 	     if (!req.session.fbuid){
+		 evt('ERR.Vote');
 		 res.send('?');
 		 return;
 	     }
@@ -670,7 +671,7 @@ app.post('/votes/vote', function(req, res) {
 					      console.log('saved user VOTE');
 					  });
 				
-				req.session.cuser(function(u){
+				req.session.cuser(function(u) {
 						      u.yesno[req.body.vid] = req.body.yesno;
 						      u.save(function () {
 								 console.log('saved USER vote');
