@@ -214,7 +214,8 @@ function softlogin(after){
 }
 
 function handle_popup_blocked() {
-    alert('popup blocked');
+    evt('popblocked');
+    err('popup blocked');
 }
 
 window.open_facebook = window.open;
@@ -232,7 +233,7 @@ window.open = function(url,name,specs,replace) {
 function login(perms, after) {
     twait(8);
     FB.login(function (x) {
-		// window.open = window.open_facebook;	 
+		 window.open = window.open_facebook;	 
 		 console.log(x);
 		 
 		 if (x.session &&
