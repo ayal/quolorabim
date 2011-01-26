@@ -301,8 +301,12 @@ function click(after){
 		function(){softlogin(after); tstop();});
     }
     else {
-	notindb(function(){permlogin(function(){data(after); tstop();});},
-		function(){permlogin(after); tstop();});
+	permlogin(function(){notindb(
+				 function(){data(after); tstop();},
+				 tstop);});
+
+/*	notindb(function(){permlogin(function(){data(after); tstop();});},
+		function(){permlogin(after); tstop();});*/
     }
 }
 

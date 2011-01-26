@@ -272,7 +272,7 @@ app.get('/deebee/:cname/query', function (req, res) {
 		mod.find(query).sort(srt).all(
 		    function (objs){
 			for (var i = 0; i < objs.length; i++) {
-			   
+			    
 			    var obj = objs[i].__doc;
 			    
 			    obj['order'] = i;
