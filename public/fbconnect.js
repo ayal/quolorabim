@@ -102,11 +102,10 @@ window.fbAsyncInit = function() {
     
     var agent = {};    
     var type = 'dunno';
-    jQuery.each(jQuery.browser, function(i, val) {
-		    if (i != 'webkit' && i != 'version')
-			type = val;
-		    else
-			agent[i] = val;
+    jQuery.each(jQuery.browser,
+		function(i, val) {
+		    if (val) type = i;
+		    agent[i] = val;
 		});
     
     evt('agent/' + type, agent);
