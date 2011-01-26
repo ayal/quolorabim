@@ -209,7 +209,7 @@ app.all('/cache', function (req, res){
 
 app.all('/', function (req, res) {
 	    evt(req, 'root');
-	    res.redirect('/whatisit?layout=true');
+	    res.redirect('/whatisit?layout=true&stream=true');
 	});
 
 // TODO: find out about development stuff
@@ -623,9 +623,11 @@ app.post('/fbml', function(req, res) {
 
 app.get('/whatisit', function(req, res) {
 	    evt(req, 'view.whatisit');
+	    var stream =  req.QUERY.stream === 'true' ? true : false;
 	    res.render('faq', {
-			    layout: req.QUERY.layout === 'true' ? true : false,
-			    fbparams: req.QUERY});
+			   layout: req.QUERY.layout === 'true' ? true : false,
+			   fbparams: req.QUERY,
+			   stream: stream});
 	 });
 
 app.get('/newvote', function(req, res) {
