@@ -88,7 +88,7 @@ function dialog(href){
 }
 
 function err(msg){
-    $('<h2 dir="rtl">' + msg + '</h2>').dialog({modal: true, show: 'drop',position: [40,80], width: 300, height: 300, resizable: false});
+    $('<h2 dir="rtl">' + msg + '</h2>').dialog({modal: true, show: 'drop',position: [40,80], width: 350, height: 200, resizable: false});
 }
 
 

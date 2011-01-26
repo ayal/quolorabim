@@ -213,28 +213,17 @@ function softlogin(after){
 		      });
 }
 
-function handle_popup_blocked() {
+function nopop() {
     evt('popblocked');
-    err('חלון ניסה לקפוץ ומשהו הפריע לו...');
+    err('ניסיתי לשאול אותך משהו ולא ענית.. יכול להיות שחלון ניסה לקפוץ ומשהו הפריע לו?');
     tstop();
 }
 
-window.open_facebook = window.open;
-window.open = function(url,name,specs,replace) {
-
-    hndl = window.open_facebook(url,name,specs,replace);
-    var blocked = !hndl || hndl.closed || typeof hndl.closed=='undefined';
-    console.log('popup: ' + blocked);
-    if( !blocked ) {
-          handle_popup_blocked();
-    }
-};
-
-
 function login(perms, after) {
     twait(8);
+    var hndl = setTimeout(nopop, 15000);
     FB.login(function (x) {
-		 window.open = window.open_facebook;	 
+		 clearTimeout(hndl);
 		 console.log(x);
 		 
 		 if (x.session &&
