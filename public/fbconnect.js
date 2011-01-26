@@ -290,20 +290,14 @@ function login(perms, after) {
     FB.login(
 	function (x) {
 	    //		 clearTimeout(hndl);
-	    console.log(x);
-	    console.log('PERMS FROM LOGIN: ' + x.perms);
-	    
-	    if (x.session &&
-		x.perms &&
-		x.perms.indexOf('stream') > -1) {
-		     
+	    if (x.session) {
 		ME = x.session;
-		evt('login/yes');
+		evt('login/yes', x);
 		after();
 		tstop();
 	    }
 	    else {
-		evt('login/no');
+		evt('login/no', x);
 		tstop();
 	    }
 	    
