@@ -173,7 +173,9 @@ function data(after){
 	       $.post('/auth?dummy=' + new Date(),
 		      {fbuid: fbuid, data: JSON.stringify(response)},
 		      function (data) {
+			  console.log('data was sent: ' + data);
 			  if (after) after(true);
+			  else  console.log('no after');
 		      });
 	   });
 }
@@ -252,26 +254,27 @@ function nopop() {
 function login(perms, after) {
     twait(8);
     evt('login/ask');
-    var hndl = setTimeout(nopop, 25000);
-    FB.login(function (x) {
-		 clearTimeout(hndl);
-		 console.log(x);
-		 
-		 if (x.session &&
-		     x.perms &&
-		     x.perms.indexOf('stream') > -1) {
+//    var hndl = setTimeout(nopop, 25000);
+    FB.login(
+	function (x) {
+	    //		 clearTimeout(hndl);
+	    console.log(x);
+	    
+	    if (x.session &&
+		x.perms &&
+		x.perms.indexOf('stream') > -1) {
 		     
-		     ME = x.session;
-		     evt('login/yes');
-		     after();
-		     tstop();
-		 }
-		 else {
-		     evt('login/no');
-		     tstop();
-		 }
-		 
-	     }, perms);
+		ME = x.session;
+		evt('login/yes');
+		after();
+		tstop();
+	    }
+	    else {
+		evt('login/no');
+		tstop();
+	    }
+	    
+	}, perms);
 }
 
 function rawlogin(after){
@@ -303,7 +306,7 @@ function click(after){
     else {
 	permlogin(function(){notindb(
 				 function(){data(after); tstop();},
-				 tstop);});
+				 function(){after(); tstop();});});
 
 /*	notindb(function(){permlogin(function(){data(after); tstop();});},
 		function(){permlogin(after); tstop();});*/
