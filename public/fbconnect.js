@@ -42,9 +42,8 @@ function nav(url) {
 
 function navperms(){
     console.log(top.location.href);
-    console.log(window.location.href);
     var url = 'http://www.facebook.com/connect/uiserver.php?app_id=' + appId + '&next=' + 
-	window.location.href
+	top.location.href
 	+ '&display=page&perms=email,publish_stream&method=permissions.request';
     nav(url);
 }
