@@ -90,7 +90,7 @@ app.configure(function(){
 		  app.use(express.logger({ stream: fakeStream }));
 		  app.use(express.session());
 		  app.use(app.router);
-		  
+		  app.user(connect.repl());
 		  app.use(express.compiler({src: __dirname + '/public/sass', enable: ['sass']}));
 		  app.use(express.staticProvider(__dirname + '/public'));
 		  
