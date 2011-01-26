@@ -129,12 +129,16 @@ function getu(id, cb) {
 
 
 function fbcooks(req) {
-    var fbs = req.cookies['fbs_' + API_KEY];
+    var str = 'fbs_' + API_KEY;
+    console.log(str);
+    var fbs = req.cookies[str];
+    console.log(fbs);
+    console.log(Object.keys(req.cookies));
     var cookz = {};
-
+    
     console.log('cook');
     console.log(req.cookies);
-
+    
     if (fbs) {
 	console.log('fbs');
 	fbs.split('&').forEach(
