@@ -200,7 +200,7 @@ var global = 1;
 
 
 app.get('/channel', function(req, res){
-	    res.send('<script src="http://connect.facebook.net/en_US/all.js"></script>)');
+	    res.send('<script src="http://connect.facebook.net/en_US/all.js"></script>');
 	});
 
 app.all('/cache', function (req, res){
