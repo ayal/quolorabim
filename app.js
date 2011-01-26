@@ -136,9 +136,10 @@ function fbcooks(req) {
     console.log(req.cookies);
 
     if (fbs) {
+	console.log('fbs');
 	fbs.split('&').forEach(
 	    function(fubu){
-		
+		console.log('fubu: ' + fubu);
 		var name =  fubu.split('=')[0];	
 		var val = fubu.split('=')[1];	
 		cookz[name] = val;
