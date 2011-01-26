@@ -135,7 +135,8 @@ function fbcooks(req) {
 	    console.log('cookey: %s', key);
 	    var fbs = req.cookies[key];
 	    console.log('cookv: %s', fbs);
-	    if (fbs.indexOf('fbs_') == 0) {
+	    if (key.indexOf('fbs_') == 0) {
+		console.log('FBCOOKZ');
 		fbs.split('&').forEach(
 		    function(fubu){
 			
