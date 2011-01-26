@@ -108,6 +108,9 @@ var cache = {
 
 function getu(id, cb) {
 
+    if (typeof id === 'undefined' || !id)
+	cb(null);
+
     if (cache[id]){
 	console.log('%s in cache.', id);
 	cb(cache[id]);
@@ -141,6 +144,8 @@ function fbcooks(req) {
 		cookz[name] = val;
 	    });
     }
+    console.log('cookZ');
+    console.log(cookz);
     return cookz;
 }
 
@@ -164,13 +169,13 @@ app.all('*', function(req, res, next){
 
 
 	    var cooks = fbcooks(req);
+
 	    if (req.QUERY.fb_sig_in_iframe) {
 		
 		if (req.session.fbuid != req.QUERY.fb_sig_user) {
 		    if (req.session.fbuid)
 			evt(req, 'xsess.' + req.session.fbuid + req.QUERY.fb_sig_user);
-		}
-		    
+		}		    
 
 		if (cooks.uid && !req.QUERY.fb_sig_user) {
 		    
@@ -186,8 +191,8 @@ app.all('*', function(req, res, next){
 	    }
 	    
 	    if (cooks.uid && (typeof req.session.fbuid === 'undefined' || !req.session.fbuid)) {
-		req.session.fbuid = cooks.uid;
 		console.log('them cooks tell me you are %s', cooks.uid);
+		req.session.fbuid = cooks.uid;
 	    }
 	    
 	    req.session.cuser = function(cb){
