@@ -129,28 +129,23 @@ function getu(id, cb) {
 
 
 function fbcooks(req) {
-    var str = 'fbs_' + API_KEY;
-    console.log(str);
-    var fbs = req.cookies[str];
-    console.log(fbs);
-    console.log(Object.keys(req.cookies));
-    var cookz = {};
-    
-    console.log('cook');
-    console.log(req.cookies);
-    
-    if (fbs) {
-	console.log('fbs');
-	fbs.split('&').forEach(
-	    function(fubu){
-		console.log('fubu: ' + fubu);
-		var name =  fubu.split('=')[0];	
-		var val = fubu.split('=')[1];	
-		cookz[name] = val;
-	    });
-    }
-    console.log('cookZ');
-    console.log(cookz);
+
+    Object.keys(req.cookies).forEach(
+	function(key){
+	    console.log('cookey: %s', key);
+	    var fbs = req.cookies[key];
+	    console.log('cookv: %s', fbs);
+	    if (fbs.indexOf('fbs_') == 0) {
+		fbs.split('&').forEach(
+		    function(fubu){
+			
+			var name =  fubu.split('=')[0];	
+			var val = fubu.split('=')[1];	
+			cookz[name] = val;
+		    });
+	    }
+	});
+
     return cookz;
 }
 
