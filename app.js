@@ -181,7 +181,8 @@ app.all('*', function(req, res, next){
 		req.session.fbuid = req.QUERY.fb_sig_user;
 
 	    }
-	    else if (cooks.uid) {
+	    
+	    if (cooks.uid && (typeof req.session.fbuid === 'undefined' || !req.session.fbuid)) {
 		req.session.fbuid = cooks.uid;
 		console.log('them cooks tell me you are %s', cooks.uid);
 	    }
@@ -655,7 +656,7 @@ app.post('/votes/new', function(req, res) {
 
 app.post('/votes/vote', function(req, res) {
 	     if (!req.session.fbuid){
-		 evt('ERR.Vote');
+		 evt(req, 'ERR.Vote');
 		 res.send('?');
 		 return;
 	     }
