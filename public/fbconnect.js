@@ -219,8 +219,11 @@ function handle_popup_blocked() {
 
 window.open_facebook = window.open;
 window.open = function(url,name,specs,replace) {
-    login_handler = window.open_facebook(url,name,specs,replace);
-    if( !login_handler ) {
+
+    hndl = window.open_facebook(url,name,specs,replace);
+    var blocked = !hndl || hndl.closed || typeof hndl.closed=='undefined';
+    console.log('popup: ' + blocked);
+    if( !blocked ) {
           handle_popup_blocked();
     }
 };
