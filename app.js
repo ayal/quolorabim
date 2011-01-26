@@ -664,30 +664,40 @@ app.post('/votes/vote', function(req, res) {
 		 res.send('?');
 		 return;
 	     }
+		
+	     try {
 		 
-	     Vote.findById( req.body.vid, 
-			    function (vote){
-				if (!vote.data['size'])
-				    vote.data['size'] = 0;
-				evt(req, 'vote.' + req.body.yesno);
-				
-				vote.yesno[req.session.fbuid] = req.body.yesno;
-				vote.data.size = Object.keys(vote.yesno).length;
-				
-				vote.save(function () {
-					      console.log('saved user VOTE');
-					  });
-				
-				req.session.cuser(function(u) {
-						      u.yesno[req.body.vid] = req.body.yesno;
-						      u.save(function () {
-								 console.log('saved USER vote');
-							     });
-						      res.send('OK');
-						      
-						  });
-				
-			    });
+		 Vote.findById( req.body.vid, 
+				function (vote){
+				    if (!vote.data['size'])
+					vote.data['size'] = 0;
+				    evt(req, 'vote.' + req.body.yesno);
+				    
+				    vote.yesno[req.session.fbuid] = req.body.yesno;
+				    vote.data.size = Object.keys(vote.yesno).length;
+				    
+				    vote.save(function () {
+						  console.log('saved user VOTE');
+					      });
+				    
+				    req.session.cuser(function(u) {
+							  u.yesno[req.body.vid] = req.body.yesno;
+							  u.save(function () {
+								     console.log('saved USER vote');
+								 });
+							  res.send('OK');
+							  
+						      });
+				    
+				});
+	     } catch (ex) {
+		 console.log('Exception while saving vote');
+		 console.log(ex);
+		 evt(req, 'ERR.Vote2');
+		 res.send('?');
+
+	     }
+
 	     // TODO: create double index on user
 	 });
 

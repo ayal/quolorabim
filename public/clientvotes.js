@@ -80,7 +80,7 @@ function stopwait(){
 }
 
 function dialog(href){
-    $.get(href, function(dom){
+    $.get(href + '?dummy=' + new Date(), function(dom){
 	      $(dom).dialog({modal: true, show: 'drop', position: [40,182], width: 700, height: 470, resizable: false});
 	      pieit();
 	  });
@@ -98,14 +98,14 @@ function postit(daat) {
     click(function () {
 	      console.log(daat);
 	      wait(1);
-	      $.post('../../votes/vote', daat, function (res) {
+	      $.post('../../votes/vote' + '?dummy=' + new Date(), daat, function (res) {
 			 if (res != 'OK'){
 			     stopwait();
 			     err('התקשתי לזהות אותך - אנא נסה לרענן את הדף (F5)');
 			 }
 
 			 var query = daat.query ? daat.query + '&' : '?';
-			 query += 'ajx=true';
+			 query += 'ajx=true' + '&dummy=' + new Date();
 			 $.get('../../votes/' + daat.vid + query, function (html) {
 				   var dom = $('<div>' + html + '</div>');
 				   domReplace(dom, '#'+daat.vid+' .urvote');

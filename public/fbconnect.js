@@ -15,10 +15,11 @@ function QS( name )
 	return decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-var msgs = $('<div></div>');
+var msgs = $('<div id=\'msgs\' style=\'font-size=10px;overflow:auto\'></div>');
 
 function msg(x){
     msgs.append($('<div>' + x + '</div>'));
+    msgs.attr('scrollTop', msgs.attr('scrollHeight'));
 }
 
 if (typeof console === 'undefined' || !console){
@@ -184,7 +185,8 @@ function tstop(){
 function evt(name, data){
     try {
 	console.log(name + ' ' + JSON.stringify(data));	
-	$.post('/evt/' + name, data || {}, function(){});
+	$.post('/evt/' + name + '?dummy=' + new Date(), data || {},
+	       function(){});
 
     } catch (x) {
 	console.log('cannot send event ' + name + ' ' +  x);
@@ -212,7 +214,7 @@ function data(after){
 
 function indb(yes, no){
     twait(6);
-    $.get('/indb', function(res){
+    $.get('/indb?' + new Date(), function(res){
 	      var indb = false;
 	      if (res != 'NO') {
 		  console.log('user in db: ' + res);
@@ -289,6 +291,7 @@ function login(perms, after) {
 	function (x) {
 	    //		 clearTimeout(hndl);
 	    console.log(x);
+	    console.log('PERMS FROM LOGIN: ' + x.perms);
 	    
 	    if (x.session &&
 		x.perms &&
