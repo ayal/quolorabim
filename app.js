@@ -181,6 +181,10 @@ app.all('*', function(req, res, next){
 		req.session.fbuid = req.QUERY.fb_sig_user;
 
 	    }
+	    else if (cooks.uid) {
+		req.session.fbuid = cooks.uid;
+		console.log('them cooks tell me you are %s', cooks.uid);
+	    }
 	    
 	    req.session.cuser = function(cb){
 		getu(this.fbuid, cb);
@@ -388,7 +392,6 @@ app.all('/auth', function (req, res){
 			response = 'firsttime';
 			console.log('user not in db');
 			var data = JSON.parse(jdata);
-			console.log(data);
 			var friendsArr = data.friends.data; // friends should be updated not just filled once
 			friendsArr.push(null); // because reduce sucks?
 			data["friends"] = friendsArr.reduce(
@@ -406,6 +409,7 @@ app.all('/auth', function (req, res){
 			user.save(function (){console.log('saved user');});
 			
 		    }
+
 		    cache[user.fbuid] = user;
 		    req.session.fbuid = user.FBUID;
 		    evt(req, 'auth');

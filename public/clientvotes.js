@@ -3,11 +3,14 @@ function domReplace(dom, cls) {
     if ($(cls)[1]){
 	$.each($(cls), function(i, v){
 		   var newel = newels[i];
+		   console.log('replacing');
 		   $(v).replaceWith(newel);
 	       });
     }
     else {
+	console.log('replacing');
 	$(cls).replaceWith(newels);
+	stopwait();
     }
     
 }
@@ -97,7 +100,7 @@ function postit(daat) {
 	      $.post('../../votes/vote', daat, function (res) {
 			 if (res != 'OK'){
 			     stopwait();
-			     err('התקשתי לזהות אותך - אנא נסה לרענן את הדף');
+			     err('התקשתי לזהות אותך - אנא נסה לרענן את הדף (F5)');
 			 }
 
 			 var query = daat.query ? daat.query + '&' : '?';
