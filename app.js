@@ -129,7 +129,7 @@ function getu(id, cb) {
 
 
 function fbcooks(req) {
-
+    var cookz = {};
     Object.keys(req.cookies).forEach(
 	function(key){
 	    console.log('cookey: %s', key);
