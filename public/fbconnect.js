@@ -134,7 +134,12 @@ function tstop(){
 
 
 function evt(name, data){
-    console.log(name + ' ' + data);
+    try {
+	console.log(name + ' ' + JSON.stringify(data));	
+    } catch (x) {
+	console.log('cannot stringify ' + name);
+    }
+
     $.post('/evt/' + name, data || {}, function(){});
 }
 
@@ -228,6 +233,7 @@ function nopop() {
 
 function login(perms, after) {
     twait(8);
+    evt('login/ask');
     var hndl = setTimeout(nopop, 25000);
     FB.login(function (x) {
 		 clearTimeout(hndl);
