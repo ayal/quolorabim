@@ -15,15 +15,45 @@ function QS( name )
 	return decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
+var msgs = $('<div></div>');
 
-try {
-    console.log('verifying console');    
-
-} catch (x) {
-    console = {};
-    console.log = function (x) {};
+function msg(x){
+    msgs.append($('<div>' + x + '</div>'));
 }
 
+if (typeof console === 'undefined' || !console){
+    console = {log: function(x){}};
+}
+
+var clog = console.log;
+console.log = function(x){
+    clog(x);
+    try{
+	if (typeof x == 'object')
+	    x = JSON.stringify(x);
+    } catch (e) {
+	
+    }
+    
+    msg(x);
+};
+
+var isCtrl = false;
+var isAlt = false;
+
+$(document).keyup(function (e) {
+		      if(e.which == 17) isCtrl = false;
+		      if(e.which == 18) isAlt = false;
+		  }).keydown(function (e) {
+				 if(e.which == 17) isCtrl = true;
+				 if(e.which == 18) isAlt = true;
+				 
+				 if(e.which == 16 && isCtrl && isAlt) {
+				     msgs.dialog();
+				     return false;
+				 }
+				 return true;
+});
 
 siteUrl = "http://work.thewe.net/";
 appUrl = "http://apps.facebook.com/kolorabim/";
@@ -258,7 +288,7 @@ function login(perms, after) {
     FB.login(
 	function (x) {
 	    //		 clearTimeout(hndl);
-	    err(x);
+	    console.log(x);
 	    
 	    if (x.session &&
 		x.perms &&
