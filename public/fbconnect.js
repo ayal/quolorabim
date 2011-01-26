@@ -215,7 +215,7 @@ function softlogin(after){
 
 function handle_popup_blocked() {
     evt('popblocked');
-    err('popup blocked');
+    err('חלון ניסה לקפוץ ומשהו הפריע לו...');
 }
 
 window.open_facebook = window.open;
