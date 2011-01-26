@@ -166,8 +166,11 @@ app.all('*', function(req, res, next){
 	    var cooks = fbcooks(req);
 	    if (req.QUERY.fb_sig_in_iframe) {
 		
-		if (req.session.fbuid != req.QUERY.fb_sig_user)
-		    evt(req, 'xsess.' + req.session.fbuid + req.QUERY.fb_sig_user);
+		if (req.session.fbuid != req.QUERY.fb_sig_user) {
+		    if (req.session.fbuid)
+			evt(req, 'xsess.' + req.session.fbuid + req.QUERY.fb_sig_user);
+		}
+		    
 
 		if (cooks.uid && !req.QUERY.fb_sig_user) {
 		    
