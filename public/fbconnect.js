@@ -49,7 +49,7 @@ console.log(fbparams);
 window.fbAsyncInit = function() {
     
     FB.Canvas.setSize();	    
-    FB.init({ appId: appId, status: true, cookie: true, xfbml: true});//, channelUrl: 'http://work.thewe.net/channel' });
+    FB.init({ appId: appId, status: false, cookie: true, xfbml: true, channelUrl: 'http://work.thewe.net/channel' });
     
     setInterval(function(){
 		    FB.Canvas.setSize({width: 750, height: 1200});	    
@@ -213,10 +213,23 @@ function softlogin(after){
 		      });
 }
 
+function handle_popup_blocked() {
+    alert('popup blocked');
+}
+
+window.open_facebook = window.open;
+window.open = function(url,name,specs,replace) {
+    login_handler = window.open_facebook(url,name,specs,replace);
+    if( !login_handler ) {
+          handle_popup_blocked();
+    }
+};
+
+
 function login(perms, after) {
     twait(8);
     FB.login(function (x) {
-		 
+		// window.open = window.open_facebook;	 
 		 console.log(x);
 		 
 		 if (x.session &&
