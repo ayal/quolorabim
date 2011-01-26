@@ -49,7 +49,7 @@ console.log(fbparams);
 window.fbAsyncInit = function() {
     
     FB.Canvas.setSize();	    
-    FB.init({ appId: appId, status: false, cookie: true, xfbml: true});//, channelUrl: 'http://work.thewe.net/channel' });
+    FB.init({ appId: appId, status: true, cookie: true, xfbml: true});//, channelUrl: 'http://work.thewe.net/channel' });
     
     setInterval(function(){
 		    FB.Canvas.setSize({width: 750, height: 1200});	    
