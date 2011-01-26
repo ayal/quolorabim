@@ -40,7 +40,7 @@ function nav(url) {
     top.location = url;
 }
 
-function navperm(){
+function navperms(){
     var url = 'http://www.facebook.com/connect/uiserver.php?app_id=' + appId + '&next=' + 
 	window.top.location.href
 	+ '&display=page&perms=email,publish_stream&method=permissions.request';
