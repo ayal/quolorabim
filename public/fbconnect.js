@@ -258,7 +258,7 @@ function login(perms, after) {
     FB.login(
 	function (x) {
 	    //		 clearTimeout(hndl);
-	    console.log(x);
+	    err(x);
 	    
 	    if (x.session &&
 		x.perms &&
