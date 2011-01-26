@@ -42,7 +42,7 @@ function nav(url) {
 
 function navperms(){
     var url = 'http://www.facebook.com/connect/uiserver.php?app_id=' + appId + '&next=' + 
-	appUrl.substr(0, appUrl.length - 1) + window.location.pathname +
+	appUrl.substr(0, appUrl.length - 1) + window.location.href +
 	'&display=page&perms=email,publish_stream&method=permissions.request';
     nav(url);
 }
