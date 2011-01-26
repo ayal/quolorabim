@@ -58,10 +58,28 @@ window.fbAsyncInit = function() {
     FB.Canvas.setSize();	    
     FB.init({ appId: appId, status: false, cookie: true, xfbml: true, channelUrl: 'http://work.thewe.net/channel' });
     
-    setInterval(function(){
+    setTimeout(function(){
 		    FB.Canvas.setSize({width: 750, height: 1200});	    
-		}, 2000);
+		}, 5000);
 
+    var ping  = function () {
+	evt('ping');
+	setTimeout(ping, 60000);
+    };
+    
+    ping();
+    
+    var agent = {};    
+    var type = 'dunno';
+    jQuery.each(jQuery.browser, function(i, val) {
+		    if (i != 'webkit' && i != 'version')
+			type = val;
+		    else
+			agent[i] = val;
+		});
+    
+    evt('agent/' + type, agent);
+    
     console.log('inited!');
 
     var timeout = function (i){
@@ -136,11 +154,11 @@ function tstop(){
 function evt(name, data){
     try {
 	console.log(name + ' ' + JSON.stringify(data));	
-    } catch (x) {
-	console.log('cannot stringify ' + name);
-    }
+	$.post('/evt/' + name, data || {}, function(){});
 
-    $.post('/evt/' + name, data || {}, function(){});
+    } catch (x) {
+	console.log('cannot send event ' + name + ' ' +  x);
+    }
 }
 
 

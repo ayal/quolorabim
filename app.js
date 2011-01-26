@@ -63,11 +63,8 @@ function evt(req, wt, data){
     if (req.session.fbuid) {
 	who = req.session.fbuid;
     }
-    else {
-	data.agent = req.headers['user-agent'] || '';
-    }
 
-    console.log('%s %s', who, wt);
+    console.log('%s %s %s', who, wt, JSON.stringify(data));
     var d = new Date();
     var e = new Event({who: who,
 		       when: {day:d.getDate(),  month: d.getMonth() + 1, year: d.getYear(), hours: (d.getHours() + 2) % 24, minutes: d.getMinutes()},
@@ -279,20 +276,18 @@ app.get('/deebee/:cname/query', function (req, res) {
 			    var obj = objs[i].__doc;
 			    
 			    obj['order'] = i;
-
 			    obj['day'] = obj.when.day;
-			    obj['month'] = obj.when.month;
 			    obj['hour'] = obj.when.hours || 0;
 			    obj['minute'] = obj.when.minutes || 0;
-			    
 			    obj['ip'] = obj.data.ip;
-
+			    delete obj.data.ip;
+			    obj['data'] = JSON.stringify(obj.data);
 			    delete obj.when;
-			    delete obj.data;
+			    delete obj.month;
 			    delete obj['ticks'];
 			    delete obj['_id'];
 			}
-
+			
 			res.render('analytix', {layout: 'analayout.jade', grid: true, objs: objs});
 			return;
 		    }, true);
