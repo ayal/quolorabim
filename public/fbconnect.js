@@ -22,7 +22,10 @@ function msg(x){
     msgs.attr('scrollTop', msgs.attr('scrollHeight'));
 }
 
-var clog = function (x){console.log(x);};
+var csl = console;
+var clog = function (x){
+    csl.log(x);
+};
 console = 
     {log: 
      function(x){
