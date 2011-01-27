@@ -38,6 +38,20 @@ function lg(x){
     msg(x);
 }
 
+// idleTimer() takes an optional argument that defines the idle timeout
+// timeout is in milliseconds; defaults to 30000
+$.idleTimer(10000);
+
+
+/*$(document).bind("idle.idleTimer", function(){
+		     // function you want to fire when the user goes idle
+		 });
+*/
+ 
+$(document).bind("active.idleTimer", function(){
+		     evt('ping');
+		 });
+
 
 var isCtrl = false;
 var isAlt = false;
