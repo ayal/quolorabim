@@ -107,13 +107,13 @@ function getu(id, cb) {
 
     if (typeof id === 'undefined' || !id)
 	cb(null);
-    
+
     if (cache[id]){
 	console.log('%s in cache.', id);
 	cb(cache[id]);
     }
     else {
-	console.log('%s NOT in cache. getting from db.', id);
+	console.log('%s NOT in cache. getting from db..', id);
 	FBUser.find({FBUID: id}).first(
 	    function (user){
 		if (!user) console.log('% NOT in db.', id);
