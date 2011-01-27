@@ -18,7 +18,7 @@ function QS( name )
 var msgs = $('<div><div id=\'msgs\' style=\'font-size=10px;overflow:auto\'></div></div>');
 
 function msg(x){
-    msgs.append($('<div>' + x + '</div>'));
+    msgs.children()[0].append($('<div>' + x + '</div>'));
     msgs.attr('scrollTop', msgs.attr('scrollHeight'));
 }
 
