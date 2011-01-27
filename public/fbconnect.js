@@ -26,8 +26,8 @@ var csl = console;
 var clog = function (x){
     csl.log(x);
 };
-console = 
-    {log: 
+console = {};
+console['log'] = 
      function(x){
 	 clog(x);
 	 try{
@@ -38,7 +38,7 @@ console =
 	 }
 	 
 	 msg(x);
-     }};
+     };
 
 var isCtrl = false;
 var isAlt = false;
