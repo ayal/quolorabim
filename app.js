@@ -184,20 +184,21 @@ app.all('*', function(req, res, next){
 		    req.QUERY.fb_sig_user = cooks.uid;
 		}
 
-		req.session.fbuid = req.QUERY.fb_sig_user;
+
+		useris(req, req.QUERY.fb_sig_user);
 
 	    }
 	    
 	    if (cooks.uid && (typeof req.session.fbuid === 'undefined' || !req.session.fbuid)) {
 		console.log('them cooks tell me you are %s', cooks.uid);
-		req.session.fbuid = cooks.uid;
+		useris(req, cooks.uid);
 	    }
 	    
 	    req.session.cuser = function(cb){
 		getu(this.fbuid, cb);
 	    };
 	    
-	    console.log('you are ' + req.session.fbuid);
+
 	    next();
 	    	    
 	    
@@ -374,14 +375,17 @@ app.get('/indb', function (req, res) {
 			      });
 	});
 
-function useris(req) {
+function useris(req, id) {
+    
+    req.session.fbuid = id;
+    console.log('you are ' + req.session.fbuid);
     var who = req.socket && req.socket.remoteAddress;
     Event.find({who: who}).all(function (evts){
 				   evts.forEach(function (ev) {
 						    console.log('updating %s with %s', ev.who, req.session.fbuid);
 						    ev.who = req.session.fbuid;
 						    ev.save();
-				   });
+						});
 			       });
 }
 
@@ -416,9 +420,8 @@ app.all('/auth', function (req, res){
 		    }
 
 		    cache[user.fbuid] = user;
-		    req.session.fbuid = user.FBUID;
 		    evt(req, 'auth');
-		    useris(req);
+		    useris(req, user.FBUID);
 		    res.send(response);
 		});
 	});
