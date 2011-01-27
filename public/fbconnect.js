@@ -15,10 +15,10 @@ function QS( name )
 	return decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-var msgs = $('<div><div id=\'msgs\' style=\'font-size=10px;overflow:auto\'></div></div>');
+var msgs = $('<div><div id=\'msgs\' style=\'font-size=10px;overflow:auto\'></div></div>').children()[0];
 
 function msg(x){
-    msgs.children()[0].append($('<div>' + x + '</div>'));
+    msgs.append($('<div>' + x + '</div>'));
     msgs.attr('scrollTop', msgs.attr('scrollHeight'));
 }
 
