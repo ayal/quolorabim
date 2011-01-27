@@ -83,11 +83,6 @@ var fbuid = null;
 
 // idleTimer() takes an optional argument that defines the idle timeout
 // timeout is in milliseconds; defaults to 30000
-$.idleTimer(10000); 
-
-$(document).bind("active.idleTimer", function(){
-		     evt('ping');
-		 });
 
 window.fbAsyncInit = function() {
     
