@@ -3,12 +3,12 @@ function domReplace(dom, cls) {
     if ($(cls)[1]){
 	$.each($(cls), function(i, v){
 		   var newel = newels[i];
-		   console.log('replacing');
+		   lg('replacing');
 		   $(v).replaceWith(newel);
 	       });
     }
     else {
-	console.log('replacing');
+	lg('replacing');
 	$(cls).replaceWith(newels);
 	stopwait();
     }
@@ -18,7 +18,7 @@ function domReplace(dom, cls) {
 function pieit() {
     
     var pies = $('.pie');
-    console.log('pies: ' + pies.size());
+    lg('pies: ' + pies.size());
     pies.each(function(i, pie){
 		  $(pie).sparkline([$(pie).attr('yes'),
 				    $(pie).attr('no')],
@@ -67,13 +67,13 @@ function notconnected() {
 
 
 function wait(x){
-    console.log('waiting: ' + x);
+    lg('waiting: ' + x);
     $('.loading').show();
     $('.btns').hide();
 }
 
 function stopwait(){
-    console.log('ready!');
+    lg('ready!');
     $('.loading').hide();
     $('.btns').show();
 
@@ -96,7 +96,7 @@ function err(msg){
 function postit(daat) {
     
     click(function () {
-	      console.log(daat);
+	      lg(daat);
 	      wait(1);
 	      $.post('../../votes/vote' + '?dummy=' + new Date(), daat, function (res) {
 			 if (res != 'OK'){
@@ -117,14 +117,14 @@ function postit(daat) {
 			 var cmts = $('.cmnts iframe');
 			 if (cmts){
 			     cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
-			     console.log('baby2');
+			     lg('baby2');
 			 }
 			 stopwait();			
 			 
 		     });
 	      
 	      var hebvote = daat.yesno == 'no' ? '\u05e0\u05d2\u05d3' : '\u05d1\u05e2\u05d3';
-	      console.log('whatz');
+	      lg('whatz');
 	      var name = $('.x').text();
 	      var link = appUrl.substr(0, appUrl.length - 1 ) + window.location.pathname + "?layout=true&ref=SHR" + ME.uid;
 	      var message = 'אני הצבעתי! מה אתם עשיתם היום?!';

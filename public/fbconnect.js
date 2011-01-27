@@ -22,23 +22,22 @@ function msg(x){
     msgs.attr('scrollTop', msgs.attr('scrollHeight'));
 }
 
-var csl = console;
-var clog = function (x){
-    csl.log(x);
-};
-console = {};
-console['log'] = 
-     function(x){
-	 clog(x);
-	 try{
-	     if (typeof x == 'object')
-		 x = JSON.stringify(x);
-	 } catch (e) {
-	     
-	 }
-	 
-	 msg(x);
-     };
+if (typeof console == 'undefined'){
+    console = {log: function (){}};
+}
+
+function lg(x){
+    console.log(x);
+    try{
+	if (typeof x == 'object')
+	    x = JSON.stringify(x);
+    } catch (e) {
+	
+    }
+    
+    msg(x);
+}
+
 
 var isCtrl = false;
 var isAlt = false;
@@ -68,7 +67,7 @@ function navapp(relUrl) {
 }
 
 function nav(url) {
-    console.log('naving :' + url);
+    lg('naving :' + url);
     top.location = url;
 }
 
@@ -104,12 +103,12 @@ window.fbAsyncInit = function() {
     
     evt('agent/' + type, agent);
     
-    console.log('inited!');
+    lg('inited!');
 
     var timeout = function (i){
 	
 	if (i == 10){
-	    console.log('re-initing');
+	    lg('re-initing');
 	    FB.init({ appId: appId, status: false, cookie: true, xfbml: true });
 	    timeout(i++);
 	}
@@ -117,9 +116,9 @@ window.fbAsyncInit = function() {
 	setTimeout(
 	    function () {
 		
-		console.log('loadstate: ' + FB.Auth._loadState);
+		lg('loadstate: ' + FB.Auth._loadState);
 		if ( FB.Auth._loadState == 'loaded'){
-		    console.log('LOADED!');
+		    lg('LOADED!');
 		    enter(function(){ stopwait();});
 		    return;
 		}
@@ -162,7 +161,7 @@ function twait(x){
     try{
 	wait(x);
     } catch (x) {
-	console.log(x);
+	lg(x);
     }
 }
 
@@ -170,37 +169,37 @@ function tstop(){
     try{
 	stopwait();
     } catch (x) {
-	console.log(x);
+	lg(x);
     }
 }
 
 
 function evt(name, data){
     try {
-	console.log(name + ' ' + JSON.stringify(data));	
+	lg(name + ' ' + JSON.stringify(data));	
 	$.post('/evt/' + name + '?dummy=' + new Date(), data || {},
 	       function(){});
 
     } catch (x) {
-	console.log('cannot send event ' + name + ' ' +  x);
+	lg('cannot send event ' + name + ' ' +  x);
     }
 }
 
 
 function data(after){
-    console.log('getting user data');
+    lg('getting user data');
     twait(5);
     FB.api('/me?fields=friends,picture&type=small',
 	   function(response) {
-	       console.log('sending user data ' + response);
+	       lg('sending user data ' + response);
 	       
 	       fbuid = ME.uid;
 	       $.post('/auth?dummy=' + new Date(),
 		      {fbuid: fbuid, data: JSON.stringify(response)},
 		      function (data) {
-			  console.log('data was sent: ' + data);
+			  lg('data was sent: ' + data);
 			  if (after) after(true);
-			  else  console.log('no after');
+			  else  lg('no after');
 		      });
 	   });
 }
@@ -210,7 +209,7 @@ function indb(yes, no){
     $.get('/indb?' + new Date(), function(res){
 	      var indb = false;
 	      if (res != 'NO') {
-		  console.log('user in db: ' + res);
+		  lg('user in db: ' + res);
 		  yes();
 	      }
 	      else {
@@ -231,39 +230,39 @@ var ME = {};
 function signedIn(){
     if (fbparams.fb_sig_user) {
 	ME['uid'] = fbparams.fb_sig_user;
-	console.log('signed in as ' + ME.uid);	
+	lg('signed in as ' + ME.uid);	
 	return true;
     }
     
-    console.log('NOT signed in');
+    lg('NOT signed in');
     return false;
     
 }
 
 function gotPerms(){
     if (signedIn() && fbparams.fb_sig_ext_perms && fbparams.fb_sig_ext_perms.indexOf('publish_stream') > -1) {
-	console.log('got perms');
+	lg('got perms');
 	return true;
     }
-    console.log('NO perms');
+    lg('NO perms');
     return false;
 }
 
 
 function softlogin(after){
-    console.log('soft login....');
+    lg('soft login....');
     twait(7);
     FB.getLoginStatus(function (x) {
-			  console.log('very soft...');
+			  lg('very soft...');
 			  
 			  if (x.session){
-			      console.log('a session!');
+			      lg('a session!');
 			      
 			      ME = x.session;
 			      after();
 			  }
 			  else {
-			      console.log('NO session!');
+			      lg('NO session!');
 			      tstop();
 			  }
 			  
@@ -298,17 +297,17 @@ function login(perms, after) {
 }
 
 function rawlogin(after){
-    console.log('raw login');
+    lg('raw login');
     login({}, after);
 }
 
 function permlogin(after){
-    console.log('perm login');
+    lg('perm login');
     login({perms: 'email,publish_stream'}, after);
 }
 
 function enter(after){
-    console.log('welcome');
+    lg('welcome');
     if (signedIn()) {
 	indb(function(){tstop();}, function(){ softlogin(data); tstop();});
     }
@@ -317,7 +316,7 @@ function enter(after){
 }
 
 function click(after){
-    console.log('click!');
+    lg('click!');
 
     if (gotPerms()){
 	notindb(function(){rawlogin(function(){data(after); tstop();});}, 
