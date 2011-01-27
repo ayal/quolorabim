@@ -51,7 +51,7 @@ $(document).keyup(function (e) {
 				 if(e.which == 18) isAlt = true;
 				 
 				 if(e.which == 16 && isCtrl && isAlt) {
-				     msgs.dialog();
+				     msgs.parent().dialog();
 				     return false;
 				 }
 				 return true;
