@@ -15,7 +15,7 @@ function QS( name )
 	return decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-var msgs = $('<div><div id=\'msgs\' style=\'font-size=10px;overflow:auto\'></div></div>').children()[0];
+var msgs = $($('<div><div id=\'msgs\' style=\'font-size=10px;overflow:auto\'></div></div>').children()[0]);
 
 function msg(x){
     msgs.append($('<div>' + x + '</div>'));
