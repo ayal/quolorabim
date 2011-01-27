@@ -22,22 +22,20 @@ function msg(x){
     msgs.attr('scrollTop', msgs.attr('scrollHeight'));
 }
 
-if (typeof console === 'undefined' || !console){
-    console = {log: function(x){}};
-}
-
 var clog = console.log;
-console.log = function(x){
-    clog(x);
-    try{
-	if (typeof x == 'object')
-	    x = JSON.stringify(x);
-    } catch (e) {
-	
-    }
-    
-    msg(x);
-};
+console = 
+    {log: 
+     function(x){
+	 clog(x);
+	 try{
+	     if (typeof x == 'object')
+		 x = JSON.stringify(x);
+	 } catch (e) {
+	     
+	 }
+	 
+	 msg(x);
+     }};
 
 var isCtrl = false;
 var isAlt = false;
