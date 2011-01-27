@@ -52,7 +52,6 @@ $(document).bind("active.idleTimer", function(){
 		     evt('ping');
 		 });
 
-
 var isCtrl = false;
 var isAlt = false;
 
