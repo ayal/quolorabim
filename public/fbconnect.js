@@ -79,10 +79,15 @@ function navperms(){
 }
 
 var fbuid = null;
+// initialize the library with the API key
 
+// idleTimer() takes an optional argument that defines the idle timeout
+// timeout is in milliseconds; defaults to 30000
+$.idleTimer(10000); 
 
-console.log(fbparams);
-	// initialize the library with the API key
+$(document).bind("active.idleTimer", function(){
+		     evt('ping');
+		 });
 
 window.fbAsyncInit = function() {
     
@@ -90,15 +95,8 @@ window.fbAsyncInit = function() {
     FB.init({ appId: appId, status: false, cookie: true, xfbml: true, channelUrl: 'http://work.thewe.net/channel' });
     
     setTimeout(function(){
-		    FB.Canvas.setSize({width: 750, height: 1200});	    
-		}, 5000);
-
-    var ping  = function () {
-	evt('ping');
-	setTimeout(ping, 60000);
-    };
-    
-    ping();
+		   FB.Canvas.setSize({width: 750, height: 1200});	    
+	       }, 5000);
     
     var agent = {};    
     var type = 'dunno';
