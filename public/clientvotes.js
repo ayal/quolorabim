@@ -81,7 +81,7 @@ function stopwait(){
 
 function dialog(href){
     $.get(href + '?dummy=' + new Date(), function(dom){
-	      $(dom).dialog({modal: true, show: 'drop', position: [40,182], width: 700, height: 470, resizable: false});
+	      $(dom).dialog({modal: true, show: 'drop', position: [40,130], width: 700, height: 480, resizable: false});
 	      pieit();
 	  });
     

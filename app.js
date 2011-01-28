@@ -1,3 +1,4 @@
+//__dirname = '~/gadget/work/nits';
 // application page!
 // TODO: error handling inside and outside 4044
 // jslint
@@ -11,18 +12,20 @@
 // RODO: do oauth or authenticate otherwise
 // http://www.hongkiat.com/blog/tips-tricks-for-your-business-facebook-fan-page/ (share, popup for voters, )
 
+
 var express = require('express'),
 url  = require('url');
-app = express.createServer();
+app = 
+express.createServer();
+
 require.paths.unshift('vendor/mongoose'),
 mongoose = require('mongoose').Mongoose,
 db = mongoose.connect('mongodb://localhost/test');
 
 var API_KEY = 'f0b99f4293afe8d7e6823f7b0ee197d1';
-// One minute
+
 var minute = 60000;
 var appUrl = 'http://apps.facebook.com/kolorabim/';
-
 
 // TODO: separate to files
 // TODO: add indexes
@@ -32,25 +35,25 @@ mongoose.model('FBUser', {
 		   indexes: ['FBUID']
 	       });
 
-var FBUser = db.model('FBUser');
+FBUser = db.model('FBUser');
 
 mongoose.model('Vote', {
 		   properties: ['author', 'date', 'yesno', 'data'],
 		   indexes: ['author']
 	       });
 
-var Vote = db.model('Vote');
+Vote = db.model('Vote');
 
 mongoose.model('Event', {
 		   properties: ['who', 'when', 'where', 'ref', 'what', 'type', 'ticks', 'data'],
 		   indexes: ['who', 'what', 'ticks']
 	       });
 
-var Event = db.model('Event');
+Event = db.model('Event');
 
 
 
-function evt(req, wt, data){
+evt = function (req, wt, data){
 
     var tp = wt.split('.')[1] || 'none';
     wt = wt.split('.')[0];
@@ -59,7 +62,8 @@ function evt(req, wt, data){
     if (req.QUERY.ajx)
 	return;
 
-    var who = data.ip = req.socket && req.socket.remoteAddress;
+    var who = req.session.id;
+    data.ip = req.socket && req.socket.remoteAddress;
     if (req.session.fbuid) {
 	who = req.session.fbuid;
     }
@@ -75,7 +79,7 @@ function evt(req, wt, data){
 		       ticks: d.getTime(),
 		       data: data});
     e.save();
-}
+};
 
 var fakeStream = {
     write: function(str){
@@ -103,7 +107,7 @@ var cache = {
     
 };
 
-function getu(id, cb) {
+getu = function (id, cb) {
 
     if (typeof id === 'undefined' || !id)
 	cb(null);
@@ -121,11 +125,11 @@ function getu(id, cb) {
 		cb(user);
 	    });		
     }
-}
+};
 
 
 
-function fbcooks(req) {
+fbcooks = function(req) {
     var cookz = {};
     Object.keys(req.cookies).forEach(
 	function(key){
@@ -145,9 +149,9 @@ function fbcooks(req) {
 	});
 
     return cookz;
-}
+};
 
-app.all('*', function(req, res, next){
+gateway = function(req, res, next){
 	    res.header('P3P', 'CP="NOI ADM DEV COM NAV OUR STP"'); 
 	    // after ie bug with redirect in fb app - I CHANGED THE CONNECT STATIC PROVIDER
 	    // maybe mmove this to the tops to avoid code change - check in fiddler
@@ -193,6 +197,8 @@ app.all('*', function(req, res, next){
 		console.log('them cooks tell me you are %s', cooks.uid);
 		useris(req, cooks.uid);
 	    }
+    console.log('you are ' + req.session.fbuid);
+
 	    
 	    req.session.cuser = function(cb){
 		getu(this.fbuid, cb);
@@ -202,17 +208,15 @@ app.all('*', function(req, res, next){
 	    next();
 	    	    
 	    
-	});
+	};
 
-var global = 1;
+app.all('*', function(x,y,n){gateway(x,y,n);});
+
+
 
 
 app.get('/channel', function(req, res){
 	    res.send('<script src="http://connect.facebook.net/en_US/all.js"></script>');
-	});
-
-app.all('/cache', function (req, res){
-	    res.send('' + (global++));
 	});
 
 app.all('/', function (req, res) {
@@ -221,6 +225,7 @@ app.all('/', function (req, res) {
 	});
 
 // TODO: find out about development stuff
+
 app.configure('development', function (){
 		  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 	      });
@@ -359,6 +364,7 @@ app.post('/deebee/:cname/update', function (req, res) {
 
 // dont log yourself
 // who brought whom
+
 app.post('/evt/:ename/?(:etype)?', function (req, res) {
 	     var wt = req.params.ename + (req.params.etype ? '.' + req.params.etype : '');
 	     evt(req,  wt, req.body);
@@ -375,19 +381,24 @@ app.get('/indb', function (req, res) {
 			      });
 	});
 
-function useris(req, id) {
+f = function (x, y) {
+    y.send('' + x.session.id);
+};
+
+app.get('/one', function(x,y){f(x, y);});
+
+
+useris = function (req, id) {
     
     req.session.fbuid = id;
-    console.log('you are ' + req.session.fbuid);
-    var who = req.socket && req.socket.remoteAddress;
-    Event.find({who: who}).all(function (evts){
+    Event.find({who: req.session.id}).all(function (evts){
 				   evts.forEach(function (ev) {
 						    console.log('updating %s with %s', ev.who, req.session.fbuid);
 						    ev.who = req.session.fbuid;
 						    ev.save();
 						});
 			       });
-}
+};
 
 app.all('/auth', function (req, res){
 
@@ -706,3 +717,6 @@ app.post('/votes/vote', function(req, res) {
 
 
 app.listen(80);
+
+require.paths.unshift('../../../swank-js');
+var swank = require('swank');
