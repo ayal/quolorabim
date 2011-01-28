@@ -132,7 +132,7 @@ window.fbAsyncInit = function() {
 		lg('loadstate: ' + FB.Auth._loadState);
 		if ( FB.Auth._loadState == 'loaded'){
 		    lg('LOADED!');
-		    enter(function(){ stopwait();});
+		    enter(function(){});
 		    return;
 		}
 		else {
@@ -162,11 +162,11 @@ $(document).ready(
     });
 
 
-function wait(){
+function wait(i){
     
 }
 
-function stopwait(){
+function stopwait(i){
     
 }
 
@@ -178,9 +178,9 @@ function twait(x){
     }
 }
 
-function tstop(){
+function tstop(i){
     try{
-	stopwait();
+	stopwait(i);
     } catch (x) {
 	lg(x);
     }
@@ -276,7 +276,7 @@ function softlogin(after){
 			  }
 			  else {
 			      lg('NO session!');
-			      tstop();
+			      tstop(8);
 			  }
 			  
 		      });
@@ -285,7 +285,7 @@ function softlogin(after){
 function nopop() {
     evt('navperms');
     navperms();
-    tstop();
+    tstop(9);
 }
 
 function login(perms, after) {
@@ -295,15 +295,18 @@ function login(perms, after) {
     FB.login(
 	function (x) {
 	    //		 clearTimeout(hndl);
-	    if (x.session) {
+	    var partialPerms = !!x.perms && (x.perms.indexOf('stream') == -1);
+	    if (partialPerms)
+		lg('partial perms');
+
+	    if (x.session && !partialPerms) {
 		ME = x.session;
 		evt('login/yes', x);
 		after();
-		tstop();
 	    }
 	    else {
 		evt('login/no', x);
-		tstop();
+		tstop(10);
 	    }
 	    
 	}, perms);
@@ -322,23 +325,28 @@ function permlogin(after){
 function enter(after){
     lg('welcome');
     if (signedIn()) {
-	indb(function(){tstop();}, function(){ softlogin(data); tstop();});
+	indb(function(){tstop(11);},
+	     function(){ 
+		 softlogin(function(){
+			       data(function(){tstop(12);});});});
+    }else{
+	tstop();
+	
     }
-    
-    after();
+   
 }
 
 function click(after){
     lg('click!');
 
     if (gotPerms()){
-	notindb(function(){rawlogin(function(){data(after); tstop();});}, 
-		function(){softlogin(after); tstop();});
+	notindb(function(){rawlogin(function(){data(after);});}, 
+		function(){softlogin(after);});
     }
     else {
 	permlogin(function(){notindb(
-				 function(){data(after); tstop();},
-				 function(){after(); tstop();});});
+				 function(){data(after);},
+				 function(){after();});});
 
 /*	notindb(function(){permlogin(function(){data(after); tstop();});},
 		function(){permlogin(after); tstop();});*/

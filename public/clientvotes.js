@@ -10,7 +10,7 @@ function domReplace(dom, cls) {
     else {
 	lg('replacing');
 	$(cls).replaceWith(newels);
-	stopwait();
+	stopwait(5);
     }
     
 }
@@ -72,8 +72,8 @@ function wait(x){
     $('.btns').hide();
 }
 
-function stopwait(){
-    lg('ready!');
+function stopwait(x){
+    lg('ready!' + x);
     $('.loading').hide();
     $('.btns').show();
 
@@ -100,7 +100,7 @@ function postit(daat) {
 	      wait(1);
 	      $.post('../../votes/vote' + '?dummy=' + new Date(), daat, function (res) {
 			 if (res != 'OK'){
-			     stopwait();
+			     stopwait(1);
 			     err('התקשתי לזהות אותך - אנא נסה לרענן את הדף (F5)');
 			 }
 
@@ -119,7 +119,6 @@ function postit(daat) {
 			     cmts.attr('src', cmts.attr('src').replace('CMT&', 'CMT' + ME.uid + '&'));
 			     lg('baby2');
 			 }
-			 stopwait();			
 			 
 		     });
 	      
@@ -141,11 +140,9 @@ function postit(daat) {
 	      FB.api('/' + ME.uid + '/feed', 'post', msg, function(response) {
 			 if (!response || response.error) {
 			     evt('shared/no', response.error);
-			     stopwait();
 			 } 
 			 else {
 			     evt('shared/yes');
-			     stopwait();
 			 }
 		     });
 

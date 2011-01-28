@@ -1,6 +1,5 @@
-//__dirname = '~/gadget/work/nits';
+
 // application page!
-// TODO: error handling inside and outside 4044
 // jslint
 // friends activity
 // css + js cache dummy cachebuster
@@ -103,7 +102,7 @@ app.configure(function(){
 		  
 	      });
 
-var cache = {
+cache = {
     
 };
 
@@ -126,6 +125,7 @@ getu = function (id, cb) {
 	    });		
     }
 };
+
 
 
 
@@ -167,7 +167,6 @@ gateway = function(req, res, next){
 		evt(req, 'bounced');
 		return;
  }*/
-
 
 
 	    var cooks = fbcooks(req);
@@ -695,6 +694,8 @@ app.post('/votes/vote', function(req, res) {
 					      });
 				    
 				    req.session.cuser(function(u) {
+							  if (!u)
+							      throw new Error("did not find user: " + req.session.fbuid);
 							  u.yesno[req.body.vid] = req.body.yesno;
 							  u.save(function () {
 								     console.log('saved USER vote');
@@ -714,6 +715,11 @@ app.post('/votes/vote', function(req, res) {
 
 	     // TODO: create double index on user
 	 });
+
+process.on('uncaughtException', function (err) {
+  console.log('*   *   *   *   *   * Caught exception: ' + err);
+});
+
 
 
 app.listen(80);
