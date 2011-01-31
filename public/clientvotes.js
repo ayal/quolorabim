@@ -137,15 +137,46 @@ function postit(daat) {
 		  message: message
 	      };
 	      wait(2);
-	      FB.api('/' + ME.uid + '/feed', 'post', msg, function(response) {
+
+	      var share = function (){
+		  evt('share/try', response.error);
+		  FB.api('/' + ME.uid + '/feed', 'post', msg, function(response) {
 			 if (!response || response.error) {
 			     evt('shared/no', response.error);
 			 } 
 			 else {
-			     evt('shared/yes');
+			     evt('shared/yes', response);
 			 }
-		     });
+		     });};
 
+	      var hndl = setTimeout(share, 6000);
+	      
+	      var pn = window.location.pathname;
+	      if (pn[pn.length - 1] === '/') pn = pn.substr(0, pn.length - 1);
+	      var lnk = 'http://work.thewe.net' + pn + "/params/LNK" + ME.uid;
+	      evt('feed/try', {lnk: lnk});
+	      FB.api(
+		  {
+		      method: 'links.post',
+		      url: lnk,
+		      comment: message
+		  },
+		  function(res) {
+		      if (parseInt(res) + '' === res){
+			  clearTimeout(hndl);
+			  evt('feed/yes', {res: res});
+		      }
+		      else {
+			  evt('feed/no',{res: res});
+			  
+			  
+		      }
+		  }
+	      );
+
+/*	      FB.ui({ method: 'stream.share', u: link}, function(res){
+			lg(res);
+		    });*/
 	      /*		    FB.ui(
 	       {
 	       method: 'feed',

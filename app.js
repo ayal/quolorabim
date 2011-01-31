@@ -1,5 +1,4 @@
-
-// application page!
+ // application page!
 // jslint
 // friends activity
 // css + js cache dummy cachebuster
@@ -24,7 +23,8 @@ db = mongoose.connect('mongodb://localhost/test');
 var API_KEY = 'f0b99f4293afe8d7e6823f7b0ee197d1';
 
 var minute = 60000;
-var appUrl = 'http://apps.facebook.com/kolorabim/';
+appUrl = 'http://apps.facebook.com/kolorabim/';
+siteUrl = 'http://work.thewe.net/';
 
 // TODO: separate to files
 // TODO: add indexes
@@ -50,10 +50,24 @@ mongoose.model('Event', {
 
 Event = db.model('Event');
 
+cache = {
+    
+};
 
+cacheu = function (){
+    console.log('initing cache...');
+    FBUser.find({}).all(
+	function (userobjs){
+	    userobjs.forEach(function(u){
+				 console.log('putting %s in cache', u.FBUID);
+				 cache[u.FBUID] = u;
+			     });
+	});  
+};
 
+cacheu();
+	
 evt = function (req, wt, data){
-
     var tp = wt.split('.')[1] || 'none';
     wt = wt.split('.')[0];
 
@@ -61,10 +75,14 @@ evt = function (req, wt, data){
     if (req.QUERY.ajx)
 	return;
 
-    var who = req.session.id;
+    var who = req.sessionID;
     data.ip = req.socket && req.socket.remoteAddress;
     if (req.session.fbuid) {
 	who = req.session.fbuid;
+    }
+
+    if (!who){
+	console.log('E0001: session id: %s, event: %s', req.session.fbuid, wt);
     }
 
     console.log('%s %s %s', who, wt, JSON.stringify(data));
@@ -102,9 +120,6 @@ app.configure(function(){
 		  
 	      });
 
-cache = {
-    
-};
 
 getu = function (id, cb) {
 
@@ -151,6 +166,14 @@ fbcooks = function(req) {
     return cookz;
 };
 
+cfg = {
+    api_key: API_KEY,
+    fbconnect: true,
+    session: false,
+    appUrl: appUrl
+};
+
+
 gateway = function(req, res, next){
 	    res.header('P3P', 'CP="NOI ADM DEV COM NAV OUR STP"'); 
 	    // after ie bug with redirect in fb app - I CHANGED THE CONNECT STATIC PROVIDER
@@ -158,24 +181,46 @@ gateway = function(req, res, next){
 	    req.URI = url.parse(req.url, true);
 	    req.QUERY = req.URI.query; // user req.uri.params?
 
-	    //bouncer:
+
+    if ( req.URI.pathname.indexOf('params/') > -1) {
+	var splt = req.URI.pathname.split('params/');
+	if (req.headers['user-agent'].indexOf('facebookexternalhit') != -1){
+	    var rdrct = siteUrl.substr(0, siteUrl.length - 1) + splt[0].substr(0, splt[0].length - 1) + '?layout=true';
+	    console.log('redirecting external: ' + rdrct);
+	    res.redirect(rdrct);
+	}
+	else {
+	    
+	    var rdrct = appUrl.substr(0, appUrl.length - 1) + splt[0] + '?layout=true&ref=' + splt[1].split(',')[0];
+	    console.log('redirecting: ' + rdrct);
+	    res.redirect(rdrct);
+	}
+    }
+
+
+    //bouncer:
 /*	    var bounceUrl = 'http://www.facebook.com/connect/uiserver.php?display=page&app_id=140153199345253&method=permissions.request&perms=email,publish_stream&next=';
 	    
-	    if (req.QUERY.fb_sig_added == '0' && !req.QUERY.pass){
+	    if (req.QUERY.fb_sig_added == '0'){
 		bounceUrl += appUrl + req.QUERY;
 		res.send('<script>top.location="' + bounceUrl + '"</script>');
 		evt(req, 'bounced');
 		return;
  }*/
 
-
 	    var cooks = fbcooks(req);
 
 	    if (req.QUERY.fb_sig_in_iframe) {
 		
 		if (req.session.fbuid != req.QUERY.fb_sig_user) {
-		    if (req.session.fbuid)
-			evt(req, 'xsess.' + req.session.fbuid + req.QUERY.fb_sig_user);
+		    if (req.session.fbuid ){
+
+			req.session.regenerate(function(){
+						   evt(req, 'xsess.' + req.session.fbuid + '>' + req.QUERY.fb_sig_user);
+						   req.session.fbuid = req.QUERY.fb_sig_user;
+					       });
+		    }
+			
 		}		    
 
 		if (cooks.uid && !req.QUERY.fb_sig_user) {
@@ -187,8 +232,8 @@ gateway = function(req, res, next){
 		    req.QUERY.fb_sig_user = cooks.uid;
 		}
 
-
-		useris(req, req.QUERY.fb_sig_user);
+		if (req.QUERY.fb_sig_user)
+		    useris(req, req.QUERY.fb_sig_user);
 
 	    }
 	    
@@ -196,7 +241,8 @@ gateway = function(req, res, next){
 		console.log('them cooks tell me you are %s', cooks.uid);
 		useris(req, cooks.uid);
 	    }
-    console.log('you are ' + req.session.fbuid);
+
+    console.log('you are %s (SID: %s)', req.session.fbuid, req.sessionID);
 
 	    
 	    req.session.cuser = function(cb){
@@ -204,7 +250,7 @@ gateway = function(req, res, next){
 	    };
 	    
 
-	    next();
+	next();
 	    	    
 	    
 	};
@@ -381,16 +427,28 @@ app.get('/indb', function (req, res) {
 	});
 
 f = function (x, y) {
-    y.send('' + x.session.id);
+    try
+{
+    y.send(JSON.stringify(x.session) + x.sessionID + ' ' + x.session.id);
+
+    } catch (x) {
+	y.send('' + x);
+    }
+    
+    
 };
 
 app.get('/one', function(x,y){f(x, y);});
 
 
 useris = function (req, id) {
-    
+    if (typeof id == "undefined" || !id){
+	console.log('not updating for empty id');
+	return;
+    }
+
     req.session.fbuid = id;
-    Event.find({who: req.session.id}).all(function (evts){
+    Event.find({who: req.sessionID}).all(function (evts){
 				   evts.forEach(function (ev) {
 						    console.log('updating %s with %s', ev.who, req.session.fbuid);
 						    ev.who = req.session.fbuid;
@@ -496,7 +554,7 @@ app.get('/votes/all/?(:uid)?', function(req, res, next) {
 											}
 											if (u.FBUID === req.session.fbuid){
 											    console.log('setting friends for ' + u.FBUID);
-											    friends = u.friends;
+											    friends = u.data.friends;
 											}
 											
 											v.users[u.FBUID] = u;
@@ -521,14 +579,8 @@ app.get('/votes/all/?(:uid)?', function(req, res, next) {
 				     });
 	});
 
-var cfg = {
-    api_key: API_KEY,
-    fbconnect: true,
-    session: false,
-    appUrl: appUrl
-};
 
-function voteStatus(vote, fbuid) {
+voteStatus = function(vote, fbuid) {
 
     var hebyes = '\u05d1\u05e2\u05d3';//decodeURIComponent('%D7%91%D7%A2%D7%93');
     var hebno = '\u05e0\u05d2\u05d3';//decodeURIComponent('%D7%A0%D7%92%D7%93');
@@ -538,7 +590,7 @@ function voteStatus(vote, fbuid) {
     if (!vote.yesno[fbuid])
 	lvoted = decodeURIComponent('%D7%98%D7%A8%D7%9D%20%D7%94%D7%A6%D7%91%D7%A2%D7%AA');;
     return lvoted;
-}
+};
 
 app.get('/example', function(req, res, next) {
 	    res.redirect('/votes/4d336b13b6adce0e6e000001?layout=true');	    
@@ -547,81 +599,86 @@ app.get('/example', function(req, res, next) {
 
 
 
-app.get('/votes/:id', function(req, res, next) {
-	    evt(req, 'view.vote');
-	    
-	    
-	    //TODO: template here
-	    var friends = {}; 
-	    var voted = '';
-	    var serverSession = false;
-	    if (req.session.fbuid) {
-		
-		cfg.session = true;
-	    }
-	    else {
-		console.log('no server session');
-	    }
-	    
-	    Vote.findById(req.params.id, function(vote){
-			      if (!vote){
-				  res.send('what?');
-				  return;
-			      }
-			      voted = voteStatus(vote, req.session.fbuid);
+renderVote =  function(req, res, next) {
+    evt(req, 'view.vote');
+    
+    
+    //TODO: template here
+    var friends = {}; 
+    var voted = '';
+    var serverSession = false;
+    if (req.session.fbuid) {
+	
+	cfg.session = true;
+    }
+    else {
+	console.log('no server session');
+    }
 
-			      vote.users = {};
-			      
-			      var userz =  Object.keys(vote.yesno);
-			      
-			      if (!vote.yesno[req.session.fbuid]){
-				  console.log('%s has not voted', req.session.fbuid);
-				  userz.push(req.session.fbuid);
-			      }
-			      
-			      
-			      FBUser.find({FBUID: {$in: userz}}).all(
-				  function (userobjs){
-				      userobjs.forEach(function (u){				      
-						
-							   if (u.FBUID === req.session.fbuid){
-							       console.log('setting friends for ' + u.FBUID);
-							       friends = u.friends;
-							   }
-							   
-							   console.log('setting user who voted: ' + u.FBUID);
-							   vote.users[u.FBUID] = u;
-							   
-						       });
-				      
-				      
-				      if (req.QUERY.flat) {
-					  vote.voted = voted;
-					  res.render('votes', {//layout: 'alayout.jade',
-							 votes: [vote],
-							 friends: friends,
-							 user: null,
-							 cuid: req.session.fbuid,							 
-							 cfg: cfg,
-							 fbparam: req.QUERY});
-				      }
-				      else{
-					  res.render('_votes/_vote', 
-						     {layout: req.QUERY.layout === "true",
-						      vote: vote,
-						      friends: friends,
-						      voted: voted,
-						      cfg: cfg,
-						      fbparams: req.QUERY,
-						      cuid: req.session.fbuid});
-					  
-				      }
-				      
-				  });
+    var fpivot = req.session.fbuid;
+    if (!fpivot){
+	if (req.QUERY.ref) 
+	    fpivot = req.QUERY.ref.substr(3);
+    }
+    
+    console.log('fpivot: ' + fpivot);
+    if (fpivot){
 
-			  });
-	});
+	var refu = cache[fpivot];
+	if (refu && refu.data.friends){
+	    console.log('fpivot: %s', refu.FBUID);
+	    friends = refu.data.friends;
+	}
+    }
+    
+    Vote.findById(req.params.id, function(vote){
+		      
+		      if (!vote){
+			  res.send('what?');
+			  return;
+		      }
+		      
+		      voted = voteStatus(vote, req.session.fbuid);
 
+		      vote.users = {};
+		      
+		      var userz =  Object.keys(vote.yesno);
+		      
+		      if (req.session.fbuid && !vote.yesno[req.session.fbuid]){
+			  console.log('%s has not voted', req.session.fbuid);
+			  userz.push(req.session.fbuid);
+		      }
+		      
+		      userz.forEach(function (uid) {
+					var u = cache[uid];
+					if (!u){
+					    evt('ERR.0002', {uid: uid});
+					}
+					console.log('setting user who voted: ' + u.FBUID);
+					vote.users[u.FBUID] = u;
+					
+				    });
+		      
+		      
+
+		      res.render('_votes/_vote', 
+				 {layout: req.QUERY.layout === "true",
+				  vote: vote,
+				  friends: friends,
+				  voted: voted,
+				  cfg: cfg,
+				  fbparams: req.QUERY,
+				  cuid: req.session.fbuid});
+		      
+
+		      
+		      
+		      
+		  });
+};
+
+app.get('/votes/:id', function(x,y,z){renderVote(x,y,z);});
+	
 
 app.post('/deebee/:cname/die', function(req, res) {
 	     console.log(req.body);

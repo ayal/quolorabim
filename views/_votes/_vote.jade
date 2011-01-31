@@ -38,6 +38,8 @@
         //span(onclick=rmpost, class="byes")
         //  | KILL
     .results.width
+      - console.log('FRIENDS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      - console.log(friends);
       - if (cuid && vote.yesno[cuid])
         div(class="noes varea")
           != partial('summary', [{classes: 'noes varea', text: '%D7%A0%D7%92%D7%93', word: 'no', count: noes, tot: noes + yess}])

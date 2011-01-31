@@ -97,6 +97,25 @@ var fbuid = null;
 // idleTimer() takes an optional argument that defines the idle timeout
 // timeout is in milliseconds; defaults to 30000
 
+window.onbeforeunload = function(e) {
+    		     try{
+			 evt('beforeunload');
+		     } catch (x) {
+			 
+		     }
+    
+};
+
+
+$(window).unload(function() {
+		     try{
+			 evt('unload');
+		     } catch (x) {
+			 
+		     }
+		     
+		 });
+
 window.fbAsyncInit = function() {
     
     FB.Canvas.setSize();	    
@@ -239,6 +258,7 @@ function notindb(yes, no){
 
 
 var ME = {};
+newu  = false;
 
 function signedIn(){
     if (fbparams.fb_sig_user) {
@@ -248,7 +268,7 @@ function signedIn(){
     }
     
     lg('NOT signed in');
-    return false;
+    return false || newu;
     
 }
 
@@ -276,7 +296,7 @@ function softlogin(after){
 			  }
 			  else {
 			      lg('NO session!');
-			      tstop(8);
+				  tstop(91);
 			  }
 			  
 		      });
@@ -302,6 +322,7 @@ function login(perms, after) {
 	    if (x.session && !partialPerms) {
 		ME = x.session;
 		evt('login/yes', x);
+		newu = true;
 		after();
 	    }
 	    else {

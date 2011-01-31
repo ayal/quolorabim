@@ -5,6 +5,7 @@
   - each val, key in vote.yesno
     - if (!vote.users[key]) vote.users[key] = unknown;
     - if (val === summary.word && friends && friends[key])
+      - console.log('friends with: ' + key);
       != partial('auserpic', [{uid: key, user: vote.users[key], showname: true}])
   - each val, key in vote.yesno
     - if (!vote.users[key]) vote.users[key] = unknown;
