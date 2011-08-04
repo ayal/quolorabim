@@ -2,23 +2,32 @@
 html(xmlns="http://www.w3.org/1999/xhtml", xmlns:fb="http://www.facebook.com/2008/fbml",  xml:lang="en", lang="en")
   head
     - var title = 'קולורבים'
-    - if (typeof vote != 'undefined' && vote)
+
+    - var url = 'http://work.thewe.net' + req.url;
+    - if (typeof vote != 'undefined' && vote && vote.data && vote.data.title)
       - title += ' - ' + vote.data.title;
+
     title= title
 
     meta(property='og:title', content=title)
     meta(property='og:description', content='\u05d7\u05d1\u05e8\u05d9\u05dd\u0020\u05d1\u05d5\u05d7\u05e8\u05d9\u05dd')
     meta(property='og:image', content='http://work.thewe.net/ivotelogo.png')
-    link(href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css", rel="stylesheet", type="text/css")
-    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js")
-    script(src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js")
-    link(rel="stylesheet", href="/sass/theme.css?v=52")
+    meta(property='og:site_name', content='\u05e7\u05d5\u05dc\u05d5\u05e8\u05d1\u05d9\u05dd')
+    meta(property='fb:app_id', content='140153199345253')
+    meta(property='og:type', content='website')
+    meta(property='og:url', content=url)
+    
+    link(href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/base/jquery-ui.css", rel="stylesheet", type="text/css")
+    script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js")
+    script(src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js")
+    link(rel="stylesheet", href="/sass/theme.css?v=59")
     script(src="/sprklines.js")
     script(src="/idle.js")
+    script(src="/rphl.js")
   body
     #fb-root
     - var json = 'fbparams = ' + JSON.stringify(fbparams) + ';'
     script!= json
-    script(src='/fbconnect.js?v=117')
-    script(src='/clientvotes.js?v=124')
+    script(src='/fbconnect.js?v=131')
+    script(src='/clientvotes.js?v=160')
     #content!= body

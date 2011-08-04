@@ -40,7 +40,7 @@ function lg(x){
 
 // idleTimer() takes an optional argument that defines the idle timeout
 // timeout is in milliseconds; defaults to 30000
-$.idleTimer(10000);
+$.idleTimer(6000);
 
 
 /*$(document).bind("idle.idleTimer", function(){
@@ -49,7 +49,14 @@ $.idleTimer(10000);
 */
  
 $(document).bind("active.idleTimer", function(){
-		     evt('ping');
+		     evt('ping/client');
+		     (function(){
+		       lg('arrowing');
+		       if (paper && $.browser.hasCanvas){
+			   lg('arrowing...');
+			   paper.arrow(200, 250, 150, 220, 8);
+		       }
+		   })();
 		 });
 
 var isCtrl = false;
@@ -86,8 +93,8 @@ function nav(url) {
 
 function navperms(){
     var url = 'http://www.facebook.com/connect/uiserver.php?app_id=' + appId + '&next=' + 
-	encodeURIComponent(appUrl.substr(0, appUrl.length - 1) + window.location.pathname + '?layout=true') +
-	'&display=page&perms=email,publish_stream&method=permissions.request';
+	encodeURIComponent(appUrl.substr(0, appUrl.length - 1) + window.location.pathname) +
+	'&display=page&perms=email&method=permissions.request';
     nav(url);
 }
 
@@ -99,7 +106,7 @@ var fbuid = null;
 
 window.onbeforeunload = function(e) {
     		     try{
-			 evt('beforeunload');
+			 evt('beforeunload/client');
 		     } catch (x) {
 			 
 		     }
@@ -109,7 +116,7 @@ window.onbeforeunload = function(e) {
 
 $(window).unload(function() {
 		     try{
-			 evt('unload');
+			 evt('unload/client');
 		     } catch (x) {
 			 
 		     }
@@ -117,19 +124,20 @@ $(window).unload(function() {
 		 });
 
 window.fbAsyncInit = function() {
+    lg('initing....');
+    lg(fbparams);
+//    FB.Canvas.setSize();	    
+    if (typeof(fbparams) === 'undefined'){
+	fbparams = {};
+	}
     
-    FB.Canvas.setSize();	    
-    FB.init({ appId: appId, status: false, cookie: true, xfbml: true, channelUrl: 'http://work.thewe.net/channel' });
-    
-    setTimeout(function(){
-		   FB.Canvas.setSize({width: 750, height: 1200});	    
-	       }, 5000);
+    FB.init({ appId: appId, status: false, cookie: true, xfbml: true/*, channelUrl: siteUrl + 'channel' */});
+
     
     var agent = {};    
     var type = 'dunno';
     jQuery.each(jQuery.browser,
 		function(i, val) {
-		    if (val) type = i;
 		    agent[i] = val;
 		});
     
@@ -151,7 +159,13 @@ window.fbAsyncInit = function() {
 		lg('loadstate: ' + FB.Auth._loadState);
 		if ( FB.Auth._loadState == 'loaded'){
 		    lg('LOADED!');
-		    enter(function(){});
+		    if (fbready) fbready();
+//		    FB.Canvas.setSize({ width: 640, height: 1500 });
+		    FB.Canvas.setAutoResize();
+		    FB.Event.subscribe('comment.create', function(response) {
+					   evt('comment/create', response);
+				       });
+		enter(function(){});
 		    return;
 		}
 		else {
@@ -164,10 +178,16 @@ window.fbAsyncInit = function() {
 };
 
 	(function() {
+	     lg('async');
 	     var e = document.createElement('script'); e.async = true;
 	     //	     e.src='/fbc.js';
+	     var locale = 'en_US';
+	     if (fbparams && fbparams.fb_sig_locale)
+		 locale = fbparams.fb_sig_locale;
+
 	     e.src = document.location.protocol +
-		 '//connect.facebook.net/' + fbparams.fb_sig_locale + '/all.js';
+		 '//connect.facebook.net/' + locale + '/all.js';
+	     lg('src: ' + e.src);
 	     document.getElementById('fb-root').appendChild(e);
 	 }());
 	
@@ -175,9 +195,11 @@ window.fbAsyncInit = function() {
 //FB.init(API_KEY, siteUrl + "xd_receiver.htm");
 $(document).ready(
     function (){
+	if (self === top) {
+	    evt('rdrcthost/' +self.location.pathname);
+	    navapp(self.location.pathname);
+	}
 	
-
-
     });
 
 
@@ -221,11 +243,15 @@ function evt(name, data){
 function data(after){
     lg('getting user data');
     twait(5);
-    FB.api('/me?fields=friends,picture&type=small',
+    FB.api('/me?fields=friends,picture,name&type=small',
 	   function(response) {
-	       lg('sending user data ' + response);
-	       
+	       lg('sending user data ' + JSON.stringify(response));
 	       fbuid = ME.uid;
+	       if (response.error){
+		   evt('ERR/DATA', response);
+		   after(false);
+		   return;
+	       }
 	       $.post('/auth?dummy=' + new Date(),
 		      {fbuid: fbuid, data: JSON.stringify(response)},
 		      function (data) {
@@ -260,20 +286,20 @@ function notindb(yes, no){
 var ME = {};
 newu  = false;
 
-function signedIn(){
-    if (fbparams.fb_sig_user) {
+function signedIn() {
+    if  (fbparams.fb_sig_user) {
 	ME['uid'] = fbparams.fb_sig_user;
 	lg('signed in as ' + ME.uid);	
 	return true;
     }
     
-    lg('NOT signed in');
+    lg('NOT signed inn', fbparams);
     return false || newu;
     
 }
 
 function gotPerms(){
-    if (signedIn() && fbparams.fb_sig_ext_perms && fbparams.fb_sig_ext_perms.indexOf('publish_stream') > -1) {
+    if (signedIn()) {// && fbparams.fb_sig_ext_perms) {
 	lg('got perms');
 	return true;
     }
@@ -289,8 +315,7 @@ function softlogin(after){
 			  lg('very soft...');
 			  
 			  if (x.session){
-			      lg('a session!');
-			      
+			      lg('a session! ' + JSON.stringify(x));
 			      ME = x.session;
 			      after();
 			  }
@@ -311,18 +336,16 @@ function nopop() {
 function login(perms, after) {
     twait(8);
     evt('login/ask');
+    dialog('/pop', [7,7], 210, 180, function(){tstop(22);});
 //    var hndl = setTimeout(nopop, 25000);
     FB.login(
 	function (x) {
 	    //		 clearTimeout(hndl);
-	    var partialPerms = !!x.perms && (x.perms.indexOf('stream') == -1);
-	    if (partialPerms)
-		lg('partial perms');
-
-	    if (x.session && !partialPerms) {
+	    if (x.session) {
 		ME = x.session;
 		evt('login/yes', x);
 		newu = true;
+		$('.pop').dialog("close");
 		after();
 	    }
 	    else {
@@ -330,21 +353,22 @@ function login(perms, after) {
 		tstop(10);
 	    }
 	    
-	}, perms);
+	}, {perms: 'email'});
 }
 
 function rawlogin(after){
     lg('raw login');
-    login({}, after);
+    login({perms: 'email'}, after);
 }
 
 function permlogin(after){
     lg('perm login');
-    login({perms: 'email,publish_stream'}, after);
+    login({prems: 'email'}, after);
 }
 
 function enter(after){
     lg('welcome');
+
     if (signedIn()) {
 	indb(function(){tstop(11);},
 	     function(){ 
@@ -352,6 +376,13 @@ function enter(after){
 			       data(function(){tstop(12);});});});
     }else{
 	tstop();
+	setTimeout(function(){
+		       lg('arrowing');
+		       if (paper && $.browser.hasCanvas){
+			   lg('arrowing...');
+			   paper.arrow(200, 250, 150, 220, 8);
+		       }
+		   },2500);
 	
     }
    

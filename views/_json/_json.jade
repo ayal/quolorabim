@@ -1,3 +1,4 @@
+- var toClass = {}.toString
 - if (json._partials)
   | ------
   div#root!= partial('json', [json._partials])
@@ -8,13 +9,15 @@
     - var class = '';
     - if (key === '_id') 
       - class = 'ID'
-      - var justId = val.substr(1, val.length - 2);
+      - var justId = val;//.substr(1, val.length - 2);
       input(type='button', id=justId, onclick="rmpost('"+ justId +"')")
     span.key(id=key,class=class)
       |#{key} :
-      - if (val[0] == '{')
+      - if (key !== '_id' && toClass.call(val) === '[object Object]')
         span.val
-          - var next = JSON.parse(val)
+          - var next = val
+          div
+            //|OBJ: #{JSON.stringify(val)}
             div(style='margin-left:50px')!= partial('json', [next])
       - else
         - if (val === '' || !val || val.length === 0)

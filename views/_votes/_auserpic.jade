@@ -1,9 +1,16 @@
-- var picurl = auserpic.user.data.picture;
-  .imgname.left
-    - var inref = 'navapp("/votes/all/' + auserpic.uid + '")';
-    - var uref = auserpic.user.data.link;
-      a(href=uref, target="_blank").left
-        img.imgsml(src=picurl, class='friendsimage', title=auserpic.user.data.name)
+- var picurl = auserpic.user ? auserpic.user.data.picture : auserpic.picture;
+- var fbuid = auserpic.user ? auserpic.user.FBUID : auserpic.uid;
+//- var linque =  auserpic.user ? auserpic.user.data.link : (auserpic.link || '#null')
+- var linque =  'http://www.facebook.com/profile.php?id=' + fbuid;
+- var name =  auserpic.user ? auserpic.user.data.name : auserpic.name;
+- var onclick = auserpic.act ?  auserpic.act + '("' + fbuid + '")' : '(function(){return true;})()';
+- var target = auserpic.act ? '' : '_blank'
+- var id = 'img' + fbuid;
+- var style = auserpic.dim ? 'width:' +  auserpic.dim + ';height:' + auserpic.dim + ';' : '';
+  .imgname.left(id=id)
+    - var inref = 'navapp("/votes/all/' + fbuid + '")';
+      a(href=linque, onclick=onclick, target=target).left
+        img.imgsml(src=picurl, class='friendsimage', title=name, style=style)
       - if (auserpic.showname)
         .name
-          div.what= auserpic.user.data.name
+          div.what= name

@@ -1,6 +1,6 @@
 - var vid =vote._id.toHexString(), postry = "postit({vid: '" + vid + "', yesno: 'yes'})", postrn = "postit({vid: '" + vid + "', yesno: 'no'})";
 - var rmpost = "rmpost({vid: '" + vid + "', yesno: 'yes'})";
-- var curl = cfg.appUrl + 'votes/' + vid + '?layout=true';
+- var curl = cfg.appUrl + 'votes/' + vid ;
 - curl = 'http://www.facebook.com/plugins/feedback.php?limit=10&href=' + encodeURIComponent(curl);
 - if (layout === true)
   - var turl = vote.data.vurl;

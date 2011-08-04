@@ -1,8 +1,12 @@
 - var vid =vote._id.toHexString(), postry = "postit({vid: '" + vid + "', yesno: 'yes'})", postrn = "postit({vid: '" + vid + "', yesno: 'no'})";
 - var rmpost = "rmpost({vid: '" + vid + "', yesno: 'yes'})";
-- var curl = cfg.appUrl + 'votes/' + vid + '?layout=true&ref=CMT';
-- if (cuid)
-  - curl += cuid;
+//- var curl = cfg.appUrl + 'votes/' + vid + '?ref=CMT';
+- var curl = cfg.appUrl + 'votes/' + vid;
+- var nurl = cfg.appUrl + 'votes/' + vid + 'ref=OWN';
+- var nvturl = cfg.appUrl + 'votes/' + vid + 'ref=NVT';
+- var acturl = cfg.siteUrl + 'invite?next=' + encodeURIComponent(nurl) + '&cuid=';
+//- if (cuid)
+//  - curl += cuid; nvturl+= cuid; acturl+= cuid;
 //- curl = 'http://www.facebook.com/plugins/feedback.php?limit=10&href=' + encodeURIComponent(curl);
 - if (layout === true)
   - var turl = vote.data.vurl;
@@ -38,8 +42,6 @@
         //span(onclick=rmpost, class="byes")
         //  | KILL
     .results.width
-      - console.log('FRIENDS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-      - console.log(friends);
       - if (cuid && vote.yesno[cuid])
         div(class="noes varea")
           != partial('summary', [{classes: 'noes varea', text: '%D7%A0%D7%92%D7%93', word: 'no', count: noes, tot: noes + yess}])
@@ -61,7 +63,7 @@
               .stitle.right(dir='rtl')=vote.data.stitle
     .centermiddle.width.right
       .more.right.width
-        table.right.width(dir='rtl')
+        table.right.width(id='tbl', dir='rtl')
           - if (vote.data.status)
             tr
               td='\u05e1\u05d8\u05d8\u05d5\u05e1'
@@ -72,27 +74,29 @@
               td='\u05e0\u05d5\u05e1\u05d7\u05d9\u0020\u05d4\u05d4\u05e6\u05e2\u05d4'
               td
                 - var i = 1;
-                - each key in JSON.parse(vote.data.laws)
-                  a(href=key.law, target='_blank')
-                    img(src='/alaw.png', title=key.time)
+                - each key in vote.data.laws
+                  -if (key.source_url)
+                    a(href=key.source_url, target='_blank')
+                      img(src='/alaw.png', title=key.date)
           - if (vote.data.votes)
             tr
               td='\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea\u0020\u05d1\u05de\u05dc\u05d9\u05d0\u05d4'
               td
                 - var i = 0;
-                - each key in JSON.parse(vote.data.votes)
+                - each key in vote.data.votez
                   - i++
-                  a(href=key.url, target='_blank')
-                    - var imgttl = '\u05d1\u05e2\u05d3' + ': ' + key.yesno.split('/')[0] + ' ' + '\u05e0\u05d2\u05d3' + ': ' + key.yesno.split('/')[1] + '\n' + key.time;
+                  - if (key === null) continue;
+                  a(href= 'http://oknesset.org' + key.url, target='_blank')
+                    - var imgttl = '\u05d1\u05e2\u05d3' + ': ' + key.for_votes.length + ' ' + '\u05e0\u05d2\u05d3' + ': ' + key.against_votes.length + ' ** \n' + key.time;
                     //img(src='/avote.gif', title=imgttl)
-                    span.pie.right(yes=key.yesno.split('/')[0],no=key.yesno.split('/')[1],title=imgttl,h='1.0em')
+                    span.pie.right(yes=key.for_votes.length,no=key.against_votes.length,title=imgttl,h='1.0em')
           - if (vote.data.commitees) 
             tr
               td='\u05ea\u05de\u05dc\u05d5\u05dc\u0020\u05d4\u05d5\u05d5\u05e2\u05d3\u05d5\u05ea'
               td
                 - var i = 1;
-                - each key in JSON.parse(vote.data.commitees)
-                  a(href=key.url, target='_blank')
+                - each key in vote.data.commitees.all
+                  a(href='http://oknesset.org/committee/meeting/' + key, target='_blank')
                     img(src='/acommittee.png', title=key.time)            
           - if (vote.data.vurl)
             tr
@@ -109,7 +113,8 @@
                     img(src='/link.png')
     .centerdown.width.left
       .cmnts.right
-        //iframe.comments(frameborder='0', height='400px', src=curl, width="470px", name="comments123")
-        fb:comments(xid=vid, url=curl, css='http://work.thewe.net/commentz.css?v=2', width="470px", height='400px')
+        //iframe.comments(frameborder='0', height='1800px', src=curl, width="470px", name="comments123")
+        //fb:comments(xid=vid, migrated='1', url=curl, numposts='30', css='http://work.thewe.net/commentz.css?v=2', width="470px", height='1800px')
+        fb:comments(href=curl, width="470px")
     
     

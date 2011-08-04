@@ -5,9 +5,9 @@
   - each val, key in vote.yesno
     - if (!vote.users[key]) vote.users[key] = unknown;
     - if (friends && friends[key])
-      != partial('auserpic', [{uid: key, user: vote.users[key], showname: true}])
+      != partial('auserpic', [{dim: '50px', uid: key, user: vote.users[key], showname: true}])
   - each val, key in vote.yesno
     - if (!vote.users[key]) vote.users[key] = unknown;
     - if (!friends || (friends && !friends[key]))
-      != partial('auserpic', [{uid: key, user: vote.users[key], showname: true}])
+      != partial('auserpic', [{dim: '50px', uid: key, user: vote.users[key], showname: true}])
  
