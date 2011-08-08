@@ -1,0 +1,78 @@
+- var vid =vote.vid, postry = "postit({vid: '" + vid + "', yesno: 'yes'})", postrn = "postit({vid: '" + vid + "', yesno: 'no'})";
+- var rmpost = "rmpost({vid: '" + vid + "', yesno: 'yes'})";
+//- var curl = cfg.appUrl + 'bill/' + vid + '?ref=CMT';
+- var curl = cfg.appUrl + 'bill/' + vid;
+- var nurl = cfg.appUrl + 'bill/' + vid + '?ref=OWN';
+- var lkurl = cfg.siteUrl + 'bill/' + vid;
+- var nvturl = cfg.appUrl + 'bill/' + vid + '?ref=NVT';
+- var acturl = cfg.siteUrl + 'invite?next=' + encodeURIComponent(nurl) + '&cuid=';
+//- if (cuid)
+//  - curl += cuid; nvturl+= cuid; acturl+= cuid;
+//- curl = 'http://www.facebook.com/plugins/feedback.php?limit=10&href=' + encodeURIComponent(curl);
+- if (layout === true)
+  - var turl = '';//vote.data.vurl;
+- var yess = 0, noes = 0;
+  - each val, key in vote.yesno
+    - val == 'yes' ? yess += 1 : noes += 1
+.content.left(id=vid)
+  .lefty.height.left
+    .vimg.width
+      #pagelet_main_nav(style='padding-bottom:2px')
+        ul.uiSideNav.mtm#fbCoreAppsNav(dir='rtl')
+          - var navs = [{what: '\u05de\u05d4\u0020\u05d6\u05d4', where: '/info', class: '', img: '/whatisit.png', dialog: true}, {what: '\u05d4\u05ea\u05e4\u05dc\u05d2\u05d5\u05ea\u0020\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea\u0020\u05d1\u05e4\u05d9\u05d9\u05e1\u05d1\u05d5\u05e7\u003a', where: '#', class: 'selectedItem', img: 'pie', yess: yess, noes: noes}];
+          //- navs.push({what: '\u05db\u05dc\u0020\u05d4\u05d4\u05e6\u05d1\u05e2\u05d5\u05ea', where: '/votes/all', class: '', img: '/vlogo.png'});
+          != partial('nav', navs)
+      .yesnokill.right
+        .loading
+          img(src='/loading40.gif')
+        .btns.width.hide
+          - if (!cuid || !vote.yesno[cuid])
+            .imgwrp
+              a.right(href='#null', onclick=postrn, class="bno")
+                img(src='/rlike.png')
+                .imgtxt
+                  |\u05d0\u05e0\u05d9 \u05e0\u05d2\u05d3
+            .imgwrp
+              a.right(href='#null', onclick=postry, class="byes")
+                img(src='/glike.png')
+                .imgtxt
+                  |\u05d0\u05e0\u05d9 \u05d1\u05e2\u05d3
+          - else
+            .urvote.width
+              |#{voted}
+        //span(onclick=rmpost, class="byes")
+        //  | KILL
+    .results.width
+      - if (cuid && vote.yesno[cuid])
+        div(class="noes varea")
+          != partial('summary', [{classes: 'noes varea', text: '%D7%A0%D7%92%D7%93', word: 'no', count: noes, tot: noes + yess}])
+        .yess.varea
+          != partial('summary', [{classes: 'yess varea', text: '%D7%91%D7%A2%D7%93', word: 'yes', count: yess, tot: noes + yess}])
+      - else
+        .yess.varea.darea
+          != partial('xsummary', [{avote: vote, text: '\u003a\u05d4\u05e6\u05d1\u05d9\u05e2\u05d5', word: 'yes', count: yess + noes}])
+    .othervts.width
+    .more.width
+  .center.left
+    .bu(style='padding-bottom:6px;border-bottom:1px solid #B3B3B3').width.right
+      fb:like(href=lkurl,show_faces='true')
+    .centermiddlez
+      iframe(src='http://oknesset.org/bill/' + vote.vid + '/embed', height='370px', frameborder='0').width
+    .centermiddle.width.right
+      .more.right.width
+        table.right.width(id='tbl', dir='rtl')
+          - if (vote.data.commitees) 
+            tr
+              td='\u05ea\u05de\u05dc\u05d5\u05dc\u0020\u05d4\u05d5\u05d5\u05e2\u05d3\u05d5\u05ea'
+              td
+                - var i = 1;
+                - each key in vote.data.commitees.all
+                  a(href='http://oknesset.org/committee/meeting/' + key, target='_blank')
+                    img(src='/acommittee.png', title=key.description)            
+    .centerdown.width.left
+      .cmnts.right
+        //iframe.comments(frameborder='0', height='1800px', src=curl, width="470px", name="comments123")
+        //fb:comments(xid=vid, migrated='1', url=curl, numposts='30', css='http://work.thewe.net/commentz.css?v=2', width="470px", height='1800px')
+        fb:comments(href=curl, width="470px")
+    
+    

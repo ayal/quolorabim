@@ -1,0 +1,2 @@
+.frdsdlg
+  != partial('auserpic', [{uid: key, picture: u, name: , showname: true}])

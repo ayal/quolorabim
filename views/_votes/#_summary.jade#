@@ -1,0 +1,14 @@
+.tot.right(dir='rtl')
+  | #{summary.count} #{decodeURIComponent(summary.text)} (#{Math.floor(summary.count * 100 / summary.tot)}%)
+- var unknown = {data : {name: 'unknown'}};
+.yimg
+  - each val, key in vote.yesno
+    - if (!vote.users[key]) vote.users[key] = unknown;
+    - if (val === summary.word && friends && friends[key])
+      - console.log('friends with: ' + key);
+      != partial('auserpic', [{uid: key, user: vote.users[key], showname: true}])
+  - each val, key in vote.yesno
+    - if (!vote.users[key]) vote.users[key] = unknown;
+    - if (val === summary.word && (!friends || (friends && !friends[key])))
+      != partial('auserpic', [{uid: key, user: vote.users[key], showname: true}])
+ 

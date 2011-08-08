@@ -1,0 +1,18 @@
+!!!
+html(xmlns="http://www.w3.org/1999/xhtml", xmlns:fb="http://www.facebook.com/2008/fbml",  xml:lang="en", lang="en")
+  head
+    - var title = 'קולורבים'
+    - var url = cfg.appUrl
+    - if (typeof vote != 'undefined' && vote && vote.data && vote.data.title)
+      - title += ' - ' + vote.data.title;
+      - url += 'bill/' + vote.vid;
+    title= title
+
+    meta(property='og:title', content=title)
+    meta(property='og:description', content='\u05d7\u05d1\u05e8\u05d9\u05dd\u0020\u05d1\u05d5\u05d7\u05e8\u05d9\u05dd')
+    meta(property='og:image', content='http://work.thewe.net/ivotelogo.png')
+    meta(property='og:site_name', content='\u05e7\u05d5\u05dc\u05d5\u05e8\u05d1\u05d9\u05dd')
+    meta(property='fb:app_id', content='140153199345253')
+    meta(property='fb:admins', content='100001083158634')
+    meta(property='og:type', content='website')
+    meta(property='og:url', content=url)

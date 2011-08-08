@@ -1,0 +1,51 @@
+.faq
+  - var height = stream ? '540' : '400'
+  - var hpx = height + 'px'
+  - var width = stream ? '750' : '220'
+  - var wpx = width + 'px'  
+  .like.left
+    iframe(scrolling='no', width=wpx, frameborder='0', style='margin-top:20px;border:none;', height=hpx, src='http://www.facebook.com/plugins/likebox.php?id=140153199345253&show_faces=true&header=false&height=' + height + '&width=' + width + '&stream=' + stream)
+  .all.right
+    .h1
+      |קולורבים
+    .h2
+      |חברים בוחרים
+    .clear
+    p
+      h3
+        |פשוט להצביע!
+      p 
+        |כדי להצביע יש ללחוץ על אחד הכפתורים:
+        img(src='/rlike.png')
+        | או
+        img(src='/glike.png')
+        br
+        |לאחר ההצבעה אפשר לראות כיצד הצביעו אנשים אחרים.
+        br
+        |בנוסף, באמצע העמוד יש מקום להביע דעה מפורטת.
+    p
+      h3
+        |מתחת לכותרת, ובהתאם לנושא ההצבעה, מופיעים קישורים למידע נוסף:
+      span.pie(yes='40',no='60',title='yay',h='1.2em',style='margin-left:5px').right
+      p
+        | תיעוד הצבעות העבר במליאה - כמה הצביעו נגד?
+        | מי הצביע בעד?
+        br
+        img(src='/acommittee.png')
+        | תמלילי וועדות הכנסת - כדאי לקרוא! זה לפעמים מצחיק ולפעמים מטריד!
+        br
+        img(src='/alaw.png')
+        | הנוסחים של הצעת החוק - החוק משתנה מאוד מנוסח אחד לשני.
+        br
+        |סטטוס ההצעה - לדוגמא: הצעה חדשה, קריאה טרומית, בוועדה, חוק קיים
+    p
+      h3
+        |יש לך נושא אחר להצבעה?
+      p
+        |קולורבים תודיע לך כשהאפשרות הזו תפתח
+        br
+        |בנתיים אפשר לכתוב על ה ---> 
+        a(target="_blank", href="http://www.facebook.com/apps/application.php?id=140153199345253&v=wall")
+          |Wall של קולורבים
+        br
+        |כל משוב וביקורת יתקבלו בברכה
