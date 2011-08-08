@@ -65,13 +65,14 @@ var cmtsUrl = appUrl +'bill/' +  $('.content').attr('id');
 				     evt('comments/no', response.error);
 				 } 
 				 else {
-				     lg(response[cmtsUrl]);
+
 				     response[cmtsUrl].data.forEach(function(rslt){
-									var arr = regit(/(http:\/\/\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/])?)/g,
-										  rslt.message);
-									if (arr.length > 0)
-									    if (arr[0]['2']) {
-										addInfoLink(td, arr[0]['2'], '/link.png');	
+
+									var arr = regit(/(http.*?)(\s|$)/g,
+											rslt.message);
+									if (arr.length > 0 && arr[0])
+									    if (arr[0]['1']) {
+										addInfoLink(td, arr[0]['1'], '/link.png');	
 									    }
 
 						 
